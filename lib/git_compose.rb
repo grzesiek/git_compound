@@ -1,5 +1,6 @@
-require "git_compose/version"
+require 'git_compose/version'
 
+# Git Compose module
+#
 module GitCompose
-  # Your code goes here...
 end

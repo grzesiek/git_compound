@@ -1,0 +1,6 @@
+Metrics/LineLength:
+  Max: 90
+Metrics/MethodLength:
+  Max: 18
+Style/SignalException:
+  Enabled: false
