@@ -10,8 +10,8 @@ module GitCompound
     end
 
     def evaluate(file, contents = nil)
-      @contents = (contents || contents_from_file(file))
-      eval_contents(file, @contents)
+      instance_contents = (contents || contents_from_file(file))
+      eval_contents(file, instance_contents)
       self
     end
 
@@ -24,7 +24,7 @@ module GitCompound
     end
 
     def eval_contents(file, contents)
-      instance_eval(contents, file)
+      instance_eval(contents, file.to_s)
     rescue => e
       raise CompoundSyntaxError, e
     end

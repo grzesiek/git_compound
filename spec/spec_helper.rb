@@ -14,12 +14,12 @@ RSpec.configure do |config|
   config.before do
     MemFs.activate!
     # Catch stdout
-    @stdout, $stdout = $stdout, StringIO.new
+    # @stdout, $stdout = $stdout, StringIO.new
   end
 
   config.after do
     MemFs.deactivate!
     # Reassign stdout
-    $stdout, @stdout = @stdout, nil
+    # $stdout, @stdout = @stdout, nil
   end
 end
