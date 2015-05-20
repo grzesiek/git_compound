@@ -2,6 +2,8 @@ module GitCompound
   # Manifest clas for .gitcompound / Compoundfile
   #
   class Manifest
+    include Dsl
+
     def self.load!(file)
       manifest = new
       manifest.evaluate(file)
@@ -10,6 +12,7 @@ module GitCompound
     def evaluate(file, contents = nil)
       @contents = (contents || contents_from_file(file))
       eval_contents(file, @contents)
+      self
     end
 
     private
