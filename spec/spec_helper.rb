@@ -1,6 +1,7 @@
 require 'bundler/setup'
-require 'simplecov'
 require 'memfs'
+require 'simplecov'
+require 'git_compound'
 
 SimpleCov.start
 Bundler.require

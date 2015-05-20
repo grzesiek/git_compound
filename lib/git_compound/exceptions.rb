@@ -1,4 +1,6 @@
 module GitCompound
-  class CompoundLoadError < StandardError; end
-  class CompoundSyntaxError < StandardError; end
+  class GitCompoundError < StandardError; end
+
+  class CompoundLoadError < GitCompoundError; end
+  class CompoundSyntaxError < GitCompoundError; end
 end
