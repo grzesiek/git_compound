@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rspec',     '~> 3.2.0'
   spec.add_development_dependency 'pry',       '~> 0.10.1'
   spec.add_development_dependency 'simplecov', '~> 0.10.0'
+  spec.add_development_dependency 'memfs',     '~> 0.4.3'
   # rubocop:enable Style/SingleSpaceBeforeFirstArg
 
   spec.requirements << 'git scm version > 2'
