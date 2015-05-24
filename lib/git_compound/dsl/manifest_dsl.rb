@@ -4,12 +4,14 @@ module GitCompound
   module Dsl
     # DSL for Manifest
     #
-    class Manifest
+    class ManifestDsl
       def initialize(contents)
         @name       = ''
         @components = {}
         @tasks      = {}
         instance_eval(contents)
+      rescue => e
+        raise CompoundSyntaxError, e
       end
 
       def name(component_name)

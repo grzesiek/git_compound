@@ -11,6 +11,10 @@ module GitCompound
           end
         end
       end
+
+      def self.extended(base)
+        base.private_class_method :delegate
+      end
     end
   end
 end

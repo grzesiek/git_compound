@@ -5,18 +5,18 @@ module GitCompound
       @valid_contents = <<-END
         name :test_project
 
-        component :test_component do |c|
-          c.version     = '~>1.1'
-          c.source      = 'git@github.com:test_account/repo1/core_module1.git'
-          c.destination = 'application/modules/core_module1'
+        component :test_component do
+          version     '~>1.1'
+          source      'git@github.com:test_account/repo1/core_module1.git'
+          destination 'application/modules/core_module1'
         end
 
         task :first_task_name do
         end
 
         # task :each_task, :each do |t|
-        #   t.exclude :a
-        #   t.script do
+        #   exclude :a
+        #   script do
         #     puts '123'
         #   end
         # end

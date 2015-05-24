@@ -8,7 +8,7 @@ module GitCompound
       @name = name
       @manifest = nil
       if block
-        block.call(self)
+        Dsl::ComponentDsl.new(self, &block)
       end
     end
   end
