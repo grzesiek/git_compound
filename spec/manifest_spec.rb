@@ -25,10 +25,6 @@ module GitCompound
       @manifest = Manifest.new(@valid_contents)
     end
 
-    it 'should return instance of Manifest' do
-      expect(@manifest).to be_an_instance_of Manifest
-    end
-
     it 'should not raise error if content is valid' do
       expect do
         Manifest.new(@valid_contents)

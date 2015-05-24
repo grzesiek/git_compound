@@ -20,8 +20,8 @@ module GitCompound
         @component.source = component_source
       end
 
-      def destination(component_destination)
-        @component.destination = component_destination
+      def destination(component_destination_path)
+        @component.destination = component_destination_path
       end
     end
   end

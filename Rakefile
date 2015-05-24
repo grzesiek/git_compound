@@ -6,8 +6,8 @@ RSpec::Core::RakeTask.new('spec')
 RuboCop::RakeTask.new
 
 task :test do
-  Rake::Task['rubocop'].invoke
   Rake::Task['spec'].invoke
+  Rake::Task['rubocop'].invoke
 end
 
 task default: :test

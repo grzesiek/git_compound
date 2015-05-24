@@ -3,4 +3,6 @@ module GitCompound
 
   class CompoundLoadError < GitCompoundError; end
   class CompoundSyntaxError < GitCompoundError; end
+  class FileNotFound < GitCompoundError; end
+  class FileUnreachable < GitCompoundError; end
 end
