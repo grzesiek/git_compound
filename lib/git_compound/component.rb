@@ -2,22 +2,14 @@ module GitCompound
   # Component
   #
   class Component
+    attr_accessor :version, :source, :destination
+
     def initialize(name, &block)
       @name = name
-      block.call(self) if block
+      @manifest = nil
+      if block
+        block.call(self)
+      end
     end
-
-    def version(ver)
-      ver
-    end
-
-    def source(src)
-      src
-    end
-
-    def destination(dest)
-      dest
-    end
-
   end
 end

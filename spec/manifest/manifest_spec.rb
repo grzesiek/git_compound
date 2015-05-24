@@ -6,9 +6,9 @@ module GitCompound
         name :test_project
 
         component :test_component do |c|
-          c.version     '~>1.1'
-          c.source      'git@github.com:test_account/repo1/core_module1.git'
-          c.destination 'application/modules/core_module1'
+          c.version     = '~>1.1'
+          c.source      = 'git@github.com:test_account/repo1/core_module1.git'
+          c.destination = 'application/modules/core_module1'
         end
 
         task :first_task_name do
@@ -49,7 +49,7 @@ module GitCompound
       expect(@manifest.components).to include(:test_component)
     end
 
-    it 'should delegate taskss method' do
+    it 'should delegate tasks method' do
       expect(@manifest.tasks).to include(:first_task_name)
     end
   end
