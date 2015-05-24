@@ -1,18 +1,17 @@
 module GitCompound
   # Compound Domain Specific Language
   #
-  module Dsl
-    def initialize
-      @name         = ''
-      @components   = {}
-      @tasks        = {}
+  class Dsl
+    def initialize(contents)
+      @name       = ''
+      @components = {}
+      @tasks      = {}
+      instance_eval(contents)
     end
 
     def name(component_name)
       @name = component_name.to_sym
     end
-
-    private
 
     def component(name, &block)
       @components.store(name.to_sym, Component.new(name, &block))

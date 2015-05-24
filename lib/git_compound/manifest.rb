@@ -1,30 +1,30 @@
 module GitCompound
-  # Manifest clas for .gitcompound / Compoundfile
+  # Manifest class for .gitcompound / Compoundfile
   #
   class Manifest
-    include Dsl
-
-    def self.load!(file)
-      manifest = new
-      manifest.evaluate(file)
+    def initialize(contents)
+      @contents = contents
+      @dsl = dsl_eval_contents(contents)
     end
 
-    def evaluate(file, contents = nil)
-      instance_contents = (contents || contents_from_file(file))
-      eval_contents(file, instance_contents)
-      self
+    # delegators
+
+    def name
+      @dsl.instance_variable_get(:@name)
+    end
+
+    def components
+      @dsl.instance_variable_get(:@components)
+    end
+
+    def tasks
+      @dsl.instance_variable_get(:@tasks)
     end
 
     private
 
-    def contents_from_file(file)
-      File.read(file)
-    rescue => e
-      raise CompoundLoadError, e
-    end
-
-    def eval_contents(file, contents)
-      instance_eval(contents, file.to_s)
+    def dsl_eval_contents(contents)
+      Dsl.new(contents)
     rescue => e
       raise CompoundSyntaxError, e
     end

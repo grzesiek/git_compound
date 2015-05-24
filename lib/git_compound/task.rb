@@ -2,9 +2,10 @@ module GitCompound
   # Task
   #
   class Task
-    def initialize(name, &block)
+    def initialize(name, type = nil, &block)
       @name = name
-      instance_eval(&block)
+      @type = type
+      block.call(self) if block
     end
   end
 end

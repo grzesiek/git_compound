@@ -4,48 +4,53 @@ module GitCompound
     before do
       @valid_contents = <<-END
         name :test_project
-        component :test_component do
-          version     '~>1.1'
-          source      'src'
-          destination 'dst'
+
+        component :test_component do |c|
+          c.version     '~>1.1'
+          c.source      'git@github.com:test_account/repo1/core_module1.git'
+          c.destination 'application/modules/core_module1'
         end
-        task :first_task do
+
+        task :first_task_name do
         end
+
+        # task :each_task, :each do |t|
+        #   t.exclude :a
+        #   t.script do
+        #     puts '123'
+        #   end
+        # end
       END
+
+      @manifest = Manifest.new(@valid_contents)
     end
 
-    context 'when loaded from file' do
-      before do
-        @compound_file = 'Compoundfile'
-        File.open(@compound_file, 'w') do |f|
-          f.puts @valid_contents
-        end
-        @manifest = described_class.load!(@compound_file)
-      end
-
-      it 'should read it and return instance of Manifest' do
-        expect(@manifest).to be_an_instance_of Manifest
-      end
-
-      it 'should raise exception if file is not found' do
-        expect { described_class.load!('nonexistent') }.to raise_error \
-          CompoundLoadError
-      end
+    it 'should return instance of Manifest' do
+      expect(@manifest).to be_an_instance_of Manifest
     end
 
-    context 'when not loaded from file' do
-      context 'when content is supplied as second argument' do
-        it 'should evaluate contents if it is valid' do
-          manifest = described_class.new.evaluate(nil, @valid_contents)
-          expect(manifest).to be_instance_of Manifest
-        end
+    it 'should not raise error if content is valid' do
+      expect do
+        Manifest.new(@valid_contents)
+      end.to_not raise_error
+    end
 
-        it 'should raise exception if syntax is invalid' do
-          expect do
-            described_class.new.evaluate(nil, 'non_existent_method')
-          end.to raise_error CompoundSyntaxError
-        end
-      end
+    it 'should raise exception if syntax is invalid' do
+      expect do
+        Manifest.new('non_existent_method')
+      end.to raise_error CompoundSyntaxError
+    end
+
+    it 'should delegate name method' do
+      expect(@manifest.name).to eq :test_project
+    end
+
+    it 'should delegate components method' do
+      expect(@manifest.components).to include(:test_component)
+    end
+
+    it 'should delegate taskss method' do
+      expect(@manifest.tasks).to include(:first_task_name)
     end
   end
 end

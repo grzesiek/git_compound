@@ -4,10 +4,8 @@ module GitCompound
   class Component
     def initialize(name, &block)
       @name = name
-      instance_eval(&block)
+      block.call(self) if block
     end
-
-    private
 
     def version(ver)
       ver
@@ -20,5 +18,6 @@ module GitCompound
     def destination(dest)
       dest
     end
+
   end
 end
