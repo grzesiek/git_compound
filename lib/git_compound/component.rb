@@ -20,18 +20,15 @@ module GitCompound
     def manifest_load
       loader = GitFileLoader.new(@source, lastest_matching_ref)
       contents = loader.contents('Compoundfile', '.gitcompound')
-    rescue FileNotFoundError
-      nil
-    else
       Manifest.new(contents)
+    rescue FileNotFoundError
     end
 
     def refs
-      refs = `git ls-remote #{@source} 2>&1`
-      if refs =~ /Could not read from remote repository./
-        raise RepositoryUnrechableError, 'Could not read from remote repository.'
-      end
+      refs = GitCommand.new("git ls-remote #{@source}").execute
       refs.scan(%r{^(\b[0-9a-f]{5,40}\b)\srefs\/(heads|tags)\/(.+)})
+    rescue GitCommandError
+      raise RepositoryUnrechableError, 'Could not read from remote repository'
     end
 
     def versions
@@ -54,6 +51,7 @@ module GitCompound
     def lastest_matching_ref
       validate_refs
       requirement = Gem::Requirement.new(versions.keys)
+      :master
     end
 
     def validate_refs

@@ -7,8 +7,6 @@ module GitCompound
         @source = source
         @ref    = ref
         @file   = file
-        raise FileUnreachableError unless reachable?
-        raise FileNotFoundError unless exists?
       end
 
       def contents

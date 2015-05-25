@@ -5,7 +5,6 @@ module GitCompound
     class GitLocalStrategy < GitFileContents
       def initialize(source, ref, file)
         source.sub!(%r{^file://}, '')
-        file = "#{source}/#{file}"
         super
       end
 
@@ -13,16 +12,30 @@ module GitCompound
         tests = []
         tests << @source.start_with?('/')
         tests << File.directory?(@source)
+        if tests.all?
+          verify_ref = GitCommand.new("git show-ref -q #{@ref}")
+          verify_ref.execute_in(@source)
+          tests << verify_ref.valid?
+        end
         tests.all?
       end
 
       def exists?
-        reachable? && File.exist?(@file)
+        raise FileUnreachableError unless reachable?
+        GitCommand.new("git show #{@ref}:#{@file}").execute_in(@source)
+        true
+      rescue GitCommandError
+        false
       end
 
       def contents
-        File.read(@file)
+        raise FileUnreachableError unless reachable?
+        raise FileNotFoundError unless exists?
+        GitCommand.new("git show #{@ref}:#{@file}").execute_in(@source)
       end
+
+      private
+
     end
   end
 end

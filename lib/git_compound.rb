@@ -9,6 +9,7 @@ module GitCompound
   autoload :Manifest,      'git_compound/manifest'
   autoload :Task,          'git_compound/task'
   autoload :GitFileLoader, 'git_compound/git_file_loader'
+  autoload :GitCommand,    'git_compound/git_command'
 
   # GitCompount Domain Specific Language
   #
