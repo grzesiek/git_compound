@@ -1,11 +1,13 @@
 module GitCompound
   module FileContents
-    # Local file strategy
+    # Local Git repository strategy
     #
-    class LocalFileStrategy < FileContentsBase
+    class GitLocalStrategy < FileContentsBase
       def initialize(source, file)
         super
         @file = "#{source}/#{file}"
+        raise FileUnreachable unless reachable?
+        raise FileNotFound unless exists?
       end
 
       def reachable?
@@ -20,8 +22,6 @@ module GitCompound
       end
 
       def contents
-        raise FileUnreachable unless reachable?
-        raise FileNotFound unless exists?
         File.read(@file)
       end
     end

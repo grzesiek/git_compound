@@ -12,27 +12,30 @@ module GitCompound
 
     def process_dependencies
       @manifest = load_manifest
-    rescue FileNotFound
-      @manifest = nil
-    else
-      @manifest.process_dependencies
+      @manifest.process_dependencies if @manifest
     end
 
     def load_manifest
-      strategies = [FileContents::LocalFileStrategy]
-#                    Contents::GitArchiveStrategy,
-#                    Contents::GitHubStrategy]
+      strategies = [FileContents::GitLocalStrategy]
+                    # Contents::GitArchiveStrategy,
+                    # Contents::GitHubStrategy]
 
       strategies.each do |strategy|
         begin
-          contents = strategy.new(@source, 'Compoundfile').contents
+          file = strategy.new(@source, 'Compoundfile')
         rescue FileNotFound
-          contents = strategy.new(@source, '.gitcompound').contents
+          file = strategy.new(@source, '.gitcompound')
         rescue FileUnreachable
           next
         end
-        return Manifest.new(contents)
+        return Manifest.new(file.contents)
       end
+
+      nil
+    end
+
+    def versions
+
     end
   end
 end

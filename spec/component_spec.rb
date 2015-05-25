@@ -6,7 +6,7 @@ module GitCompound
       File.open('/component1/Compoundfile', 'w') do |f|
         f.puts 'name "test component 1"'
       end
-      @component = Component.new(:test_component) do
+      @component_1 = Component.new(:test_component_1) do
         version '~>1.1'
         source '/component1'
         destination 'some destination'
@@ -14,20 +14,20 @@ module GitCompound
     end
 
     it 'should set version parameter' do
-      expect(@component.version).to eq '~>1.1'
+      expect(@component_1.version).to eq '~>1.1'
     end
 
     it 'should set source parameter' do
-      expect(@component.source).to eq '/component1'
+      expect(@component_1.source).to eq '/component1'
     end
 
     it 'should set destination parameter' do
-      expect(@component.destination).to eq 'some destination'
+      expect(@component_1.destination).to eq 'some destination'
     end
 
     context 'component manifest is stored in Compoundfile' do
       it do
-        manifest = @component.load_manifest
+        manifest = @component_1.load_manifest
         expect(manifest).to be_instance_of Manifest
       end
     end
@@ -38,12 +38,26 @@ module GitCompound
         File.open('/component2/.gitcompound', 'w') do |f|
           f.puts 'name "test component 2"'
         end
-        component2 = Component.new(:test_component2) do
+        component_2 = Component.new(:test_component_2) do
           version '~>1.1'
           source '/component2'
           destination 'some destination'
         end
-        expect(component2.load_manifest).to be_instance_of Manifest
+        expect(component_2.load_manifest).to be_instance_of Manifest
+      end
+    end
+
+    context 'manifest file is not found' do
+      before do
+        @component_3 = Component.new(:test_component_3) do
+          version '~>1.1'
+          source '/component3'
+          destination 'some destination'
+        end
+      end
+
+      it 'should return nil if manifest is not found' do
+        expect(@component_3.load_manifest).to eq nil
       end
     end
   end
