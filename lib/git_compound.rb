@@ -19,7 +19,7 @@ module GitCompound
   # Single file contents strategies
   #
   module FileContents
-    autoload :FileContentsBase, 'git_compound/file_contents/file_contents_base'
+    autoload :GitFileContents,  'git_compound/file_contents/git_file_contents'
     autoload :GitLocalStrategy, 'git_compound/file_contents/git_local_strategy'
   end
 end

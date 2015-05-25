@@ -2,9 +2,10 @@ module GitCompound
   module FileContents
     # Base interface for FileContents strategies
     #
-    class FileContentsBase
-      def initialize(source, file)
+    class GitFileContents
+      def initialize(source, ref, file)
         @source = source
+        @ref    = ref
         @file   = file
       end
 

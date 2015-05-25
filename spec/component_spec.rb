@@ -1,63 +1,91 @@
 # GitCompound
+#
 module GitCompound
   describe Component do
     before do
-      Dir.mkdir('/component1')
-      File.open('/component1/Compoundfile', 'w') do |f|
-        f.puts 'name "test component 1"'
+      @component_dir = "#{@dir}/component"
+      Dir.mkdir(@component_dir)
+
+      git(@component_dir) do
+        git_init
+
+        git_add_file('Compoundfile') do
+          'name "test component"'
+        end
+
+        git_commit('compoundfile commit')
+        git_tag('v0.1', 'version 0.1')
+
+        git_add_file('second_file') do
+          'some second file'
+        end
+
+        git_commit('second commit')
+        git_tag('v0.2', 'version 0.2')
       end
-      @component_1 = Component.new(:test_component_1) do
+
+      component_dir = @component_dir
+      @component = Component.new(:test_component) do
         version '~>1.1'
-        source '/component1'
+        source component_dir
         destination 'some destination'
       end
     end
 
     it 'should set version parameter' do
-      expect(@component_1.version).to eq '~>1.1'
+      expect(@component.version).to eq '~>1.1'
     end
 
     it 'should set source parameter' do
-      expect(@component_1.source).to eq '/component1'
+      expect(@component.source).to eq @component_dir
     end
 
     it 'should set destination parameter' do
-      expect(@component_1.destination).to eq 'some destination'
+      expect(@component.destination).to eq 'some destination'
+    end
+
+    it 'should access component refs' do
+      refs = @component.refs
+      expect(refs[0]).to include('master')
+      expect(refs[1]).to include('v0.1')
     end
 
     context 'component manifest is stored in Compoundfile' do
       it do
-        manifest = @component_1.load_manifest
+        manifest = @component.manifest_load
         expect(manifest).to be_instance_of Manifest
       end
     end
 
     context 'component manifest is stored in .gitcompound file' do
       it do
-        Dir.mkdir('/component2')
-        File.open('/component2/.gitcompound', 'w') do |f|
-          f.puts 'name "test component 2"'
+        git(@component_dir) do
+          git_rm_file('Compoundfile')
+          git_add_file('.gitcompound') { 'name :test_component_2' }
+          git_commit('component2 commit')
         end
+        component_dir = @component_dir
         component_2 = Component.new(:test_component_2) do
           version '~>1.1'
-          source '/component2'
+          source component_dir
           destination 'some destination'
         end
-        expect(component_2.load_manifest).to be_instance_of Manifest
+        expect(component_2.manifest_load).to be_instance_of Manifest
       end
     end
 
     context 'manifest file is not found' do
       before do
+        component_dir = "#{@dir}/component3"
         @component_3 = Component.new(:test_component_3) do
           version '~>1.1'
-          source '/component3'
+          source component_dir
           destination 'some destination'
         end
       end
 
       it 'should return nil if manifest is not found' do
-        expect(@component_3.load_manifest).to eq nil
+        expect(@component_3.manifest_load).to eq nil
       end
     end
   end
