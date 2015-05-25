@@ -22,6 +22,8 @@ module GitCompound
 
         git_commit('second commit')
         git_tag('v0.2', 'version 0.2')
+
+        git_tag('v1.1', 'version 1.1')
       end
 
       component_dir = @component_dir
@@ -41,10 +43,10 @@ module GitCompound
 
     it 'should access component versions' do
       versions = @component.versions
-      expect(versions).to include 'v0.1'
-      expect(versions).to include 'v0.2'
-      expect(versions).to_not include 'v0.1^{}'
-      expect(versions).to_not include 'v0.2^{}'
+      expect(versions).to include '0.1'
+      expect(versions).to include '0.2'
+      expect(versions).to_not include '0.1^{}'
+      expect(versions).to_not include '0.2^{}'
     end
 
     context 'component manifest is stored in Compoundfile' do
@@ -73,7 +75,11 @@ module GitCompound
 
     context 'manifest file is not found' do
       before do
-        component_dir = "#{@dir}/component3"
+        git(@component_dir) do
+          git_rm_file('Compoundfile')
+          git_commit('component3 commit')
+        end
+        component_dir = @component_dir
         @component_3 = Component.new(:test_component_3) do
           version '~>1.1'
           source component_dir
@@ -83,6 +89,17 @@ module GitCompound
 
       it 'should return nil if manifest is not found' do
         expect(@component_3.manifest_load).to eq nil
+      end
+    end
+
+    context 'source repository is unreachable' do
+      it do
+        component = Component.new(:test_component_3) do
+          version '~>1.1'
+          source '/some/invalid/path'
+          destination 'some destination'
+        end
+        expect { component.manifest_load }.to raise_error RepositoryUnrechableError
       end
     end
   end

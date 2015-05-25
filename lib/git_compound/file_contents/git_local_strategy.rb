@@ -4,11 +4,9 @@ module GitCompound
     #
     class GitLocalStrategy < GitFileContents
       def initialize(source, ref, file)
+        source.sub!(%r{^file://}, '')
+        file = "#{source}/#{file}"
         super
-        @source.sub!(%r{^file://}, '')
-        @file = "#{source}/#{file}"
-        raise FileUnreachable unless reachable?
-        raise FileNotFound unless exists?
       end
 
       def reachable?

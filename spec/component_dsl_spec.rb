@@ -45,7 +45,6 @@ module GitCompound
           end
         }.to raise_error CompoundSyntaxError
       end
-
     end
   end
 end

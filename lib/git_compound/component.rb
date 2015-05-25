@@ -7,10 +7,9 @@ module GitCompound
 
     def initialize(name, &block)
       @name = name
-      if block
-        Dsl::ComponentDsl.new(self, &block)
-        validate
-      end
+      return unless block
+      Dsl::ComponentDsl.new(self, &block)
+      validate_refs
     end
 
     def process_dependencies
@@ -19,27 +18,19 @@ module GitCompound
     end
 
     def manifest_load
-      strategies = [FileContents::GitLocalStrategy]
-                  # Contents::GitArchiveStrategy,
-                  # Contents::GitHubStrategy]
-
-      ref = lastest_matching_ref
-      strategies.each do |strategy|
-        begin
-          file = strategy.new(@source, ref, 'Compoundfile')
-        rescue FileNotFound
-          file = strategy.new(@source, ref, '.gitcompound')
-        rescue FileUnreachable
-          next
-        end
-        return Manifest.new(file.contents)
-      end
-
+      loader = GitFileLoader.new(@source, lastest_matching_ref)
+      contents = loader.contents('Compoundfile', '.gitcompound')
+    rescue FileNotFoundError
       nil
+    else
+      Manifest.new(contents)
     end
 
     def refs
-      refs = `git ls-remote #{@source}`
+      refs = `git ls-remote #{@source} 2>&1`
+      if refs =~ /Could not read from remote repository./
+        raise RepositoryUnrechableError, 'Could not read from remote repository.'
+      end
       refs.scan(%r{^(\b[0-9a-f]{5,40}\b)\srefs\/(heads|tags)\/(.+)})
     end
 
@@ -49,8 +40,8 @@ module GitCompound
         ref[2].start_with?('v') &&
         !ref[2].match(/.*\^\{\}$/) # annotated tag objects
       end
-      version_tags.each { |v| v.delete_at(1) }
-      Hash[version_tags.map(&:reverse)]
+      version_tags.collect! { |v| [v.last[1..-1], v.first] }
+      Hash[version_tags]
     end
 
     def branches
@@ -61,10 +52,11 @@ module GitCompound
     private
 
     def lastest_matching_ref
-      validate
+      validate_refs
+      requirement = Gem::Requirement.new(versions.keys)
     end
 
-    def validate
+    def validate_refs
       case
       when @sha && !@sha.match(/[0-9a-f]{5,40}/)
         raise CompoundSyntaxError,

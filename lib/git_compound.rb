@@ -1,12 +1,14 @@
 require 'git_compound/version'
 require 'git_compound/exceptions'
+require 'rubygems/requirement'
 
 # Git Compound module
 #
 module GitCompound
-  autoload :Component, 'git_compound/component'
-  autoload :Manifest,  'git_compound/manifest'
-  autoload :Task,      'git_compound/task'
+  autoload :Component,     'git_compound/component'
+  autoload :Manifest,      'git_compound/manifest'
+  autoload :Task,          'git_compound/task'
+  autoload :GitFileLoader, 'git_compound/git_file_loader'
 
   # GitCompount Domain Specific Language
   #
