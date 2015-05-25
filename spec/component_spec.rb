@@ -32,22 +32,19 @@ module GitCompound
       end
     end
 
-    it 'should set version parameter' do
-      expect(@component.version).to eq '~>1.1'
-    end
-
-    it 'should set source parameter' do
-      expect(@component.source).to eq @component_dir
-    end
-
-    it 'should set destination parameter' do
-      expect(@component.destination).to eq 'some destination'
-    end
-
     it 'should access component refs' do
       refs = @component.refs
       expect(refs[0]).to include('master')
       expect(refs[1]).to include('v0.1')
+      expect(refs[3]).to include('v0.2')
+    end
+
+    it 'should access component versions' do
+      versions = @component.versions
+      expect(versions).to include 'v0.1'
+      expect(versions).to include 'v0.2'
+      expect(versions).to_not include 'v0.1^{}'
+      expect(versions).to_not include 'v0.2^{}'
     end
 
     context 'component manifest is stored in Compoundfile' do

@@ -16,6 +16,14 @@ module GitCompound
         @component.version = component_version
       end
 
+      def sha(component_sha)
+        @component.sha = component_sha
+      end
+
+      def branch(component_branch)
+        @component.branch = component_branch
+      end
+
       def source(component_source)
         @component.source = component_source
       end

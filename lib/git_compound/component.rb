@@ -2,11 +2,15 @@ module GitCompound
   # Component
   #
   class Component
-    attr_accessor :version, :source, :destination
+    attr_accessor :version, :branch, :sha
+    attr_accessor :source, :destination
 
     def initialize(name, &block)
       @name = name
-      Dsl::ComponentDsl.new(self, &block) if block
+      if block
+        Dsl::ComponentDsl.new(self, &block)
+        validate
+      end
     end
 
     def process_dependencies
@@ -42,9 +46,10 @@ module GitCompound
     def versions
       version_tags = refs.select do |ref|
         ref[1] == 'tags' &&
-        ref[2].starts_with?('v') &&
-        !ref[2].matches(/.*^\{\}$/) # annotateg tag objects
+        ref[2].start_with?('v') &&
+        !ref[2].match(/.*\^\{\}$/) # annotated tag objects
       end
+      version_tags.each { |v| v.delete_at(1) }
       Hash[version_tags.map(&:reverse)]
     end
 
@@ -56,6 +61,18 @@ module GitCompound
     private
 
     def lastest_matching_ref
+      validate
+    end
+
+    def validate
+      case
+      when @sha && !@sha.match(/[0-9a-f]{5,40}/)
+        raise CompoundSyntaxError,
+              'Invalid SHA format'
+      when ![@version, @branch, @sha].one?
+        raise CompoundSyntaxError,
+              'Version, sha and branch cannot be use with each other'
+      end
     end
   end
 end
