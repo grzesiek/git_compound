@@ -12,7 +12,7 @@ module GitCompound
     def execute!
       path = @workdir ? @workdir : Dir.pwd
       Dir.chdir(path) { @output = `#{@command}` }
-      @status = $?.exitstatus
+      @status = $CHILD_STATUS.exitstatus
       @output
     end
 

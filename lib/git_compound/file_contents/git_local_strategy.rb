@@ -4,34 +4,25 @@ module GitCompound
     #
     class GitLocalStrategy < GitFileContents
       def initialize(source, ref, file)
-        source.sub!(%r{^file://}, '')
         super
+        @repository = GitRepository::RepositoryLocal.new(@source)
       end
 
       def reachable?
-        tests = []
-        tests << @source.start_with?('/')
-        tests << File.directory?(@source)
-        tests << GitRepository.new(@source).has_ref?(@ref)
-        tests.all?
+        return false unless GitRepository.local?(@source)
+        return false unless @repository.has_ref?(@ref)
+        true
       end
 
       def exists?
         raise FileUnreachableError unless reachable?
-        GitCommand.new(:show, "#{@ref}:#{@file}", @source).execute
-        true
-      rescue GitCommandError
-        false
+        @repository.file_exists?(@file, @ref)
       end
 
       def contents
-        raise FileUnreachableError unless reachable?
         raise FileNotFoundError unless exists?
-        GitCommand.new(:show, "#{@ref}:#{@file}", @source).execute
+        @repository.file_contents(@file, @ref)
       end
-
-      private
-
     end
   end
 end

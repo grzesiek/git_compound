@@ -1,23 +1,19 @@
 module GitCompound
-  # Git repository implementation
+  # Git repositories module, also repository factory
   #
-  class GitRepository
-    def initialize(remote)
-      @remote = remote
-    end
-
-    def refs
-      refs = GitCommand.new('ls-remote', @remote).execute
-      refs.scan(%r{^(\b[0-9a-f]{5,40}\b)\srefs\/(heads|tags)\/(.+)})
-    rescue GitCommandError
-      raise RepositoryUnrechableError, 'Could not read from remote repository'
-    end
-
-    def has_ref?(ref)
-      matching = refs.select do |refs_array|
-        refs_array.include?(ref.to_s)
+  module GitRepository
+    def self.factory(source)
+      if local?(source)
+        RepositoryLocal.new(source)
+      else
+        RepositoryRemote.new(remote = source) # rubocop:disable Lint/UselessAssignment
       end
-      matching.any?
+    end
+
+    def self.local?(source)
+      tests = [source.match(%r{(^\/|file:\/\/).*})]
+      tests << File.directory?(source)
+      tests.all?
     end
   end
 end

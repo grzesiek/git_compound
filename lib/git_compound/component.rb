@@ -10,7 +10,7 @@ module GitCompound
       return unless block
       Dsl::ComponentDsl.new(self, &block)
       validate_refs
-      @repository = GitRepository.new(@source)
+      @repository = GitRepository.factory(@source)
     end
 
     def process_dependencies
