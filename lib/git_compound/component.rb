@@ -10,6 +10,7 @@ module GitCompound
       return unless block
       Dsl::ComponentDsl.new(self, &block)
       validate_refs
+      @repository = GitRepository.new(@source)
     end
 
     def process_dependencies
@@ -25,10 +26,7 @@ module GitCompound
     end
 
     def refs
-      refs = GitCommand.new('ls-remote', @source).execute
-      refs.scan(%r{^(\b[0-9a-f]{5,40}\b)\srefs\/(heads|tags)\/(.+)})
-    rescue GitCommandError
-      raise RepositoryUnrechableError, 'Could not read from remote repository'
+      @repository.refs
     end
 
     def versions

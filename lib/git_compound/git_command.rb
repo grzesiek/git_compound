@@ -11,10 +11,8 @@ module GitCompound
 
     def execute!
       path = @workdir ? @workdir : Dir.pwd
-      Dir.chdir(path) do
-        @output = `#{@command}`
-        @status = $?.exitstatus
-      end
+      Dir.chdir(path) { @output = `#{@command}` }
+      @status = $?.exitstatus
       @output
     end
 

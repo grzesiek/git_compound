@@ -12,11 +12,7 @@ module GitCompound
         tests = []
         tests << @source.start_with?('/')
         tests << File.directory?(@source)
-        if tests.all?
-          verify_ref = GitCommand.new('show-ref', "-q #{@ref}", @source)
-          verify_ref.execute!
-          tests << verify_ref.valid?
-        end
+        tests << GitRepository.new(@source).has_ref?(@ref)
         tests.all?
       end
 

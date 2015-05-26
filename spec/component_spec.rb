@@ -3,7 +3,7 @@
 module GitCompound
   describe Component do
     before do
-      @component_dir = "#{@dir}/component"
+      @component_dir = "#{@dir}/component.git"
       Dir.mkdir(@component_dir)
 
       git(@component_dir) do
