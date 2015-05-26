@@ -17,6 +17,10 @@ module GitHelper
     `git add #{name}`
   end
 
+  def git_edit_file(name, &block)
+    git_add_file(name, &block)
+  end
+
   def git_rm_file(name)
     `git rm #{name}`
   end
