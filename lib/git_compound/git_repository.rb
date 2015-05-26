@@ -11,9 +11,7 @@ module GitCompound
     end
 
     def self.local?(source)
-      tests = [source.match(%r{(^\/|file:\/\/).*})]
-      tests << File.directory?(source)
-      tests.all?
+      source.match(%r{(^\/|file:\/\/).*})
     end
   end
 end

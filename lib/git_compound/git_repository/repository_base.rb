@@ -36,12 +36,6 @@ module GitCompound
         matching.any?
       end
 
-      def file_contents(file, ref)
-        available_strategies = GitFileLoader.strategies_available
-        loader = GitFileLoader.new(@source, ref, available_strategies)
-        loader.contents(file)
-      end
-
       def first_file_contents(files, ref)
         files.each do |file|
           begin
@@ -52,6 +46,10 @@ module GitCompound
         end
         raise FileNotFoundError,
               "Couldn't find any of #{files} files"
+      end
+
+      def file_contents(file, ref)
+        raise NotImplementedError
       end
 
       def file_exists?(_file, _ref)

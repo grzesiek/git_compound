@@ -1,15 +1,14 @@
 module GitCompound
-  # File loader based on strategies
+  # Remote file loader based on strategies
   #
-  class GitFileLoader
-    def initialize(source, ref, strategies)
+  class GitRemoteFile
+    def initialize(source, ref)
       @source = source
       @ref = ref
-      @strategies = strategies
     end
 
     def contents(file)
-      @strategies.each do |strategy|
+      strategies.each do |strategy|
         begin
           return strategy.new(@source, @ref, file).contents
         rescue FileUnreachableError
@@ -20,10 +19,10 @@ module GitCompound
             "Couldn't reach manifest after trying #{@strategies.count} stategies"
     end
 
-    def self.strategies_available
-      [FileContents::GitLocalStrategy]
-      # FileContents::GitArchiveStrategy,
-      # FileContents::GitHubStrategy]
+    def strategies
+      []
+      # GitArchiveStrategy,
+      # GitHubStrategy]
     end
   end
 end

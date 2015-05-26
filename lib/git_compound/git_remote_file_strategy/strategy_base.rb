@@ -1,8 +1,8 @@
 module GitCompound
-  module FileContents
-    # Base interface for FileContents strategies
+  module GitRemoteFileStrategy
+    # Base interface for strategies
     #
-    class GitFileContents
+    class StrategyBase
       def initialize(source, ref, file)
         @source = source
         @ref    = ref

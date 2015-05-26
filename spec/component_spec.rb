@@ -94,12 +94,13 @@ module GitCompound
 
     context 'source repository is unreachable' do
       it do
-        component = Component.new(:test_component_3) do
-          version '~>1.1'
-          source '/some/invalid/path'
-          destination 'some destination'
-        end
-        expect { component.manifest }.to raise_error FileUnreachableError
+        expect do
+          component = Component.new(:test_component_3) do
+            version '~>1.1'
+            source '/some/invalid/path'
+            destination 'some destination'
+          end
+        end.to raise_error RepositoryUnreachableError
       end
     end
   end

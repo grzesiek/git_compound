@@ -7,7 +7,7 @@ require 'git_compound/exceptions'
 module GitCompound
   autoload :Component,           'git_compound/component'
   autoload :GitCommand,          'git_compound/git_command'
-  autoload :GitFileLoader,       'git_compound/git_file_loader'
+  autoload :GitRemoteFile,       'git_compound/git_remote_file'
   autoload :GitRepository,       'git_compound/git_repository'
   autoload :Manifest,            'git_compound/manifest'
   autoload :Task,                'git_compound/task'
@@ -27,10 +27,9 @@ module GitCompound
     autoload :RepositoryRemote, 'git_compound/git_repository/repository_remote'
   end
 
-  # Single file contents strategies
+  # Remote file contents strategies
   #
-  module FileContents
-    autoload :GitFileContents,  'git_compound/file_contents/git_file_contents'
-    autoload :GitLocalStrategy, 'git_compound/file_contents/git_local_strategy'
+  module GitRemoteFileStategy
+    autoload :StrategyBase,  'git_compound/git_remote_file_strategy/strategy_base'
   end
 end
