@@ -34,8 +34,8 @@ module GitCompound
       end
     end
 
-    it 'should access component refs' do
-      refs = @component.refs
+    it 'should access component repository refs' do
+      refs = @component.repository.refs
       expect(refs[0]).to include('master')
       expect(refs[1]).to include('v0.1')
       expect(refs[3]).to include('v0.2')
@@ -51,7 +51,7 @@ module GitCompound
 
     context 'component manifest is stored in Compoundfile' do
       it do
-        manifest = @component.manifest_load
+        manifest = @component.manifest
         expect(manifest).to be_instance_of Manifest
       end
     end
@@ -69,7 +69,7 @@ module GitCompound
           source component_dir
           destination 'some destination'
         end
-        expect(component_2.manifest_load).to be_instance_of Manifest
+        expect(component_2.manifest).to be_instance_of Manifest
       end
     end
 
@@ -88,7 +88,7 @@ module GitCompound
       end
 
       it 'should return nil if manifest is not found' do
-        expect(@component_3.manifest_load).to eq nil
+        expect(@component_3.manifest).to eq nil
       end
     end
 
@@ -99,7 +99,7 @@ module GitCompound
           source '/some/invalid/path'
           destination 'some destination'
         end
-        expect { component.manifest_load }.to raise_error RepositoryUnrechableError
+        expect { component.manifest }.to raise_error RepositoryUnrechableError
       end
     end
   end

@@ -4,6 +4,7 @@ module GitCompound
   class Component
     attr_accessor :version, :branch, :sha
     attr_accessor :source, :destination
+    attr_accessor :repository
 
     def initialize(name, &block)
       @name = name
@@ -14,23 +15,17 @@ module GitCompound
     end
 
     def process_dependencies
-      @manifest = manifest_load
-      @manifest.process_dependencies if @manifest
+      loaded_manifest = manifest
+      manifest.process_dependencies if @manifest
     end
 
-    def manifest_load
-      loader = GitFileLoader.new(@source, lastest_matching_ref)
-      contents = loader.contents('Compoundfile', '.gitcompound')
-      Manifest.new(contents)
-    rescue FileNotFoundError
-    end
-
-    def refs
-      @repository.refs
+    def manifest
+      contents = load_manifest_contents('Compoundfile', '.gitcompound')
+      contents ? Manifest.new(contents) : nil
     end
 
     def versions
-      version_tags = refs.select do |ref|
+      version_tags = @repository.refs.select do |ref|
         ref[1] == 'tags' &&
         ref[2].start_with?('v') &&
         !ref[2].match(/.*\^\{\}$/) # annotated tag objects
@@ -40,11 +35,25 @@ module GitCompound
     end
 
     def branches
-      heads = refs.select { |ref| ref[1] == 'heads' }
+      heads = @repository.refs.select { |ref| ref[1] == 'heads' }
       Hash[heads.map(&:reverse)]
     end
 
     private
+
+    def load_manifest_contents(*files)
+      repository = GitRepository::RepositoryBase.new(@source)
+      ref = lastest_matching_ref
+      contents = nil
+      files.each do |file|
+        begin
+          contents = repository.file_contents(file, ref)
+        rescue FileNotFoundError
+          next
+        end
+      end
+      contents
+    end
 
     def lastest_matching_ref
       validate_refs

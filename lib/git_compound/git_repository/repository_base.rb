@@ -14,7 +14,7 @@ module GitCompound
         raise RepositoryUnrechableError, 'Could not reach repository'
       end
 
-      def has_ref?(ref)
+      def ref_exists?(ref)
         matching = refs.select do |refs_array|
           refs_array.include?(ref.to_s)
         end
@@ -26,7 +26,8 @@ module GitCompound
       end
 
       def file_contents(file, ref)
-        raise NotImplementedError
+        loader = GitFileLoader.new(@source, ref)
+        loader.contents(file)
       end
     end
   end

@@ -10,7 +10,7 @@ module GitCompound
 
       def reachable?
         return false unless GitRepository.local?(@source)
-        return false unless @repository.has_ref?(@ref)
+        return false unless @repository.ref_exists?(@ref)
         true
       end
 
