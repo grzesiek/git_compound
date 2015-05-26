@@ -21,13 +21,13 @@ module GitCompound
         matching.any?
       end
 
-      def file_exists?(file, ref)
-        raise NotImplementedError
-      end
-
       def file_contents(file, ref)
         loader = GitFileLoader.new(@source, ref)
         loader.contents(file)
+      end
+
+      def file_exists?(file, ref)
+        raise NotImplementedError
       end
     end
   end

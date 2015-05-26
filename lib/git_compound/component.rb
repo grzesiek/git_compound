@@ -10,7 +10,6 @@ module GitCompound
       @name = name
       return unless block
       Dsl::ComponentDsl.new(self, &block)
-      validate_refs
       @repository = GitRepository.factory(@source)
     end
 
@@ -56,20 +55,8 @@ module GitCompound
     end
 
     def lastest_matching_ref
-      validate_refs
       requirement = Gem::Requirement.new(versions.keys)
       :master
-    end
-
-    def validate_refs
-      case
-      when @sha && !@sha.match(/[0-9a-f]{5,40}/)
-        raise CompoundSyntaxError,
-              'Invalid SHA format'
-      when ![@version, @branch, @sha].one?
-        raise CompoundSyntaxError,
-              'Version, sha and branch cannot be use with each other'
-      end
     end
   end
 end
