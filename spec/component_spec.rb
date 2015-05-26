@@ -41,8 +41,8 @@ module GitCompound
       expect(refs[3]).to include('v0.2')
     end
 
-    it 'should access component versions' do
-      versions = @component.versions
+    it 'should access component repository versions' do
+      versions = @component.repository.versions
       expect(versions).to include '0.1'
       expect(versions).to include '0.2'
       expect(versions).to_not include '0.1^{}'

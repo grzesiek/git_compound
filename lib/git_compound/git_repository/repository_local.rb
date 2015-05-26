@@ -10,7 +10,9 @@ module GitCompound
       end
 
       def file_contents(file, ref)
-        GitCommand.new(:show, "#{ref}:#{file}", @source).execute
+        contents = GitCommand.new(:show, "#{ref}:#{file}", @source).execute
+      rescue GitCommandError
+        raise FileNotFoundError
       end
     end
   end
