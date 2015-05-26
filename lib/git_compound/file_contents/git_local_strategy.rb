@@ -13,8 +13,8 @@ module GitCompound
         tests << @source.start_with?('/')
         tests << File.directory?(@source)
         if tests.all?
-          verify_ref = GitCommand.new("git show-ref -q #{@ref}")
-          verify_ref.execute_in(@source)
+          verify_ref = GitCommand.new('show-ref', "-q #{@ref}", @source)
+          verify_ref.execute!
           tests << verify_ref.valid?
         end
         tests.all?
@@ -22,7 +22,7 @@ module GitCompound
 
       def exists?
         raise FileUnreachableError unless reachable?
-        GitCommand.new("git show #{@ref}:#{@file}").execute_in(@source)
+        GitCommand.new(:show, "#{@ref}:#{@file}", @source).execute
         true
       rescue GitCommandError
         false
@@ -31,7 +31,7 @@ module GitCompound
       def contents
         raise FileUnreachableError unless reachable?
         raise FileNotFoundError unless exists?
-        GitCommand.new("git show #{@ref}:#{@file}").execute_in(@source)
+        GitCommand.new(:show, "#{@ref}:#{@file}", @source).execute
       end
 
       private

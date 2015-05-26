@@ -25,7 +25,7 @@ module GitCompound
     end
 
     def refs
-      refs = GitCommand.new("git ls-remote #{@source}").execute
+      refs = GitCommand.new('ls-remote', @source).execute
       refs.scan(%r{^(\b[0-9a-f]{5,40}\b)\srefs\/(heads|tags)\/(.+)})
     rescue GitCommandError
       raise RepositoryUnrechableError, 'Could not read from remote repository'
