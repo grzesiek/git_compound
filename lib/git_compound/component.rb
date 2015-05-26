@@ -23,11 +23,13 @@ module GitCompound
 
     private
 
-    def load_manifest(*files)
-      repository = GitRepository::RepositoryBase.new(@source)
+    def load_manifest
       valid_manifests = ['Compoundfile', '.gitcompound']
-      contents = repository.first_available_file_contents(valid_manifests, lastest_matching_ref)
-      contents ? Manifest.new(contents) : nil
+      contents = @repository.first_file_contents(valid_manifests,
+                                                 lastest_matching_ref)
+      Manifest.new(contents)
+    rescue FileNotFoundError
+      nil
     end
 
     def lastest_matching_ref

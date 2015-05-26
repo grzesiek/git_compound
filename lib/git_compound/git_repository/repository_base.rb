@@ -37,20 +37,21 @@ module GitCompound
       end
 
       def file_contents(file, ref)
-        loader = GitFileLoader.new(@source, ref)
+        available_strategies = GitFileLoader.strategies_available
+        loader = GitFileLoader.new(@source, ref, available_strategies)
         loader.contents(file)
       end
 
-      def first_available_file_contents(files, ref)
-        contents = nil
+      def first_file_contents(files, ref)
         files.each do |file|
           begin
-            contents = file_contents(file, ref)
+            return file_contents(file, ref)
           rescue FileNotFoundError
             next
           end
         end
-        contents
+        raise FileNotFoundError,
+              "Couldn't find any of #{files} files"
       end
 
       def file_exists?(_file, _ref)

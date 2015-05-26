@@ -2,42 +2,28 @@ module GitCompound
   # File loader based on strategies
   #
   class GitFileLoader
-    def initialize(source, ref)
+    def initialize(source, ref, strategies)
       @source = source
       @ref = ref
+      @strategies = strategies
     end
 
-    def contents(*files)
-      strategies.each do |strategy|
+    def contents(file)
+      @strategies.each do |strategy|
         begin
-          return load_first_available(files, strategy)
+          return strategy.new(@source, @ref, file).contents
         rescue FileUnreachableError
           next
         end
       end
       raise FileUnreachableError,
-            "Couldn't reach manifest after trying #{strategies.count} stategies"
+            "Couldn't reach manifest after trying #{@strategies.count} stategies"
     end
 
-    def strategies
+    def self.strategies_available
       [FileContents::GitLocalStrategy]
-      # Contents::GitArchiveStrategy,
-      # Contents::GitHubStrategy]
-    end
-
-    private
-
-    def load_first_available(file_names, file_strategy)
-      file_names.each do |filename|
-        begin
-          file = file_strategy.new(@source, @ref, filename)
-          return file.contents
-        rescue FileNotFoundError
-          next
-        end
-      end
-      raise FileNotFoundError,
-            "Couldn't find any of #{file_names} files"
+      # FileContents::GitArchiveStrategy,
+      # FileContents::GitHubStrategy]
     end
   end
 end
