@@ -16,9 +16,8 @@ module GitCompound
       end
 
       def file_contents(file, ref)
+        raise FileNotFoundError unless file_exists?(file, ref)
         GitCommand.new(:show, "#{ref}:#{file}", @source).execute
-      rescue GitCommandError
-        raise FileNotFoundError
       end
     end
   end

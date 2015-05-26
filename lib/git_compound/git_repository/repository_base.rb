@@ -19,14 +19,15 @@ module GitCompound
 
       def branches
         heads = refs.select { |ref| ref[1] == 'heads' }
-        Hash[heads.map(&:reverse)]
+        heads.collect! { |h| [h.last.to_sym, h.first] }
+        Hash[heads]
       end
 
       def refs
         refs = GitCommand.new('ls-remote', @source).execute
         refs.scan(%r{^(\b[0-9a-f]{5,40}\b)\srefs\/(heads|tags)\/(.+)})
       rescue GitCommandError
-        raise RepositoryUnrechableError, 'Could not reach repository'
+        raise RepositoryUnreachableError, 'Could not reach repository'
       end
 
       def ref_exists?(ref)

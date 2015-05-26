@@ -49,6 +49,11 @@ module GitCompound
       expect(versions).to_not include '0.2^{}'
     end
 
+    it 'should access component repository branches' do
+      versions = @component.repository.branches
+      expect(versions).to include :master
+    end
+
     context 'component manifest is stored in Compoundfile' do
       it do
         manifest = @component.manifest
