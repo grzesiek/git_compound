@@ -99,7 +99,7 @@ module GitCompound
           source '/some/invalid/path'
           destination 'some destination'
         end
-        expect { component.manifest }.to raise_error RepositoryUnrechableError
+        expect { component.manifest }.to raise_error FileUnreachableError
       end
     end
   end

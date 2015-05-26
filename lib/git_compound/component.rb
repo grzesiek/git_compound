@@ -14,7 +14,6 @@ module GitCompound
     end
 
     def process_dependencies
-      loaded_manifest = manifest
       manifest.process_dependencies if @manifest
     end
 
@@ -55,7 +54,7 @@ module GitCompound
     end
 
     def lastest_matching_ref
-      requirement = Gem::Requirement.new(versions.keys)
+      # requirement = Gem::Requirement.new(versions.keys)
       :master
     end
   end

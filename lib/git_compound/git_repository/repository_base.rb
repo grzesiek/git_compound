@@ -26,7 +26,7 @@ module GitCompound
         loader.contents(file)
       end
 
-      def file_exists?(file, ref)
+      def file_exists?(_file, _ref)
         raise NotImplementedError
       end
     end

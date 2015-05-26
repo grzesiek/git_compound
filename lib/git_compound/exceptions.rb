@@ -5,7 +5,6 @@ module GitCompound
   class CompoundSyntaxError < GitCompoundError; end
   class FileNotFoundError < GitCompoundError; end
   class FileUnreachableError < GitCompoundError; end
-  class RepositoryUnrechableError < GitCompoundError; end
   class GitCommandError < GitCompoundError; end
   class LocalRepositoryNotFoundError < GitCompoundError; end
 end
