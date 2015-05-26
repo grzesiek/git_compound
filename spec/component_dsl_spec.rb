@@ -37,23 +37,17 @@ module GitCompound
     context 'invalid DSL' do
       it 'should raise if sha is invalid' do
         expect do
-          component_dir = @component_dir
           Component.new(:test_component) do
             sha '~>1.1'
-            source component_dir
-            destination '/some/destination'
           end
         end.to raise_error CompoundSyntaxError
       end
 
       it 'should raise if branch and sha is set' do
         expect do
-          component_dir = @component_dir
           Component.new(:test_component) do
             sha '9b09e513a7929dfbfcff1990a6207228e79ab451'
             branch 'feature/something'
-            source component_dir
-            destination '/some/destination'
           end
         end.to raise_error CompoundSyntaxError
       end
