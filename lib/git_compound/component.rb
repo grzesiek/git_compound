@@ -42,7 +42,13 @@ module GitCompound
     end
 
     def lastest_matching_version
-      :master
+      versions = @repository.versions.map { |k, v| Gem::Version.new(k) }
+      versions.sort.reverse.each do |repository_version|
+        dependency = Gem::Dependency.new('component', @version)
+          return "v#{repository_version.to_s}" if
+            dependency.match?('component', repository_version, false)
+      end
+      raise DependencyError, "No maching version available for `#{@name}` component"
     end
   end
 end

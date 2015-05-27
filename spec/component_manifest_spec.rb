@@ -7,6 +7,9 @@ module GitCompound
       Dir.mkdir(@component_dir)
       git(@component_dir) do
         git_init
+        git_add_file('test') { 'test' }
+        git_commit('initial commit')
+        git_tag('v1.1', 'version 1.1')
       end
       component_dir = @component_dir
       @component = Component.new(:test_component) do
@@ -22,6 +25,7 @@ module GitCompound
           git(@component_dir) do
             git_add_file('Compoundfile') { 'name "test component"' }
             git_commit('compoundfile commit')
+            git_tag('v1.2', 'version 1.2') # we need to bump version that matches ~>1.1
           end
         end
 
@@ -36,6 +40,7 @@ module GitCompound
           git(@component_dir) do
             git_add_file('.gitcompound') { 'name "test component"' }
             git_commit('.gitcompound commit')
+            git_tag('v1.2', 'version 1.2')
           end
         end
 

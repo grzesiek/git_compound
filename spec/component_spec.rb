@@ -56,7 +56,7 @@ module GitCompound
     end
 
     it 'should match version and ref correctly' do
-      expect(@component.lastest_matching_ref).to eq '1.1.8'
+      expect(@component.lastest_matching_ref).to eq 'v1.1.8'
     end
 
     context 'source repository is unreachable' do

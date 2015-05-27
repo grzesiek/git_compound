@@ -8,4 +8,5 @@ module GitCompound
   class RepositoryUnreachableError < GitCompoundError; end
   class GitCommandError < GitCompoundError; end
   class LocalRepositoryNotFoundError < GitCompoundError; end
+  class DependencyError < GitCompoundError; end
 end

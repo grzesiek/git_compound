@@ -10,7 +10,9 @@ module GitCompound
 
       git(leaf_component_dir) do
         git_init
+        git_add_file('test') { 'test' }
         git_commit('initial commit')
+        git_tag('v1.0', 'version 1.0')
       end
 
       # Dependent compontent 1
@@ -60,11 +62,11 @@ module GitCompound
         git_add_file('Compoundfile') do
           'name :dependent_component_2'
         end
-        git_commit('Compoundfile commit')
+        git_commit('compoundfile commit')
         git_tag('v0.1', 'version 0.1')
-        git_edit_file('.gitcompound') do
+        git_edit_file('Compoundfile') do
           <<-END
-            name :dependent_component_1
+            name :dependent_component_2
 
             component :dependent_leaf_1_1 do
               version '1.0'
@@ -75,9 +77,9 @@ module GitCompound
         end
         git_commit('v1.1 commit')
         git_tag('v1.1', 'version 1.1')
-        git_edit_file('.gitcompound') do
+        git_edit_file('Compoundfile') do
           <<-END
-            name :dependent_component_1
+            name :dependent_component_2
           END
         end
         git_commit('v1.2 commit')
@@ -100,7 +102,7 @@ module GitCompound
               destination '#{@dir}/compound/component_1'
             end
             component :dependent_component_2 do
-              version "~>2.0"
+              version "1.1"
               source '#{@dependent_component_2_dir}'
               destination '#{@dir}/compound/component_2'
             end
