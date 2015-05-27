@@ -10,8 +10,8 @@ module GitHelper
 
   def git_init
     `git init`
-    `git config user.name TEST`
-    `git config user.email TEST`
+    `git config user.name test_user`
+    `git config user.email test_email`
   end
 
   def git_add_file(name, &block)

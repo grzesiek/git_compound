@@ -26,7 +26,7 @@ module GitCompound
     end
 
     def lastest_matching_ref
-      return @sha || @branch if [@sha, @branch].any?
+      return lastest_matching_strict_ref unless @version
       lastest_matching_version
     end
 
@@ -41,12 +41,20 @@ module GitCompound
       nil
     end
 
+    def lastest_matching_strict_ref
+      ref = @sha || @branch
+      raise DependencyError,
+            "Ref #{ref} not available in #{@source} for component `#{name}`" unless
+        @repository.ref_exists?(ref)
+      ref
+    end
+
     def lastest_matching_version
-      versions = @repository.versions.map { |k, v| Gem::Version.new(k) }
-      versions.sort.reverse.each do |repository_version|
+      versions = @repository.versions.map { |k, _| Gem::Version.new(k) }
+      versions.sort.reverse_each do |repository_version|
         dependency = Gem::Dependency.new('component', @version)
-          return "v#{repository_version.to_s}" if
-            dependency.match?('component', repository_version, false)
+        return "v#{repository_version}" if
+          dependency.match?('component', repository_version, false)
       end
       raise DependencyError, "No maching version available for `#{@name}` component"
     end

@@ -1,5 +1,6 @@
 # GitCompound
 #
+# rubocop:disable Metrics/ModuleLength
 module GitCompound
   describe Component do
     before do
@@ -147,5 +148,26 @@ module GitCompound
       expect(dependent_components.count).to eq 1
       expect(dependent_components).to include(:dependent_leaf_1_1)
     end
+
+    it 'should raise error if there is no maching version' do
+      component_dir = @dependent_component_1_dir
+      component = Component.new(:test) do
+        version '>5.0'
+        source component_dir
+        destination 'any'
+      end
+      expect { component.process_dependencies }.to raise_error DependencyError
+    end
+
+    it 'should raise error if there is no maching ref' do
+      component_dir = @dependent_component_1_dir
+      component = Component.new(:test) do
+        sha 'a2b0fec89736deba6cc647bcc2b238812c3725ad'
+        source component_dir
+        destination 'any'
+      end
+      expect { component.process_dependencies }.to raise_error DependencyError
+    end
   end
 end
+# rubocop:enable Metrics/ModuleLength
