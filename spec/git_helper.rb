@@ -32,4 +32,11 @@ module GitHelper
   def git_tag(name, message)
     `git tag -a "#{name}" -m "#{message}"`
   end
+
+  def git_expose(dir, port)
+    cmd = "git daemon --reuseaddr --listen=127.0.0.1 --port=#{port} #{dir}"
+    pid = Process.spawn(cmd)
+    Process.detach(pid)
+    pid
+  end
 end
