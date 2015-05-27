@@ -61,6 +61,27 @@ module GitCompound
           'name :dependent_component_2'
         end
         git_commit('Compoundfile commit')
+        git_tag('v0.1', 'version 0.1')
+        git_edit_file('.gitcompound') do
+          <<-END
+            name :dependent_component_1
+
+            component :dependent_leaf_1_1 do
+              version '1.0'
+              source  '#{leaf_component_dir}'
+              destination 'd'
+            end
+          END
+        end
+        git_commit('v1.1 commit')
+        git_tag('v1.1', 'version 1.1')
+        git_edit_file('.gitcompound') do
+          <<-END
+            name :dependent_component_1
+          END
+        end
+        git_commit('v1.2 commit')
+        git_tag('v1.2', 'version 1.2')
       end
 
       # Base component
@@ -117,8 +138,12 @@ module GitCompound
       expect(dependent_components).to include(:dependent_leaf_2)
     end
 
-    pending 'should load dependent component_1 from valid ref' do
-      fail 'TODO'
+    it 'should load dependent component_2 from valid ref' do
+      @manifest.process_dependencies
+      dependent_components =
+        @manifest.components[:dependent_component_2].manifest.components
+      expect(dependent_components.count).to eq 1
+      expect(dependent_components).to include(:dependent_leaf_1_1)
     end
   end
 end

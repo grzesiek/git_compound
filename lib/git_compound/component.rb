@@ -14,8 +14,7 @@ module GitCompound
     end
 
     def process_dependencies
-      @manifest ||= load_manifest
-      @manifest.process_dependencies if @manifest
+      @manifest.process_dependencies if manifest
     end
 
     def manifest
@@ -24,6 +23,11 @@ module GitCompound
 
     def valid?
       [[@version, @branch, @sha].any?, @source, @destination].all?
+    end
+
+    def lastest_matching_ref
+      return @sha || @branch if [@sha, @branch].any?
+      lastest_matching_version
     end
 
     private
@@ -37,9 +41,7 @@ module GitCompound
       nil
     end
 
-    def lastest_matching_ref
-      return @sha || @branch if [@sha, @branch].any?
-      # requirement = Gem::Requirement.new(versions.keys)
+    def lastest_matching_version
       :master
     end
   end

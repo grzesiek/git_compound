@@ -22,8 +22,9 @@ module GitCompound
 
         git_commit('second commit')
         git_tag('v0.2', 'version 0.2')
-
         git_tag('v1.1', 'version 1.1')
+        git_tag('v1.1.8', 'version 1.1.8')
+        git_tag('v2.0', 'version 2.0')
       end
 
       component_dir = @component_dir
@@ -54,47 +55,8 @@ module GitCompound
       expect(versions).to include :master
     end
 
-    context 'component manifest is stored in Compoundfile' do
-      it do
-        manifest = @component.manifest
-        expect(manifest).to be_instance_of Manifest
-      end
-    end
-
-    context 'component manifest is stored in .gitcompound file' do
-      it do
-        git(@component_dir) do
-          git_rm_file('Compoundfile')
-          git_add_file('.gitcompound') { 'name :test_component_2' }
-          git_commit('component2 commit')
-        end
-        component_dir = @component_dir
-        component_2 = Component.new(:test_component_2) do
-          version '~>1.1'
-          source component_dir
-          destination 'some destination'
-        end
-        expect(component_2.manifest).to be_instance_of Manifest
-      end
-    end
-
-    context 'manifest file is not found' do
-      before do
-        git(@component_dir) do
-          git_rm_file('Compoundfile')
-          git_commit('component3 commit')
-        end
-        component_dir = @component_dir
-        @component_3 = Component.new(:test_component_3) do
-          version '~>1.1'
-          source component_dir
-          destination 'some destination'
-        end
-      end
-
-      it 'should return nil if manifest is not found' do
-        expect(@component_3.manifest).to eq nil
-      end
+    it 'should match version and ref correctly' do
+      expect(@component.lastest_matching_ref).to eq '1.1.8'
     end
 
     context 'source repository is unreachable' do
