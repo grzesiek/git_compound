@@ -2,7 +2,7 @@ module GitCompound
   # Component
   #
   class Component
-    attr_reader   :name
+    attr_reader :name
     attr_accessor :version, :branch, :sha
     attr_accessor :source, :destination, :repository
 

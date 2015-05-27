@@ -49,7 +49,7 @@ module GitCompound
               "Couldn't find any of #{files} files"
       end
 
-      def file_contents(file, ref)
+      def file_contents(_file, _ref)
         raise NotImplementedError
       end
 

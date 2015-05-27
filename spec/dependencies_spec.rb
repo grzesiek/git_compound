@@ -110,8 +110,11 @@ module GitCompound
 
     it 'it should process dependent components dependencies' do
       @manifest.process_dependencies
-      dependent_manifest = @manifest.components[:dependent_component_1].manifest
-      expect(dependent_manifest.components.count).to eq 2
+      dependent_components =
+        @manifest.components[:dependent_component_1].manifest.components
+      expect(dependent_components.count).to eq 2
+      expect(dependent_components).to include(:dependent_leaf_1)
+      expect(dependent_components).to include(:dependent_leaf_2)
     end
 
     pending 'should load dependent component_1 from valid ref' do

@@ -100,7 +100,7 @@ module GitCompound
     context 'source repository is unreachable' do
       it do
         expect do
-          component = Component.new(:test_component_3) do
+          Component.new(:test_component_3) do
             version '~>1.1'
             source '/some/invalid/path'
             destination 'some destination'

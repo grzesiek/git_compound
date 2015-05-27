@@ -3,8 +3,6 @@ require 'git_helper'
 
 require 'simplecov'
 SimpleCov.start { add_filter '/spec' }
-
-
 Bundler.require
 
 RSpec.configure do |config|

@@ -1,5 +1,5 @@
 # GitCompound
-
+#
 module GitCompound
   describe GitRepository::RepositoryRemote do
     describe 'remote file in remote repo via git archive strategy' do
@@ -27,7 +27,6 @@ module GitCompound
       it 'should contain valid test_tag ref' do
         expect(@remote_repository.ref_exists?('test_tag')).to be true
       end
-
 
       context 'git archive supported' do
         before do

@@ -18,7 +18,7 @@ module GitCompound
         end
 
         def reachable?
-          @command.valid? || @command.output.include?("did not match any files")
+          @command.valid? || @command.output.include?('did not match any files')
         end
 
         def exists?

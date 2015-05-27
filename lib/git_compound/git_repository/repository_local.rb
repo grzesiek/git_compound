@@ -5,7 +5,7 @@ module GitCompound
     class RepositoryLocal < RepositoryBase
       def initialize(source)
         super
-        raise RepositoryUnreachableError unless 
+        raise RepositoryUnreachableError unless
           File.directory?("#{@source}/.git")
       end
 

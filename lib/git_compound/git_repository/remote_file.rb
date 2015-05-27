@@ -20,7 +20,7 @@ module GitCompound
           end
         end
         raise FileUnreachableError,
-          "Couldn't reach file #{@file} after trying #{@strategies.count} stategies"
+              "Couldn't reach file #{@file} after trying #{@strategies.count} stategies"
       end
 
       def strategies_available
