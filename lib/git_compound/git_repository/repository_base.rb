@@ -26,8 +26,8 @@ module GitCompound
       def refs
         refs = GitCommand.new('ls-remote', @source).execute
         refs.scan(%r{^(\b[0-9a-f]{5,40}\b)\srefs\/(heads|tags)\/(.+)})
-      rescue GitCommandError
-        raise RepositoryUnreachableError, 'Could not reach repository'
+      rescue GitCommandError => e
+        raise RepositoryUnreachableError, "Could not reach repository: #{e.message}"
       end
 
       def ref_exists?(ref)
