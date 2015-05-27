@@ -8,6 +8,7 @@ module GitCompound
       def initialize(component, &block)
         @component = component
         instance_eval(&block)
+        raise "Component `#{component.name}` invalid" unless component.valid?
       rescue => e
         raise CompoundSyntaxError, e
       end

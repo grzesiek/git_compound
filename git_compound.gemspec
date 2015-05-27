@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   # rubocop:enable Style/SingleSpaceBeforeFirstArg
 
   spec.requirements << 'git scm version > 2'
+  spec.requirements << 'gnu tar'
 end

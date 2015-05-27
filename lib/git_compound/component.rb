@@ -2,6 +2,7 @@ module GitCompound
   # Component
   #
   class Component
+    attr_reader   :name
     attr_accessor :version, :branch, :sha
     attr_accessor :source, :destination, :repository
 
@@ -19,6 +20,10 @@ module GitCompound
 
     def manifest
       @manifest ||= load_manifest
+    end
+
+    def valid?
+      [[@version, @branch, @sha].any?, @source, @destination].all?
     end
 
     private

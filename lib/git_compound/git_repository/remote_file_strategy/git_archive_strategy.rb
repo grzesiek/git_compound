@@ -8,7 +8,6 @@ module GitCompound
           super
           opts = "--format=tar --remote=#{@source} #{@ref} -- #{@file} | tar -O -xf -"
           @command = GitCommand.new(:archive, opts)
-          puts @command.output
           @command.execute!
         end
 
