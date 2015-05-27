@@ -9,8 +9,6 @@ module GitCompound
         @component = component
         instance_eval(&block)
         raise "Component `#{component.name}` invalid" unless component.valid?
-      rescue => e
-        raise CompoundSyntaxError, e
       end
 
       def version(component_version)
@@ -37,6 +35,7 @@ module GitCompound
         @component.source = component_source
         raise CompoundSyntaxError, 'Source cannot be empty' if
           component_source.nil? || component_source.empty?
+        @component.repository = GitRepository.factory(component_source)
       end
 
       def destination(component_destination_path)

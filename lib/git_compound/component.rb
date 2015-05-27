@@ -8,9 +8,7 @@ module GitCompound
 
     def initialize(name, &block)
       @name = name
-      return unless block
-      Dsl::ComponentDsl.new(self, &block)
-      @repository = GitRepository.factory(@source)
+      Dsl::ComponentDsl.new(self, &block) if block
     end
 
     def process_dependencies
@@ -22,7 +20,8 @@ module GitCompound
     end
 
     def valid?
-      [[@version, @branch, @sha].any?, @source, @destination].all?
+      [[@version, @branch, @sha].any?,
+       @source, @destination, @repository, @name].all?
     end
 
     def lastest_matching_ref
