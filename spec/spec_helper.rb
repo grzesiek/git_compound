@@ -1,9 +1,10 @@
 require 'bundler/setup'
-require 'simplecov'
-require 'git_compound'
 require 'git_helper'
 
-SimpleCov.start
+require 'simplecov'
+SimpleCov.start { add_filter '/spec' }
+
+
 Bundler.require
 
 RSpec.configure do |config|

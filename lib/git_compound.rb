@@ -29,7 +29,8 @@ module GitCompound
     # Git remote file strategy
     #
     module RemoteFileStrategy
-      autoload :StrategyBase, 'git_compound/git_repository/remote_file_strategy/strategy_base'
+      autoload :StrategyBase,       'git_compound/git_repository/remote_file_strategy/strategy_base'
+      autoload :GitArchiveStrategy, 'git_compound/git_repository/remote_file_strategy/git_archive_strategy'
     end
   end
 end
