@@ -43,7 +43,7 @@ module GitCompound
     def lastest_matching_strict_ref
       ref = @sha || @branch
       raise DependencyError,
-            "Ref #{ref} not available in #{@source} for component `#{name}`" unless
+            "Ref #{ref} not available in #{@source} for component `#{@name}`" unless
         @repository.ref_exists?(ref)
       ref
     end
