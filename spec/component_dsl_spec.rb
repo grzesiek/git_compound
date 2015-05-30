@@ -3,17 +3,12 @@
 module GitCompound
   describe Component do
     before do
-      @component_dir = "#{@dir}/component.git"
-      Dir.mkdir(@component_dir)
-
-      git(@component_dir) do
-        git_init
-      end
+      git_create_leaf_component_1
     end
 
     context 'valid DSL' do
       before do
-        component_dir = @component_dir
+        component_dir = @leaf_component_1_dir
         @component = Component.new(:test_component) do
           version '~>1.1'
           source component_dir
@@ -26,7 +21,7 @@ module GitCompound
       end
 
       it 'should set source parameter' do
-        expect(@component.source).to eq @component_dir
+        expect(@component.source).to eq @leaf_component_1_dir
       end
 
       it 'should set destination parameter' do
