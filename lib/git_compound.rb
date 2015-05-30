@@ -19,6 +19,7 @@ module GitCompound
   end
 
   # Git repositories
+  #
   module GitRepository
     autoload :RepositoryBase,   'git_compound/git_repository/repository_base'
     autoload :RepositoryLocal,  'git_compound/git_repository/repository_local'

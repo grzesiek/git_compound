@@ -2,7 +2,7 @@
 module GitCompound
   describe Manifest do
     before do
-      @valid_contents = <<-END
+      @manifest_contents = <<-END
         name :test_project
 
         component :test_component do
@@ -22,16 +22,16 @@ module GitCompound
         # end
       END
 
-      @manifest = Manifest.new(@valid_contents)
+      @manifest = Manifest.new(@manifest_contents)
     end
 
-    it 'should not raise error if content is valid' do
+    it 'should not raise error if content is manifest' do
       expect do
-        Manifest.new(@valid_contents)
+        Manifest.new(@manifest_contents)
       end.to_not raise_error
     end
 
-    it 'should raise exception if syntax is invalid' do
+    it 'should raise exception if syntax is inmanifest' do
       expect do
         Manifest.new('non_existent_method')
       end.to raise_error NameError

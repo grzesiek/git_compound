@@ -39,6 +39,7 @@ module GitHelper
     cmd = "git daemon --reuseaddr --listen=127.0.0.1 --port=#{port} #{dir}"
     pid = Process.spawn(cmd)
     Process.detach(pid)
+    sleep 0.05
     pid
   end
 end
