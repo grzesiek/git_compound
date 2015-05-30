@@ -1,9 +1,11 @@
-require 'bundler/setup'
-require 'git_helper'
-
 require 'simplecov'
 SimpleCov.start { add_filter '/spec' }
+
+require 'bundler/setup'
 Bundler.require
+
+require 'git_helper'
+require 'git_test_env_builder'
 
 RSpec.configure do |config|
   config.profile_examples = 2
@@ -11,6 +13,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 
   config.include GitHelper
+  config.include GitTestEnvBuilder
 
   config.before do
     # Catch stdout
