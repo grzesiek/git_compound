@@ -2,15 +2,15 @@ module GitCompound
   # Component
   #
   class Component
-    extend Dsl::Delegator
-    delegate :dsl, [:version, :sha, :branch]
-    delegate :dsl, [:source, :destination, :repository]
     attr_reader :name
+    attr_accessor :version, :sha, :branch
+    attr_accessor :source, :destination
+    attr_accessor :repository
 
     def initialize(name, &block)
       @name = name
+      Dsl::ComponentDsl.new(self, &block) if block
       raise CompoundSyntaxError, "No block given for component `#{@name}`" unless block
-      @dsl = Dsl::ComponentDsl.new(&block)
       raise GitCompoundError, "Component `#{@name}` invalid" unless valid?
     end
 
@@ -23,12 +23,12 @@ module GitCompound
     end
 
     def valid?
-      [[version, branch, sha].any?,
-       source, destination, repository, @name].all?
+      [[@version, @branch, @sha].any?,
+       @source, @destination, @repository, @name].all?
     end
 
     def lastest_matching_ref
-      return lastest_matching_strict_ref unless version
+      return lastest_matching_strict_ref unless @version
       lastest_matching_version
     end
 
@@ -44,17 +44,17 @@ module GitCompound
     end
 
     def lastest_matching_strict_ref
-      ref = sha || branch
+      ref = @sha || @branch
       raise DependencyError,
-            "Ref #{ref} not available in #{source} for component `#{@name}`" unless
+            "Ref #{ref} not available in #{@source} for component `#{@name}`" unless
         repository.ref_exists?(ref)
       ref
     end
 
     def lastest_matching_version
-      versions = repository.versions.map { |k, _| Gem::Version.new(k) }
+      versions = @repository.versions.map { |k, _| Gem::Version.new(k) }
       versions.sort.reverse_each do |repository_version|
-        dependency = Gem::Dependency.new('component', version)
+        dependency = Gem::Dependency.new('component', @version)
         return "v#{repository_version}" if
           dependency.match?('component', repository_version, false)
       end
