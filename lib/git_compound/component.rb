@@ -2,13 +2,16 @@ module GitCompound
   # Component
   #
   class Component
+    extend Dsl::Delegator
+    delegate :dsl, [:version, :sha, :branch]
+    delegate :dsl, [:source, :destination, :repository]
     attr_reader :name
-    attr_accessor :version, :branch, :sha
-    attr_accessor :source, :destination, :repository
 
     def initialize(name, &block)
       @name = name
-      Dsl::ComponentDsl.new(self, &block) if block
+      raise CompoundSyntaxError, "No block given for component `#{@name}`" unless block
+      @dsl = Dsl::ComponentDsl.new(&block)
+      raise GitCompoundError, "Component `#{@name}` invalid" unless valid?
     end
 
     def process_dependencies
@@ -20,12 +23,12 @@ module GitCompound
     end
 
     def valid?
-      [[@version, @branch, @sha].any?,
-       @source, @destination, @repository, @name].all?
+      [[version, branch, sha].any?,
+       source, destination, repository, @name].all?
     end
 
     def lastest_matching_ref
-      return lastest_matching_strict_ref unless @version
+      return lastest_matching_strict_ref unless version
       lastest_matching_version
     end
 
@@ -33,25 +36,25 @@ module GitCompound
 
     def load_manifest
       valid_manifests = ['Compoundfile', '.gitcompound']
-      contents = @repository.first_file_contents(valid_manifests,
-                                                 lastest_matching_ref)
+      contents = repository.first_file_contents(valid_manifests,
+                                                lastest_matching_ref)
       Manifest.new(contents)
     rescue FileNotFoundError
       nil
     end
 
     def lastest_matching_strict_ref
-      ref = @sha || @branch
+      ref = sha || branch
       raise DependencyError,
-            "Ref #{ref} not available in #{@source} for component `#{@name}`" unless
-        @repository.ref_exists?(ref)
+            "Ref #{ref} not available in #{source} for component `#{@name}`" unless
+        repository.ref_exists?(ref)
       ref
     end
 
     def lastest_matching_version
-      versions = @repository.versions.map { |k, _| Gem::Version.new(k) }
+      versions = repository.versions.map { |k, _| Gem::Version.new(k) }
       versions.sort.reverse_each do |repository_version|
-        dependency = Gem::Dependency.new('component', @version)
+        dependency = Gem::Dependency.new('component', version)
         return "v#{repository_version}" if
           dependency.match?('component', repository_version, false)
       end
