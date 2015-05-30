@@ -2,11 +2,10 @@ module GitCompound
   # Manifest class for .gitcompound / Compoundfile
   #
   class Manifest
-    extend Dsl::Delegator
-    delegate :dsl, [:name, :components, :tasks]
+    attr_accessor :name, :components, :tasks
 
     def initialize(contents)
-      @dsl = Dsl::ManifestDsl.new(contents)
+      Dsl::ManifestDsl.new(self, contents)
     end
 
     def process_dependencies

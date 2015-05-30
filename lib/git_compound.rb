@@ -15,7 +15,6 @@ module GitCompound
   #
   module Dsl
     autoload :ComponentDsl, 'git_compound/dsl/component_dsl'
-    autoload :Delegator,    'git_compound/dsl/delegator'
     autoload :ManifestDsl,  'git_compound/dsl/manifest_dsl'
   end
 

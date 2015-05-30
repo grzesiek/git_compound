@@ -34,7 +34,7 @@ module GitCompound
     it 'should raise exception if syntax is invalid' do
       expect do
         Manifest.new('non_existent_method')
-      end.to raise_error CompoundSyntaxError
+      end.to raise_error NameError
     end
 
     it 'should delegate name method' do
