@@ -4,10 +4,6 @@
 # rubocop:disable Metrics/MethodLength
 module GitTestEnvBuilder
   def git_build_test_environment!
-    git_create_leaf_component_1
-    git_create_leaf_component_2
-    git_create_dependent_component_1
-    git_create_dependent_component_2
     git_create_base_component
   end
 
@@ -35,7 +31,22 @@ module GitTestEnvBuilder
     end
   end
 
+  def git_create_leaf_component_3
+    @leaf_component_3_dir = "#{@dir}/leaf_component_3.git"
+    Dir.mkdir(@leaf_component_3_dir)
+
+    git(@leaf_component_3_dir) do
+      git_init
+      git_add_file('component') { 'leaf_component_3' }
+      git_commit('initial commit')
+      git_tag('v1.0', 'version 1.0')
+    end
+  end
+
   def git_create_dependent_component_1
+    git_create_leaf_component_1
+    git_create_leaf_component_2
+
     @dependent_component_1_dir = "#{@dir}/dependent_component_1.git"
     Dir.mkdir(@dependent_component_1_dir)
 
@@ -73,6 +84,8 @@ module GitTestEnvBuilder
   end
 
   def git_create_dependent_component_2
+    git_create_leaf_component_3
+
     @dependent_component_2_dir = "#{@dir}/dependent_component_2.git"
     Dir.mkdir(@dependent_component_2_dir)
 
@@ -87,9 +100,9 @@ module GitTestEnvBuilder
         <<-END
           name :dependent_component_2
 
-          component :dependent_leaf_1_1 do
+          component :dependent_leaf_3 do
             version '1.0'
-            source  '#{@leaf_component_1_dir}'
+            source  '#{@leaf_component_3_dir}'
             destination 'd'
           end
         END
@@ -107,6 +120,9 @@ module GitTestEnvBuilder
   end
 
   def git_create_base_component
+    git_create_dependent_component_1
+    git_create_dependent_component_2
+
     @base_component_dir = "#{@dir}/base_component.git"
     Dir.mkdir(@base_component_dir)
 
