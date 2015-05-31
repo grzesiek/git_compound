@@ -11,7 +11,7 @@ module GitCompound
       end
 
       def version(component_version)
-        @component.version = component_version
+        @component.version = Component::Version.new(@component, component_version)
         raise CompoundSyntaxError, 'Cannot use version with sha or branch' if
           [@component.sha, @component.branch].any?
       end

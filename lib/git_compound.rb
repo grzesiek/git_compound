@@ -1,5 +1,4 @@
 require 'English'
-require 'git_compound/version'
 require 'git_compound/exceptions'
 
 # Git Compound module
@@ -11,14 +10,20 @@ module GitCompound
   autoload :Manifest,            'git_compound/manifest'
   autoload :Task,                'git_compound/task'
 
-  # GitCompount Domain Specific Language
+  # GitCompound Domain Specific Language
   #
   module Dsl
     autoload :ComponentDsl, 'git_compound/dsl/component_dsl'
     autoload :ManifestDsl,  'git_compound/dsl/manifest_dsl'
   end
 
-  # Git repositories
+  # GitCompound component class
+  #
+  class Component
+    autoload :Version, 'git_compound/component/version'
+  end
+
+  # Git repository
   #
   module GitRepository
     autoload :RepositoryBase,   'git_compound/git_repository/repository_base'

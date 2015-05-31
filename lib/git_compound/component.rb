@@ -27,38 +27,36 @@ module GitCompound
        @source, @destination, @repository, @name].all?
     end
 
-    def lastest_matching_ref
-      return lastest_matching_strict_ref unless @version
-      lastest_matching_version
+    def lastest_matching_sha
+      return @sha if @sha
+      return branch_sha if @branch
+      return version_sha if @version
     end
 
     private
 
     def load_manifest
       valid_manifests = ['Compoundfile', '.gitcompound']
-      contents = repository.first_file_contents(valid_manifests,
-                                                lastest_matching_ref)
+      contents = @repository.first_found_file_contents(valid_manifests,
+                                                       lastest_matching_sha)
       Manifest.new(contents)
     rescue FileNotFoundError
       nil
     end
 
-    def lastest_matching_strict_ref
-      ref = @sha || @branch
+    def branch_sha
+      repository_branch_sha = @repository.branches[@branch]
       raise DependencyError,
-            "Ref #{ref} not available in #{@source} for component `#{@name}`" unless
-        repository.ref_exists?(ref)
-      ref
+            "Branch #{@branch} not available in #{@source} " \
+            "for component `#{@name}`" unless repository_bransh_sha
+      repository_branch_sha
     end
 
-    def lastest_matching_version
-      versions = @repository.versions.map { |k, _| Gem::Version.new(k) }
-      versions.sort.reverse_each do |repository_version|
-        dependency = Gem::Dependency.new('component', @version)
-        return "v#{repository_version}" if
-          dependency.match?('component', repository_version, false)
-      end
-      raise DependencyError, "No maching version available for `#{@name}` component"
+    def version_sha
+      repository_version_sha = @version.lastest_matching_sha
+      raise DependencyError, "No maching version available for " \
+                             "`#{@name}` component" unless repository_version_sha
+      repository_version_sha
     end
   end
 end

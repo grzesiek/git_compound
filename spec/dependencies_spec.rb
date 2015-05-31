@@ -39,7 +39,7 @@ module GitCompound
       dependent_components =
         @manifest.components[:dependent_component_2].manifest.components
       expect(dependent_components.count).to eq 1
-      expect(dependent_components).to include(:dependent_leaf_1_1)
+      expect(dependent_components).to include(:dependent_leaf_3)
     end
 
     it 'should raise error if there is no maching version' do

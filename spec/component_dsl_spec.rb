@@ -16,8 +16,9 @@ module GitCompound
         end
       end
 
-      it 'should set version parameter' do
-        expect(@component.version).to eq '~>1.1'
+      it 'should set version' do
+        expect(@component.version).to be_an_instance_of Component::Version
+        expect(@component.version.requirement).to eq '~>1.1'
       end
 
       it 'should set source parameter' do

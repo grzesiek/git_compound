@@ -29,10 +29,14 @@ module GitHelper
 
   def git_commit(message)
     `git commit -m "#{message}"`
+    sha = `git rev-parse HEAD`
+    sha.strip
   end
 
   def git_tag(name, message)
     `git tag -a "#{name}" -m "#{message}"`
+    sha = `git rev-parse #{name}`
+    sha.strip
   end
 
   def git_expose(dir, port)

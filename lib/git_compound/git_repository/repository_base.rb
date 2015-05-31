@@ -10,16 +10,17 @@ module GitCompound
       def versions
         version_tags = refs.select do |ref|
           ref[1] == 'tags' &&
-          ref[2].start_with?('v') &&
+          # TODO: Gem::Version:: ... /\A\s*(#{VERSION_PATTERN})?\s*\z/
+          ref[2].match(/^v?(\d\.){1,3}\d(\.|-)?.*/) &&
           !ref[2].match(/.*\^\{\}$/) # annotated tag objects
         end
-        version_tags.collect! { |v| [v.last[1..-1], v.first] }
+        version_tags.map! { |v| [v.last.sub(/^v/, ''), v.first] }
         Hash[version_tags]
       end
 
       def branches
         heads = refs.select { |ref| ref[1] == 'heads' }
-        heads.collect! { |h| [h.last.to_sym, h.first] }
+        heads.collect! { |h| [h.last, h.first] }
         Hash[heads]
       end
 
@@ -37,7 +38,7 @@ module GitCompound
         matching.any?
       end
 
-      def first_file_contents(files, ref)
+      def first_found_file_contents(files, ref)
         files.each do |file|
           begin
             return file_contents(file, ref)

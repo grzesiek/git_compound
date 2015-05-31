@@ -115,7 +115,7 @@ module GitTestEnvBuilder
         END
       end
       git_commit('v1.2 commit')
-      git_tag('v1.2', 'version 1.2')
+      @dependent_component_2_commit_tag_v1_2_sha = git_tag('v1.2', 'version 1.2')
     end
   end
 
