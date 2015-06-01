@@ -20,7 +20,7 @@ module GitCompound
     end
 
     it 'should provide lastest valid matching version' do
-      lastest_matching_version = @component.version.lastest_matching_version
+      lastest_matching_version = @component.version.lastest_matching
       expect(lastest_matching_version).to eq '1.2'
     end
 

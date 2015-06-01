@@ -22,12 +22,12 @@ module GitCompound
         matching_versions.map(&:to_s)
       end
 
-      def lastest_matching_version
+      def lastest_matching
         matches.first
       end
 
       def lastest_matching_sha
-        repository_versions[lastest_matching_version]
+        repository_versions[lastest_matching]
       end
 
       private

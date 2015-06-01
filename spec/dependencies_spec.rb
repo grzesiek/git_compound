@@ -45,7 +45,7 @@ module GitCompound
     it 'should raise error if there is no maching version' do
       component_dir = @dependent_component_1_dir
       component = Component.new(:test) do
-        version '>5.0'
+        version '>6.0'
         source component_dir
         destination 'any'
       end

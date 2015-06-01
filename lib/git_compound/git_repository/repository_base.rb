@@ -8,20 +8,13 @@ module GitCompound
       end
 
       def versions
-        version_tags = refs.select do |ref|
-          ref[1] == 'tags' &&
+        version_tags = tags.select do |tag, _|
           # TODO: Gem::Version:: ... /\A\s*(#{VERSION_PATTERN})?\s*\z/
-          ref[2].match(/^v?(\d\.){1,3}\d(\.|-)?.*/) &&
-          !ref[2].match(/.*\^\{\}$/) # annotated tag objects
+          # tag.match(/^v?(\d\.){1,3}\d(\.|-)?.*/) &&
+          tag.match(/^v?#{Gem::Version::VERSION_PATTERN}$/) &&
+          !tag.match(/.*\^\{\}$/) # annotated tag objects
         end
-        version_tags.map! { |v| [v.last.sub(/^v/, ''), v.first] }
-        Hash[version_tags]
-      end
-
-      def branches
-        heads = refs.select { |ref| ref[1] == 'heads' }
-        heads.collect! { |h| [h.last, h.first] }
-        Hash[heads]
+        Hash[version_tags.map { |k, v| [k.sub(/^v/, ''), v] }]
       end
 
       def refs
@@ -29,6 +22,14 @@ module GitCompound
         refs.scan(%r{^(\b[0-9a-f]{5,40}\b)\srefs\/(heads|tags)\/(.+)})
       rescue GitCommandError => e
         raise RepositoryUnreachableError, "Could not reach repository: #{e.message}"
+      end
+
+      def branches
+        select_refs('heads')
+      end
+
+      def tags
+        select_refs('tags')
       end
 
       def ref_exists?(ref)
@@ -56,6 +57,14 @@ module GitCompound
 
       def file_exists?(_file, _ref)
         raise NotImplementedError
+      end
+
+      private
+
+      def select_refs(name)
+        selected_refs = refs.select { |ref| ref[1] == name }
+        selected_refs.collect! { |r| [r.last, r.first] }
+        Hash[selected_refs]
       end
     end
   end
