@@ -1,5 +1,5 @@
 module GitCompound
-  module GitRepository
+  module Repository
     # Remote file loader based on strategies
     #
     class RemoteFile
@@ -24,7 +24,7 @@ module GitCompound
       end
 
       def strategies_available
-        [RemoteFileStrategy::GitArchiveStrategy]
+        [GitArchiveStrategy]
         # GitArchiveStrategy,
         # GitHubStrategy]
       end

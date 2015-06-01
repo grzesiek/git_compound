@@ -34,7 +34,7 @@ module GitCompound
         @component.source = component_source
         raise CompoundSyntaxError, 'Source cannot be empty' if
           @component.source.nil? || @component.source.empty?
-        @component.repository = GitRepository.factory(@component.source)
+        @component.repository = Repository.factory(@component.source)
       end
 
       def destination(component_destination_path)

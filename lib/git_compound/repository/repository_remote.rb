@@ -1,8 +1,8 @@
 module GitCompound
-  module GitRepository
+  module Repository
     # Remote git repository implementation
     #
-    class RepositoryRemote < RepositoryBase
+    class RepositoryRemote < GitRepository
       def file_contents(file, ref)
         remote_file = RemoteFile.new(@source, ref, file)
         remote_file.contents

@@ -1,16 +1,14 @@
 module GitCompound
-  module GitRepository
+  module Repository
     # Git repository base class
     #
-    class RepositoryBase
+    class GitRepository
       def initialize(source)
         @source = source
       end
 
       def versions
         version_tags = tags.select do |tag, _|
-          # TODO: Gem::Version:: ... /\A\s*(#{VERSION_PATTERN})?\s*\z/
-          # tag.match(/^v?(\d\.){1,3}\d(\.|-)?.*/) &&
           tag.match(/^v?#{Gem::Version::VERSION_PATTERN}$/) &&
           !tag.match(/.*\^\{\}$/) # annotated tag objects
         end

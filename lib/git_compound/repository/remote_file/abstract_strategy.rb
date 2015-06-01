@@ -1,9 +1,9 @@
 module GitCompound
-  module GitRepository
-    module RemoteFileStrategy
+  module Repository
+    class RemoteFile
       # Base interface for strategies
       #
-      class StrategyBase
+      class AbstractStrategy
         def initialize(source, ref, file)
           @source = source
           @ref    = ref

@@ -1,7 +1,7 @@
 # GitCompound
 #
 module GitCompound
-  describe GitRepository::RepositoryRemote do
+  describe Repository::RepositoryRemote do
     describe 'remote file in remote repo via git archive strategy' do
       before do
         @repository_dir = "#{@dir}/repo.git"
@@ -21,7 +21,7 @@ module GitCompound
         end
 
         @remote = "git://localhost:9999#{@repository_dir}"
-        @remote_repository = GitRepository::RepositoryRemote.new(@remote)
+        @remote_repository = Repository::RepositoryRemote.new(@remote)
       end
 
       it 'should contain valid test_tag ref' do

@@ -28,7 +28,7 @@ module GitCompound
     end
 
     def lastest_matching_sha
-      return @sha if @sha
+      return @sha if @sha # TODO: verify if SHA exists
       return branch_sha if @branch
       return version_sha if @version
     end
@@ -54,7 +54,7 @@ module GitCompound
 
     def version_sha
       repository_version_sha = @version.lastest_matching_sha
-      raise DependencyError, "No maching version available for " \
+      raise DependencyError, 'No maching version available for ' \
                              "`#{@name}` component" unless repository_version_sha
       repository_version_sha
     end

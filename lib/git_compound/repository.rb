@@ -1,7 +1,7 @@
 module GitCompound
   # Git repositories module, also repository factory
   #
-  module GitRepository
+  module Repository
     def self.factory(source)
       if local?(source)
         RepositoryLocal.new(source)
