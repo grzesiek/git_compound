@@ -36,10 +36,11 @@ module GitCompound
         @component.source = Component::Source.new(@component, component_source)
       end
 
-      def destination(component_destination_path)
-        @component.destination = component_destination_path
+      def destination(component_destination)
         raise CompoundSyntaxError, 'Destination cannot be empty' if
-          @component.destination.nil? || @component.destination.empty?
+          component_destination.nil? || component_destination.empty?
+        @component.destination =
+          Component::Destination.new(@component, component_destination)
       end
     end
   end

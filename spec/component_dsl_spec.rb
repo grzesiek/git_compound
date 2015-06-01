@@ -26,7 +26,7 @@ module GitCompound
       end
 
       it 'should set destination parameter' do
-        expect(@component.destination).to eq '/some/destination'
+        expect(@component.destination.path).to eq '/some/destination'
       end
     end
 
