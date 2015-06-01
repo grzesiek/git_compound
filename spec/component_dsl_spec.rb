@@ -22,7 +22,7 @@ module GitCompound
       end
 
       it 'should set source parameter' do
-        expect(@component.source).to eq @leaf_component_1_dir
+        expect(@component.source.location).to eq @leaf_component_1_dir
       end
 
       it 'should set destination parameter' do

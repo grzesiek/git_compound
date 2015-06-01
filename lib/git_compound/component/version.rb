@@ -33,7 +33,7 @@ module GitCompound
       private
 
       def repository_versions
-        @component.repository.versions
+        @component.source.repository.versions
       end
     end
   end

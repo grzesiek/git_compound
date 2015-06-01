@@ -5,7 +5,6 @@ module GitCompound
     attr_reader :name
     attr_accessor :version, :sha, :branch
     attr_accessor :source, :destination
-    attr_accessor :repository
 
     def initialize(name, &block)
       @name = name
@@ -24,7 +23,7 @@ module GitCompound
 
     def valid?
       [[@version, @branch, @sha].any?,
-       @source, @destination, @repository, @name].all?
+       @source, @destination, @name].all?
     end
 
     def lastest_matching_sha
@@ -37,15 +36,15 @@ module GitCompound
 
     def load_manifest
       valid_manifests = ['Compoundfile', '.gitcompound']
-      contents = @repository.first_found_file_contents(valid_manifests,
-                                                       lastest_matching_sha)
+      contents = @source.repository.first_found_file_contents(valid_manifests,
+                                                              lastest_matching_sha)
       Manifest.new(contents)
     rescue FileNotFoundError
       nil
     end
 
     def branch_sha
-      repository_branch_sha = @repository.branches[@branch]
+      repository_branch_sha = @source.repository.branches[@branch]
       raise DependencyError,
             "Branch #{@branch} not available in #{@source} " \
             "for component `#{@name}`" unless repository_bransh_sha

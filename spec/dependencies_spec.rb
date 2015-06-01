@@ -19,8 +19,8 @@ module GitCompound
     end
 
     it 'should set valid sources for dependent components' do
-      component_1_source = @manifest.components[:dependent_component_1].source
-      component_2_source = @manifest.components[:dependent_component_2].source
+      component_1_source = @manifest.components[:dependent_component_1].source.location
+      component_2_source = @manifest.components[:dependent_component_2].source.location
       expect(component_1_source).to eq @dependent_component_1_dir
       expect(component_2_source).to eq @dependent_component_2_dir
     end

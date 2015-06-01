@@ -19,6 +19,7 @@ module GitCompound
   # GitCompound component class
   #
   class Component
+    autoload :Source,  'git_compound/component/source'
     autoload :Version, 'git_compound/component/version'
   end
 

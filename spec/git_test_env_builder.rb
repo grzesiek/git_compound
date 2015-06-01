@@ -2,6 +2,7 @@
 #
 # rubocop:disable Metrics/ModuleLength
 # rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/AbcSize
 module GitTestEnvBuilder
   def git_build_test_environment!
     git_create_base_component
@@ -147,5 +148,6 @@ module GitTestEnvBuilder
     end
   end
 end
+# rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/ModuleLength
 # rubocop:enable Metrics/MethodLength

@@ -37,14 +37,14 @@ module GitCompound
     end
 
     it 'should access component repository refs' do
-      refs = @component.repository.refs
+      refs = @component.source.repository.refs
       expect(refs[0]).to include('master')
       expect(refs[1]).to include('5.10.20.pre.rc1')
       expect(refs[3]).to include('v0.1')
     end
 
     it 'should access component repository versions' do
-      versions = @component.repository.versions
+      versions = @component.source.repository.versions
       expect(versions).to include '0.1'
       expect(versions).to include '0.2'
       expect(versions).to_not include '0.1^{}'
@@ -52,7 +52,7 @@ module GitCompound
     end
 
     it 'should access component repository branches' do
-      versions = @component.repository.branches
+      versions = @component.source.repository.branches
       expect(versions).to include 'master'
     end
 
