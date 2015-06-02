@@ -11,23 +11,23 @@ module GitCompound
       end
 
       def version(component_version)
+        raise CompoundSyntaxError, 'Component version already set' if
+          @component.version
         @component.version = Component::Version.new(@component, component_version)
-        raise CompoundSyntaxError, 'Cannot use version with sha or branch' if
-          [@component.sha, @component.branch].any?
       end
 
       def sha(component_sha)
-        @component.sha = component_sha
-        raise CompoundSyntaxError, 'Cannot use sha with version or branch' if
-          [@component.version, @component.branch].any?
         raise CompoundSyntaxError, 'Invalid SHA1 format' unless
-          @component.sha.match(/[0-9a-f]{5,40}/)
+          component_sha.match(/[0-9a-f]{5,40}/)
+        raise CompoundSyntaxError, 'Component version already set' if
+          @component.version
+        @component.version = Component::SHA.new(@component, component_sha)
       end
 
       def branch(component_branch)
-        @component.branch = component_branch
-        raise CompoundSyntaxError, 'Cannot use branch with version or sha' if
-          [@component.version, @component.sha].any?
+        raise CompoundSyntaxError, 'Component version already set' if
+          @component.version
+        @component.version = Component::Branch.new(@component, component_branch)
       end
 
       def source(component_source)

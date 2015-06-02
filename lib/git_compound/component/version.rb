@@ -2,7 +2,7 @@ module GitCompound
   class Component
     # Component version class
     #
-    class Version
+    class Version < AbstractVersion
       attr_reader :requirement
 
       def initialize(component, requirement)
@@ -12,8 +12,22 @@ module GitCompound
           @requirement =~ Gem::Requirement::PATTERN
       end
 
+      # Lastest matching version
+      #
+      def reference
+        matches.first
+      end
+
+      def sha
+        raise DependencyError, 'No maching version available for ' \
+              "`#{@component.name}` component" unless reachable?
+        @component.source.repository.versions[reference]
+      end
+
       def matches
-        gem_versions = repository_versions.map { |k, _| Gem::Version.new(k) }
+        repository = @component.source.repository
+
+        gem_versions = repository.versions.map { |k, _| Gem::Version.new(k) }
         matching_versions = gem_versions.sort.reverse.select do |gem_version|
           dependency = Gem::Dependency.new('component', @requirement)
           dependency.match?('component', gem_version, false)
@@ -22,18 +36,8 @@ module GitCompound
         matching_versions.map(&:to_s)
       end
 
-      def lastest_matching
-        matches.first
-      end
-
-      def lastest_matching_sha
-        repository_versions[lastest_matching]
-      end
-
-      private
-
-      def repository_versions
-        @component.source.repository.versions
+      def reachable?
+        !@component.source.repository.versions[reference].nil?
       end
     end
   end

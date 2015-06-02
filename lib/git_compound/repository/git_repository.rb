@@ -37,7 +37,9 @@ module GitCompound
         matching.any?
       end
 
-      def first_found_file_contents(files, ref)
+      # Returns contents of first file found
+      #
+      def files_contents(files, ref)
         files.each do |file|
           begin
             return file_contents(file, ref)

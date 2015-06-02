@@ -19,9 +19,12 @@ module GitCompound
   # GitCompound component class
   #
   class Component
-    autoload :Destination, 'git_compound/component/destination'
-    autoload :Source,      'git_compound/component/source'
-    autoload :Version,     'git_compound/component/version'
+    autoload :AbstractVersion, 'git_compound/component/abstract_version'
+    autoload :Branch,          'git_compound/component/branch'
+    autoload :Destination,     'git_compound/component/destination'
+    autoload :SHA,             'git_compound/component/sha'
+    autoload :Source,          'git_compound/component/source'
+    autoload :Version,         'git_compound/component/version'
   end
 
   # Repository
