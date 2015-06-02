@@ -20,12 +20,12 @@ module GitCompound
     end
 
     it 'should provide lastest valid matching version' do
-      lastest_matching_version = @component.version.lastest_matching
+      lastest_matching_version = @component.version.reference
       expect(lastest_matching_version).to eq '1.2'
     end
 
     it 'should provide valid lastest matching sha' do
-      lastest_matching_sha = @component.version.lastest_matching_sha
+      lastest_matching_sha = @component.version.sha
       expect(lastest_matching_sha).to eq @dependent_component_2_commit_tag_v1_2_sha
     end
   end

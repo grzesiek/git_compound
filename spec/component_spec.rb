@@ -57,12 +57,12 @@ module GitCompound
     end
 
     it 'should match version and ref correctly' do
-      expect(@component.lastest_matching_sha).to eq @git_commit_tag_1_1_8
+      expect(@component.version.sha).to eq @git_commit_tag_1_1_8
     end
 
     it 'should match version in different format' do
-      @component.version = Component::Version.new(@component, '5.10.20.pre.rc1')
-      expect(@component.lastest_matching_sha).to eq @git_commit_tag_5_10_20
+      @component.version = Component::Version::GemVersion.new(@component, '5.10.20.pre.rc1')
+      expect(@component.version.sha).to eq @git_commit_tag_5_10_20
     end
 
     context 'source repository is unreachable' do

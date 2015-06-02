@@ -1,6 +1,8 @@
 module GitCompound
   class Component
     module Version
+      # Component version indicated by SHA hash
+      #
       class SHA < AbstractVersion
         def initialize(component, sha)
           @component = component
@@ -11,7 +13,7 @@ module GitCompound
           @sha
         end
 
-        def sha
+        def sha # rubocop:disable Style/TrivialAccessors
           @sha
         end
 

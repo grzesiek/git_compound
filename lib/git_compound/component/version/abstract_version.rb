@@ -1,6 +1,9 @@
 module GitCompound
   class Component
     module Version
+      # Abstraction for component versions like
+      #   gem version, sha and branch
+      #
       class AbstractVersion
         def initialize
           raise NotImplementedError
@@ -13,9 +16,10 @@ module GitCompound
           raise NotImplementedError
         end
 
-        # Should return sha for specified reference 
+        # Should return sha for specified reference
         #   (ex tagged commit sha or head of specified branch)
         # Should raise exception if unreachable
+        #
         def sha
           raise NotImplementedError
         end

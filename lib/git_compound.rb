@@ -22,6 +22,8 @@ module GitCompound
     autoload :Source,          'git_compound/component/source'
     autoload :Destination,     'git_compound/component/destination'
 
+    # Possible component versions
+    #
     module Version
       autoload :AbstractVersion, 'git_compound/component/version/abstract_version'
       autoload :Branch,          'git_compound/component/version/branch'

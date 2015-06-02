@@ -17,7 +17,7 @@ module GitCompound
       end
 
       it 'should set version' do
-        expect(@component.version).to be_an_instance_of Component::Version
+        expect(@component.version).to be_an_instance_of Component::Version::GemVersion
         expect(@component.version.requirement).to eq '~>1.1'
       end
 

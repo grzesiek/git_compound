@@ -1,7 +1,7 @@
 module GitCompound
   class Component
     module Version
-      # Component version class
+      # Component Gem-like version
       #
       class GemVersion < AbstractVersion
         attr_reader :requirement

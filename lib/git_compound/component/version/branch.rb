@@ -1,6 +1,8 @@
 class GitCompound
   class Component
     module Version
+      # Component version indicated by branch (head of branch)
+      #
       class Branch < AbstractVersion
         def initialize(component, branch)
           @component = component
