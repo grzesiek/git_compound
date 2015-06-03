@@ -15,15 +15,12 @@ module GitCompound
 
         # Lastest matching version
         #
-        def reference
+        def ref
           matches.first
         end
 
         def sha
-          # TODO
-          # raise DependencyError, 'No maching version available for ' \
-          #       "`#{@component.name}` component" unless reachable?
-          @repository.versions[reference]
+          @repository.versions[ref]
         end
 
         def matches
@@ -37,7 +34,7 @@ module GitCompound
         end
 
         def reachable?
-          @repository.versions[reference] ? true : false
+          @repository.versions[ref] ? true : false
         end
       end
     end

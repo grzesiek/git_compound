@@ -61,6 +61,7 @@ module GitCompound
     end
 
     it 'should match version in different format' do
+      repository = @component.source.repository
       version_strategy = Component::Version::GemVersion.new(repository, '5.10.20.pre.rc1')
       expect(version_strategy.sha).to eq @git_commit_tag_5_10_20
     end

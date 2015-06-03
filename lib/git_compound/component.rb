@@ -3,7 +3,7 @@ module GitCompound
   #
   class Component
     attr_reader :name
-    attr_accessor :version,  :source, :destination
+    attr_accessor :version, :source, :destination
 
     def initialize(name, &block)
       @name = name

@@ -9,7 +9,7 @@ module GitCompound
           @branch = branch
         end
 
-        def reference
+        def ref
           @branch
         end
 

@@ -9,7 +9,7 @@ module GitCompound
           @sha = sha
         end
 
-        def reference
+        def ref
           @sha
         end
 

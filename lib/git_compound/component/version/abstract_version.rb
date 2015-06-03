@@ -12,13 +12,12 @@ module GitCompound
         # Should return git reference (ex branch, tag or sha)
         # This should not raise exception if unreachable
         #
-        def reference
+        def ref
           raise NotImplementedError
         end
 
         # Should return sha for specified reference
         #   (ex tagged commit sha or head of specified branch)
-        # Should raise exception if unreachable
         #
         def sha
           raise NotImplementedError
