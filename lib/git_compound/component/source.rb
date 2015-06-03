@@ -3,20 +3,21 @@ module GitCompound
     # Component source
     #
     class Source
-      attr_reader :location, :repository
+      attr_reader :location, :repository, :version
 
-      def initialize(component, source)
+      def initialize(source, version_strategy, version)
         @location   = source
-        @component  = component
         @repository = Repository.factory(@location)
+        @version    = version_strategy.new(@repository, version)
+        raise CompoundSyntaxError, 'Source cannot be empty' if
+          source.nil? || source.empty?
       end
 
       # Loads manifest from source repository
       #
       def manifest
         manifests = ['Compoundfile', '.gitcompound']
-        sha = @component.version.sha
-        contents = @repository.files_contents(manifests, sha)
+        contents = @repository.files_contents(manifests, @version.sha)
         Manifest.new(contents)
       rescue FileNotFoundError
         nil

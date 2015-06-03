@@ -1,27 +1,28 @@
-class GitCompound
+module GitCompound
   class Component
     module Version
       # Component version indicated by branch (head of branch)
       #
       class Branch < AbstractVersion
-        def initialize(component, branch)
-          @component = component
+        def initialize(repository, branch)
+          @repository = repository
           @branch = branch
         end
 
-        def reference!
+        def reference
           @branch
         end
 
         def sha
-          raise DependencyError,
-                "Branch #{@branch} not available in #{@source.location} " \
-                "for component `#{@component.name}`" unless reachable?
-          @component.source.repository.branches[@branch]
+          # TODO
+          # raise DependencyError,
+          #       "Branch #{@branch} not available in #{@source.location} " \
+          #       "for component `#{@component.name}`" unless reachable?
+          @repository.branches[@branch]
         end
 
         def reachable?
-          @component.source.repository.ref_exists?(@branch)
+          @repository.ref_exists?(@branch)
         end
       end
     end

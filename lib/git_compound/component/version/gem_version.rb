@@ -6,9 +6,9 @@ module GitCompound
       class GemVersion < AbstractVersion
         attr_reader :requirement
 
-        def initialize(component, requirement)
+        def initialize(repository, requirement)
+          @repository  = repository
           @requirement = requirement
-          @component   = component
           raise CompoundSyntaxError, 'Malformed version requirement string' unless
             @requirement =~ Gem::Requirement::PATTERN
         end
@@ -20,15 +20,14 @@ module GitCompound
         end
 
         def sha
-          raise DependencyError, 'No maching version available for ' \
-                "`#{@component.name}` component" unless reachable?
-          @component.source.repository.versions[reference]
+          # TODO
+          # raise DependencyError, 'No maching version available for ' \
+          #       "`#{@component.name}` component" unless reachable?
+          @repository.versions[reference]
         end
 
         def matches
-          repository = @component.source.repository
-
-          gem_versions = repository.versions.map { |k, _| Gem::Version.new(k) }
+          gem_versions = @repository.versions.map { |k, _| Gem::Version.new(k) }
           matching_versions = gem_versions.sort.reverse.select do |gem_version|
             dependency = Gem::Dependency.new('component', @requirement)
             dependency.match?('component', gem_version, false)
@@ -38,7 +37,7 @@ module GitCompound
         end
 
         def reachable?
-          !@component.source.repository.versions[reference].nil?
+          @repository.versions[reference] ? true : false
         end
       end
     end

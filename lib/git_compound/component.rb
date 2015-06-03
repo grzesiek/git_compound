@@ -21,8 +21,7 @@ module GitCompound
     end
 
     def valid?
-      [[@version, @branch, @sha].any?,
-       @source, @destination, @name].all?
+      [@version, @source, @destination, @name].all?
     end
   end
 end
