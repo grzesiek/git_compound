@@ -5,7 +5,7 @@ module GitCompound
     attr_accessor :name, :components, :tasks
 
     def initialize(contents)
-      Dsl::ManifestDsl.new(self, contents)
+      DSL::ManifestDSL.new(self, contents)
     end
 
     def process_dependencies

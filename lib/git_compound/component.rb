@@ -7,7 +7,7 @@ module GitCompound
 
     def initialize(name, &block)
       @name = name
-      Dsl::ComponentDsl.new(self, &block) if block
+      DSL::ComponentDSL.new(self, &block) if block
       raise CompoundSyntaxError, "No block given for component `#{@name}`" unless block
       raise GitCompoundError, "Component `#{@name}` invalid" unless valid?
     end

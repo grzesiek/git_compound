@@ -11,9 +11,9 @@ module GitCompound
 
   # GitCompound Domain Specific Language
   #
-  module Dsl
-    autoload :ComponentDsl, 'git_compound/dsl/component_dsl'
-    autoload :ManifestDsl,  'git_compound/dsl/manifest_dsl'
+  module DSL
+    autoload :ComponentDSL, 'git_compound/dsl/component_dsl'
+    autoload :ManifestDSL,  'git_compound/dsl/manifest_dsl'
   end
 
   # GitCompound component class

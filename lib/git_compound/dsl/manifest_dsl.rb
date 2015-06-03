@@ -1,10 +1,10 @@
 module GitCompound
   # Compound Domain Specific Language
   #
-  module Dsl
+  module DSL
     # DSL for Manifest
     #
-    class ManifestDsl
+    class ManifestDSL
       def initialize(manifest, contents)
         @manifest            = manifest
         @manifest.name       = ''

@@ -1,10 +1,10 @@
 module GitCompound
   # Compound Domain Specific Language
   #
-  module Dsl
+  module DSL
     # DSL for Component
     #
-    class ComponentDsl
+    class ComponentDSL
       def initialize(component, &block)
         @component = component
         instance_eval(&block)
