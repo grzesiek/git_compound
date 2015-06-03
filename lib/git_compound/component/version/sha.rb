@@ -4,8 +4,8 @@ module GitCompound
       # Component version indicated by SHA hash
       #
       class SHA < AbstractVersion
-        def initialize(component, sha)
-          @component = component
+        def initialize(repository, sha)
+          @repository = repository
           @sha = sha
         end
 
