@@ -9,6 +9,7 @@ module GitCompound
     end
 
     def process(*workers)
+      workers.each { |worker| worker.instance.visit_manifest(self) }
       components.each_value { |component| component.process(*workers) }
     end
   end

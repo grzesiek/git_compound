@@ -1,4 +1,5 @@
 require 'English'
+require 'singleton'
 require 'git_compound/exceptions'
 
 # Git Compound module
@@ -49,5 +50,12 @@ module GitCompound
       autoload :GitArchiveStrategy,
                'git_compound/repository/remote_file/git_archive_strategy'
     end
+  end
+
+  # Workers
+  #
+  module Worker
+    autoload :AbstractWorker, 'git_compound/worker/abstract_worker'
+    autoload :PrettyPrint,    'git_compound/worker/pretty_print'
   end
 end

@@ -13,6 +13,7 @@ module GitCompound
     end
 
     def process(*workers)
+      workers.each { |worker| worker.instance.visit_component(self) }
       @manifest.process(*workers) if manifest
     end
 
