@@ -12,8 +12,8 @@ module GitCompound
       raise GitCompoundError, "Component `#{@name}` invalid" unless valid?
     end
 
-    def process_dependencies
-      @manifest.process_dependencies if manifest
+    def process(*workers)
+      @manifest.process(*workers) if manifest
     end
 
     def manifest

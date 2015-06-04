@@ -1,5 +1,5 @@
 module GitCompound
-  # Manifest class for .gitcompound / Compoundfile
+  # Manifest
   #
   class Manifest
     attr_accessor :name, :components, :tasks
@@ -8,11 +8,8 @@ module GitCompound
       DSL::ManifestDSL.new(self, contents)
     end
 
-    def process_dependencies
-      components.each_value(&:process_dependencies)
-    end
-
-    def build
+    def process(*workers)
+      components.each_value { |component| component.process(*workers) }
     end
   end
 end
