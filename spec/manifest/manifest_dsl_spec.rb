@@ -1,6 +1,6 @@
 # GitCompound
 module GitCompound
-  describe Manifest do
+  describe DSL::ManifestDSL do
     before do
       @manifest_contents = <<-END
         name :test_project

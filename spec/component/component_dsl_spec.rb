@@ -1,7 +1,7 @@
 # GitCompound
 #
 module GitCompound
-  describe Component do
+  describe DSL::ComponentDSL do
     before do
       git_create_leaf_component_1
     end

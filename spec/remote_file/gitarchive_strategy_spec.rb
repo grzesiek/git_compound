@@ -2,13 +2,11 @@
 #
 module GitCompound
   describe Repository::RepositoryRemote do
-    describe 'remote file in remote repo via git archive strategy' do
+    describe Repository::RemoteFile::GitArchiveStrategy do
       before do
-        @repository_dir = "#{@dir}/repo.git"
-        Dir.mkdir(@repository_dir)
+        git_create_leaf_component_1
 
-        git(@repository_dir) do
-          git_init
+        git(@leaf_component_1_dir) do
           git_add_file('Compoundfile') { 'name :test123' }
           git_commit('compoundfile commit')
           git_tag('test_tag', 'test_tag')
@@ -16,11 +14,11 @@ module GitCompound
           git_commit('compoundfile changed')
           git_tag('second_test_tag', 'second test_tag')
 
-          FileUtils.touch("#{@repository_dir}/.git/git-daemon-export-ok")
-          @git_daemon_pid = git_expose("#{@repository_dir}", 9999)
+          FileUtils.touch("#{@leaf_component_1_dir}/.git/git-daemon-export-ok")
+          @git_daemon_pid = git_expose("#{@leaf_component_1_dir}", 9999)
         end
 
-        @remote = "git://localhost:9999#{@repository_dir}"
+        @remote = "git://localhost:9999#{@leaf_component_1_dir}"
         @remote_repository = Repository::RepositoryRemote.new(@remote)
       end
 
@@ -30,7 +28,7 @@ module GitCompound
 
       context 'git archive supported' do
         before do
-          git(@repository_dir) { `git config daemon.uploadarch true` }
+          git(@leaf_component_1_dir) { `git config daemon.uploadarch true` }
         end
 
         it 'should return valid contents of file from remote repository' do

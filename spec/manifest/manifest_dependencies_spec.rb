@@ -13,19 +13,19 @@ module GitCompound
       expect(@manifest.components.count).to eq 2
     end
 
-    it 'should set valid names for dependent components' do
+    it 'should set valid names for required components' do
       expect(@manifest.components).to include(:dependent_component_1)
       expect(@manifest.components).to include(:dependent_component_2)
     end
 
-    it 'should set valid sources for dependent components' do
+    it 'should set valid sources for required components' do
       component_1_source = @manifest.components[:dependent_component_1].source.location
       component_2_source = @manifest.components[:dependent_component_2].source.location
       expect(component_1_source).to eq @dependent_component_1_dir
       expect(component_2_source).to eq @dependent_component_2_dir
     end
 
-    it 'it should process dependent components dependencies' do
+    it 'it should process required components dependencies' do
       @manifest.process_dependencies
       dependent_components =
         @manifest.components[:dependent_component_1].manifest.components
@@ -34,7 +34,7 @@ module GitCompound
       expect(dependent_components).to include(:dependent_leaf_2)
     end
 
-    it 'should load dependent component_2 from valid ref' do
+    it 'should load required component from valid ref' do
       @manifest.process_dependencies
       dependent_components =
         @manifest.components[:dependent_component_2].manifest.components
