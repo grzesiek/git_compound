@@ -1,7 +1,7 @@
 # GitCompound
 #
 module GitCompound
-  describe Component do
+  describe Manifest do
     before do
       git_build_test_environment!
 

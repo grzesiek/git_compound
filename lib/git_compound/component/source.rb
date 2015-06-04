@@ -6,11 +6,12 @@ module GitCompound
       attr_reader :location, :repository, :version
 
       def initialize(source, version_strategy, version)
+        raise CompoundSyntaxError, 'Source cannot be empty' if
+          source.nil? || source.empty?
+
         @location   = source
         @repository = Repository.factory(@location)
         @version    = version_strategy.new(@repository, version)
-        raise CompoundSyntaxError, 'Source cannot be empty' if
-          source.nil? || source.empty?
       end
 
       # Loads manifest from source repository
