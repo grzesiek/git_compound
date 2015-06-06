@@ -14,15 +14,15 @@ module GitCompound
         end
 
         def sha
-          # TODO
-          # raise DependencyError,
-          #       "Branch #{@branch} not available in #{@source.location} " \
-          #       "for component `#{@component.name}`" unless reachable?
           @repository.branches[@branch]
         end
 
         def reachable?
           @repository.ref_exists?(@branch)
+        end
+
+        def to_s
+          "branch: #{@branch}"
         end
       end
     end

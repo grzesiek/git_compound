@@ -36,6 +36,10 @@ module GitCompound
         def reachable?
           @repository.versions[ref] ? true : false
         end
+
+        def to_s
+          "gem version: #{@requirement}"
+        end
       end
     end
   end

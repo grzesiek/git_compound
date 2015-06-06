@@ -9,7 +9,13 @@ module GitCompound
 
     it 'should pretty-print dependency tree' do
       expect { @manifest.process(Worker::PrettyPrint) }
-        .to output("component").to_stdout
+        .to output(
+          "`dependent_component_1` component, gem version: ~>1.1\n" \
+          "  `dependent_leaf_1` component, gem version: 1.0\n"      \
+          "  `dependent_leaf_2` component, gem version: 1.0\n"      \
+          "`dependent_component_2` component, gem version: 1.1\n"   \
+          "  `dependent_leaf_3` component, gem version: 1.0\n"      \
+      ).to_stdout
     end
   end
 end

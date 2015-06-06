@@ -2,16 +2,35 @@ module GitCompound
   module Worker
     class PrettyPrint < AbstractWorker
       def initialize
-        @components = []
+        @indent = 0
       end
 
       def visit_component(component)
-        @components << component.name
-        puts component.name
+        @indent = 0 if root_component?(component)
+        print_component(component)
       end
 
       def visit_manifest(manifest)
-        nil
+        @root_manifest ||= manifest
+        @indent += 1
+      end
+
+      private
+
+      def root_component?(component)
+        @root_manifest.components.values.include?(component)
+      end
+
+      def print_component(component)
+        print_line("`#{component.name}` component, #{component.source.version}")
+      end
+
+      def print_line(text)
+        puts indentation + text
+      end
+
+      def indentation
+        '  ' * @indent
       end
     end
   end

@@ -20,6 +20,10 @@ module GitCompound
         def reachable?
           raise NotImplementedError # TODO
         end
+
+        def to_s
+          "sha: #{@sha[0..8]}"
+        end
       end
     end
   end

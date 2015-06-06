@@ -29,6 +29,12 @@ module GitCompound
         def reachable?
           raise NotImplementedError
         end
+
+        # String representation of this version strategy
+        #
+        def to_s
+          raise NotImplementedError
+        end
       end
     end
   end
