@@ -20,7 +20,8 @@ module GitCompound
       private
 
       def root_component?(component)
-        @root_manifest.components.values.include?(component)
+        root_components = @root_manifest.components.values
+        root_components.include?(component)
       end
 
       def print_component(component)
