@@ -1,5 +1,7 @@
 module GitCompound
   module Worker
+    # Worker that prints dependency tree
+    #
     class PrettyPrint < AbstractWorker
       def initialize
         @indent = 0

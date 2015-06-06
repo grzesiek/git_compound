@@ -1,3 +1,5 @@
+# Git compound
+#
 module GitCompound
   describe Worker::PrettyPrint do
     before do
@@ -15,7 +17,7 @@ module GitCompound
           "  `dependent_leaf_2` component, gem version: 1.0\n"      \
           "`dependent_component_2` component, gem version: 1.1\n"   \
           "  `dependent_leaf_3` component, gem version: 1.0\n"      \
-      ).to_stdout
+        ).to_stdout
     end
   end
 end

@@ -1,23 +1,26 @@
 module GitCompound
   module Worker
+    # Abstract worker
+    #
     class AbstractWorker
       include Singleton
 
-      def visit_component(component)
+      def visit_component(_component)
         raise NotImplementedError
       end
 
-      def visit_manifest(manifest)
+      def visit_manifest(_manifest)
         raise NotImplementedError
       end
 
-      def visit_task(task)
+      def visit_task(_task)
         raise NotImplementedError
       end
 
-      def result
-        raise NotImplementedError
-      end
+      # Maybe ?
+      # def result
+      #   raise NotImplementedError
+      # end
     end
   end
 end
