@@ -15,36 +15,36 @@ module GitCompound
       end
 
       it 'should set valid names for required components' do
-        expect(@manifest.components).to include(:dependent_component_1)
-        expect(@manifest.components).to include(:dependent_component_2)
+        expect(@manifest.components).to include(:component_1)
+        expect(@manifest.components).to include(:component_2)
       end
 
       it 'should set valid sources for required components' do
-        component_1_source = @manifest.components[:dependent_component_1].source.location
-        component_2_source = @manifest.components[:dependent_component_2].source.location
-        expect(component_1_source).to eq @dependent_component_1_dir
-        expect(component_2_source).to eq @dependent_component_2_dir
+        component_1_source = @manifest.components[:component_1].source.location
+        component_2_source = @manifest.components[:component_2].source.location
+        expect(component_1_source).to eq @component_1_dir
+        expect(component_2_source).to eq @component_2_dir
       end
 
       it 'it should process required components dependencies' do
         @manifest.process
-        dependent_components =
-          @manifest.components[:dependent_component_1].manifest.components
-        expect(dependent_components.count).to eq 2
-        expect(dependent_components).to include(:dependent_leaf_1)
-        expect(dependent_components).to include(:dependent_leaf_2)
+        required_components =
+          @manifest.components[:component_1].manifest.components
+        expect(required_components.count).to eq 2
+        expect(required_components).to include(:leaf_component_1)
+        expect(required_components).to include(:leaf_component_2)
       end
 
       it 'should load required component from valid ref' do
         @manifest.process
-        dependent_components =
-          @manifest.components[:dependent_component_2].manifest.components
-        expect(dependent_components.count).to eq 1
-        expect(dependent_components).to include(:dependent_leaf_3)
+        required_components =
+          @manifest.components[:component_2].manifest.components
+        expect(required_components.count).to eq 1
+        expect(required_components).to include(:leaf_component_3)
       end
 
       it 'should raise error if there is no maching version' do
-        component_dir = @dependent_component_1_dir
+        component_dir = @component_1_dir
         component = Component.new(:test) do
           version '>6.0'
           source component_dir
@@ -54,7 +54,7 @@ module GitCompound
       end
 
       it 'should raise error if there is no maching ref' do
-        component_dir = @dependent_component_1_dir
+        component_dir = @component_1_dir
         component = Component.new(:test) do
           sha 'a2b0fec89736deba6cc647bcc2b238812c3725ad'
           source component_dir

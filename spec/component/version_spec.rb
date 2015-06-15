@@ -3,12 +3,12 @@
 module GitCompound
   describe Component::Version do
     before do
-      git_create_dependent_component_2
-      dependent_component_2_dir = @dependent_component_2_dir
+      git_create_component_2
+      component_2_dir = @component_2_dir
 
       @component = Component.new(:test_component) do
         version '~>1.1'
-        source dependent_component_2_dir
+        source component_2_dir
         destination '/some/path'
       end
     end
@@ -26,7 +26,7 @@ module GitCompound
 
     it 'should provide valid lastest matching sha' do
       lastest_matching_sha = @component.source.version.sha
-      expect(lastest_matching_sha).to eq @dependent_component_2_commit_tag_v1_2_sha
+      expect(lastest_matching_sha).to eq @component_2_commit_tag_v1_2_sha
     end
   end
 end

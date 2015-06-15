@@ -44,17 +44,17 @@ module GitTestEnvBuilder
     end
   end
 
-  def git_create_dependent_component_1
+  def git_create_component_1
     git_create_leaf_component_1
     git_create_leaf_component_2
 
-    @dependent_component_1_dir = "#{@dir}/dependent_component_1.git"
-    Dir.mkdir(@dependent_component_1_dir)
+    @component_1_dir = "#{@dir}/component_1.git"
+    Dir.mkdir(@component_1_dir)
 
-    git(@dependent_component_1_dir) do
+    git(@component_1_dir) do
       git_init
       git_add_file('.gitcompound') do
-        'name :dependent_component_1'
+        'name :component_1'
       end
       git_commit('gitcompound commit')
       git_tag('v0.1', 'version 0.1')
@@ -64,15 +64,15 @@ module GitTestEnvBuilder
       git_add_file('version_1.2') { 'v1.2' }
       git_edit_file('.gitcompound') do
         <<-END
-          name :dependent_component_1
+          name :component_1
 
-          component :dependent_leaf_1 do
+          component :leaf_component_1 do
             version '1.0'
             source  '#{@leaf_component_1_dir}'
             destination 'd'
           end
 
-          component :dependent_leaf_2 do
+          component :leaf_component_2 do
             version '1.0'
             source  '#{@leaf_component_2_dir}'
             destination 'd'
@@ -84,24 +84,24 @@ module GitTestEnvBuilder
     end
   end
 
-  def git_create_dependent_component_2
+  def git_create_component_2
     git_create_leaf_component_3
 
-    @dependent_component_2_dir = "#{@dir}/dependent_component_2.git"
-    Dir.mkdir(@dependent_component_2_dir)
+    @component_2_dir = "#{@dir}/component_2.git"
+    Dir.mkdir(@component_2_dir)
 
-    git(@dependent_component_2_dir) do
+    git(@component_2_dir) do
       git_init
       git_add_file('Compoundfile') do
-        'name :dependent_component_2'
+        'name :component_2'
       end
       git_commit('compoundfile commit')
       git_tag('v0.1', 'version 0.1')
       git_edit_file('Compoundfile') do
         <<-END
-          name :dependent_component_2
+          name :component_2
 
-          component :dependent_leaf_3 do
+          component :leaf_component_3 do
             version '1.0'
             source  '#{@leaf_component_3_dir}'
             destination 'd'
@@ -112,17 +112,17 @@ module GitTestEnvBuilder
       git_tag('v1.1', 'version 1.1')
       git_edit_file('Compoundfile') do
         <<-END
-          name :dependent_component_2
+          name :component_2
         END
       end
       git_commit('v1.2 commit')
-      @dependent_component_2_commit_tag_v1_2_sha = git_tag('v1.2', 'version 1.2')
+      @component_2_commit_tag_v1_2_sha = git_tag('v1.2', 'version 1.2')
     end
   end
 
   def git_create_base_component
-    git_create_dependent_component_1
-    git_create_dependent_component_2
+    git_create_component_1
+    git_create_component_2
 
     @base_component_dir = "#{@dir}/base_component.git"
     Dir.mkdir(@base_component_dir)
@@ -132,14 +132,14 @@ module GitTestEnvBuilder
       git_add_file('Compoundfile') do
         <<-END
           name :test_component
-          component :dependent_component_1 do
+          component :component_1 do
             version "~>1.1"
-            source '#{@dependent_component_1_dir}'
+            source '#{@component_1_dir}'
             destination '#{@dir}/compound/component_1'
           end
-          component :dependent_component_2 do
+          component :component_2 do
             version "1.1"
-            source '#{@dependent_component_2_dir}'
+            source '#{@component_2_dir}'
             destination '#{@dir}/compound/component_2'
           end
         END

@@ -21,7 +21,7 @@ module GitCompound
 
     describe 'leaf component ancestors' do
       before do
-        required_component = @component.manifest.components[:required_component_1]
+        required_component = @component.manifest.components[:component_1]
         leaf_component = required_component.manifest.components[:leaf_component_1]
         @ancestors = leaf_component.ancestors
       end

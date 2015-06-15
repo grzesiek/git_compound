@@ -30,7 +30,7 @@ module GitCompound
         raise CompoundSyntaxError,
               'Version already set (sha, branch ?)' if @version_strategy
         @version_strategy = Component::Version::Branch
-        @component_version = component_branch
+        @component.version = component_branch
       end
 
       def source(component_source)
