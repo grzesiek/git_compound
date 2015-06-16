@@ -4,18 +4,18 @@ module GitCompound
   describe Component do
     before do
       git_build_test_environment!
-        component_dir = @base_component_dir
-        @component = Component.new(:base_component) do
-          branch 'master'
-          source component_dir
-          destination 'some destination'
-        end
-        
+
+      component_dir = @base_component_dir
+      @component = Component.new(:base_component) do
+        branch 'master'
+        source component_dir
+        destination 'some destination'
+      end
     end
 
     describe 'base component ancestors' do
       it 'should be empty array' do
-        expect(@component.ancestors).to be []
+        expect(@component.ancestors).to eq []
       end
     end
 
@@ -27,9 +27,7 @@ module GitCompound
       end
 
       it 'should be array of component instances' do
-        expect do
-          @ancestors.all? { |ancestor| ancessor.instance_of?(Component) }
-        end.to be true
+        expect(@ancestors.all? { |ancestor| ancestor.instance_of?(Component) }).to be true
       end
 
       it 'should have expected size' do

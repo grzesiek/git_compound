@@ -18,11 +18,11 @@ module GitCompound
       end
 
       def component(name, &block)
-        @manifest.components.store(name.to_sym, Component.new(name, &block))
+        @manifest.components.store(name.to_sym, Component.new(name, @manifest, &block))
       end
 
       def task(name, &block)
-        @manifest.tasks.store(name.to_sym, Task.new(name, &block))
+        @manifest.tasks.store(name.to_sym, Task.new(name, @manifest, &block))
       end
     end
   end

@@ -3,8 +3,11 @@ module GitCompound
   #
   class Manifest
     attr_accessor :name, :components, :tasks
+    attr_reader :component
 
-    def initialize(contents)
+    def initialize(contents, component = nil)
+      @contents  = contents
+      @component = component
       DSL::ManifestDSL.new(self, contents)
     end
 

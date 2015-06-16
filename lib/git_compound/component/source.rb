@@ -5,13 +5,15 @@ module GitCompound
     class Source
       attr_reader :location, :repository, :version
 
-      def initialize(source, version_strategy, version)
+      def initialize(source, component)
         raise CompoundSyntaxError, 'Source cannot be empty' if
           source.nil? || source.empty?
 
+        @component  = component
         @location   = source
         @repository = Repository.factory(@location)
-        @version    = version_strategy.new(@repository, version)
+        @vstrategy  = @component.version_strategy
+        @version    = @vstrategy.new(@repository, @component.version)
       end
 
       # Loads manifest from source repository
@@ -20,8 +22,9 @@ module GitCompound
         manifests = ['Compoundfile', '.gitcompound']
         raise DependencyError,
               "Version #{@version} unreachable" unless @version.reachable?
+
         contents = @repository.files_contents(manifests, @version.sha)
-        Manifest.new(contents)
+        Manifest.new(contents, @component)
       rescue FileNotFoundError
         nil
       end
