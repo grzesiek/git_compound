@@ -5,12 +5,12 @@ module GitCompound
     class Source
       attr_reader :location, :repository, :version
 
-      def initialize(source, component)
+      def initialize(location, component)
         raise CompoundSyntaxError, 'Source cannot be empty' if
           source.nil? || source.empty?
 
         @component  = component
-        @location   = source
+        @location   = location
         @repository = Repository.factory(@location)
         @vstrategy  = @component.version_strategy
         @version    = @vstrategy.new(@repository, @component.version)
