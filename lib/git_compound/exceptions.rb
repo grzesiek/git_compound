@@ -9,4 +9,5 @@ module GitCompound
   class GitCommandError < GitCompoundError; end
   class LocalRepositoryNotFoundError < GitCompoundError; end
   class DependencyError < GitCompoundError; end
+  class CircularDependencyError < GitCompoundError; end
 end

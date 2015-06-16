@@ -102,7 +102,7 @@ module GitTestEnvBuilder
           name :component_2
 
           component :leaf_component_3 do
-            version '1.0'
+            version '~>1.0'
             source  '#{@leaf_component_3_dir}'
             destination 'd'
           end

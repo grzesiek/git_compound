@@ -1,3 +1,4 @@
+require 'digest'
 require 'English'
 require 'singleton'
 require 'git_compound/exceptions'
@@ -55,7 +56,9 @@ module GitCompound
   # Workers
   #
   module Worker
-    autoload :AbstractWorker, 'git_compound/worker/abstract_worker'
-    autoload :PrettyPrint,    'git_compound/worker/pretty_print'
+    autoload :Worker,      'git_compound/worker/worker'
+    autoload :PrettyPrint, 'git_compound/worker/pretty_print'
+    autoload :CircularDependencyChecker,
+             'git_compound/worker/circular_dependency_checker'
   end
 end

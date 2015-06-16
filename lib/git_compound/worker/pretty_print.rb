@@ -2,7 +2,7 @@ module GitCompound
   module Worker
     # Worker that prints dependency tree
     #
-    class PrettyPrint < AbstractWorker
+    class PrettyPrint < Worker
       def visit_component(component)
         print_component(component)
       end

@@ -15,5 +15,9 @@ module GitCompound
       workers.each { |worker| worker.instance.visit_manifest(self) }
       components.each_value { |component| component.process(*workers) }
     end
+
+    def md5sum
+      Digest::MD5.hexdigest(@contents)
+    end
   end
 end

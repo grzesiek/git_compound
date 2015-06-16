@@ -30,5 +30,12 @@ module GitCompound
     def valid?
       [@version, @source, @destination, @name].all?
     end
+
+    def ==(other)
+      tests = [(source.location == other.source.location)]
+      tests << (manifest.md5sum == other.manifest.md5sum) if
+        manifest && other.manifest
+      tests.all?
+    end
   end
 end

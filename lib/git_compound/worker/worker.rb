@@ -2,7 +2,7 @@ module GitCompound
   module Worker
     # Abstract worker
     #
-    class AbstractWorker
+    class Worker
       include Singleton
 
       def visit_component(_component)
