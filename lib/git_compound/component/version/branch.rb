@@ -3,7 +3,7 @@ module GitCompound
     module Version
       # Component version indicated by branch (head of branch)
       #
-      class Branch < AbstractVersion
+      class Branch < VersionStrategy
         def initialize(repository, branch)
           @repository = repository
           @branch = branch

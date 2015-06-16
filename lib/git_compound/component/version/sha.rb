@@ -3,7 +3,7 @@ module GitCompound
     module Version
       # Component version indicated by SHA hash
       #
-      class SHA < AbstractVersion
+      class SHA < VersionStrategy
         def initialize(repository, sha)
           @repository = repository
           @sha = sha

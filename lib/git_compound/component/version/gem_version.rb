@@ -3,7 +3,7 @@ module GitCompound
     module Version
       # Component Gem-like version
       #
-      class GemVersion < AbstractVersion
+      class GemVersion < VersionStrategy
         attr_reader :requirement
 
         def initialize(repository, requirement)

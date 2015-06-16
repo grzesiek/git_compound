@@ -4,7 +4,7 @@ module GitCompound
       # Abstraction for component versions like
       #   gem version, sha and branch
       #
-      class AbstractVersion
+      class VersionStrategy
         def initialize
           raise NotImplementedError
         end

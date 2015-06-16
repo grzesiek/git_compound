@@ -27,10 +27,10 @@ module GitCompound
     # Possible component versions
     #
     module Version
-      autoload :AbstractVersion, 'git_compound/component/version/abstract_version'
       autoload :Branch,          'git_compound/component/version/branch'
-      autoload :SHA,             'git_compound/component/version/sha'
       autoload :GemVersion,      'git_compound/component/version/gem_version'
+      autoload :SHA,             'git_compound/component/version/sha'
+      autoload :VersionStrategy, 'git_compound/component/version/version_strategy'
     end
   end
 
@@ -56,9 +56,9 @@ module GitCompound
   # Workers
   #
   module Worker
-    autoload :Worker,      'git_compound/worker/worker'
-    autoload :PrettyPrint, 'git_compound/worker/pretty_print'
     autoload :CircularDependencyChecker,
              'git_compound/worker/circular_dependency_checker'
+    autoload :PrettyPrint, 'git_compound/worker/pretty_print'
+    autoload :Worker,      'git_compound/worker/worker'
   end
 end

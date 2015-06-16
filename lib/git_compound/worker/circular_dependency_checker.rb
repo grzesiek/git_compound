@@ -1,6 +1,6 @@
 module GitCompound
   module Worker
-    # Worker that prints dependency tree
+    # Worker that checks if unwanted circular dependency exists
     #
     class CircularDependencyChecker < Worker
       def visit_component(component)
