@@ -14,8 +14,8 @@ module GitCompound
         raise CompoundSyntaxError,
               'Version already set (branch, sha ?)' if @component.version
 
-        @component.version          = component_version
-        @component.version_strategy = Component::Version::GemVersion
+        @component.version = component_version
+        @version_strategy  = Component::Version::GemVersion
       end
 
       def sha(component_sha)
@@ -24,7 +24,7 @@ module GitCompound
         raise CompoundSyntaxError, 'Invalid SHA1 format' unless
           component_sha.match(/[0-9a-f]{5,40}/)
 
-        @component.version_strategy = Component::Version::SHA
+        @version_strategy  = Component::Version::SHA
         @component.version = component_sha
       end
 
@@ -32,8 +32,8 @@ module GitCompound
         raise CompoundSyntaxError,
               'Version already set (sha, branch ?)' if @component.version
 
-        @component.version_strategy = Component::Version::Branch
-        @component.version          = component_branch
+        @version_strategy  = Component::Version::Branch
+        @component.version = component_branch
       end
 
       def source(component_source)
@@ -41,7 +41,7 @@ module GitCompound
               'Version/branch/sha needed first' unless @component.version
 
         @component.source =
-          Component::Source.new(component_source, @component)
+          Component::Source.new(component_source, @version_strategy, @component)
       end
 
       def destination(component_path)
