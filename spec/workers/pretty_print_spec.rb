@@ -10,7 +10,7 @@ module GitCompound
     end
 
     it 'should pretty-print dependency tree' do
-      expect { @manifest.process(Worker::PrettyPrint) }
+      expect { @manifest.process(described_class.new) }
         .to output(
           "`component_1` component, gem version: ~>1.1\n" \
           "  `leaf_component_1` component, gem version: 1.0\n"      \

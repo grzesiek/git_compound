@@ -15,7 +15,7 @@ module GitCompound
 
     context 'circular depenendecy does not exist' do
       it 'should not raise error' do
-        expect { @component.process(described_class) }
+        expect { @component.process(described_class.new) }
           .to_not raise_error
       end
     end
@@ -40,7 +40,7 @@ module GitCompound
       end
 
       it 'should raise error when circular depenendecy is found' do
-        expect { @component.process(described_class) }
+        expect { @component.process(described_class.new) }
           .to raise_error CircularDependencyError
       end
     end

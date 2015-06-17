@@ -1,6 +1,5 @@
 require 'digest'
 require 'English'
-require 'singleton'
 require 'git_compound/exceptions'
 
 # Git Compound module

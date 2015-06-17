@@ -3,8 +3,6 @@ module GitCompound
     # Abstract worker
     #
     class Worker
-      include Singleton
-
       def visit_component(_component)
         raise NotImplementedError
       end
