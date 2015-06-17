@@ -46,10 +46,10 @@ module GitCompound
     # Remote file strategy
     #
     class RemoteFile
-      autoload :AbstractStrategy,
-               'git_compound/repository/remote_file/abstract_strategy'
       autoload :GitArchiveStrategy,
                'git_compound/repository/remote_file/git_archive_strategy'
+      autoload :RemoteFileStrategy,
+               'git_compound/repository/remote_file/remote_file_strategy'
     end
   end
 

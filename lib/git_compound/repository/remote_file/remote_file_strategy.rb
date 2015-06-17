@@ -3,7 +3,7 @@ module GitCompound
     class RemoteFile
       # Base interface for strategies
       #
-      class AbstractStrategy
+      class RemoteFileStrategy
         def initialize(source, ref, file)
           @source = source
           @ref    = ref

@@ -3,7 +3,7 @@ module GitCompound
     class RemoteFile
       # Git archive strategy
       #
-      class GitArchiveStrategy < AbstractStrategy
+      class GitArchiveStrategy < RemoteFileStrategy
         def initialize(source, ref, file)
           super
           opts = "--format=tar --remote=#{@source} #{@ref} -- #{@file} | tar -O -xf -"
