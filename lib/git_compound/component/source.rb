@@ -7,7 +7,7 @@ module GitCompound
 
       def initialize(location, component)
         raise CompoundSyntaxError, 'Source cannot be empty' if
-          source.nil? || source.empty?
+          location.nil? || location.empty?
 
         @component  = component
         @location   = location
