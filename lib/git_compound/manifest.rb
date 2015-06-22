@@ -1,3 +1,5 @@
+require 'digest'
+
 module GitCompound
   # Manifest
   #

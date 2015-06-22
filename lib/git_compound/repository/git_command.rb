@@ -1,3 +1,5 @@
+require 'English'
+
 module GitCompound
   module Repository
     # Execute git command

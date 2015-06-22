@@ -1,5 +1,3 @@
-require 'digest'
-require 'English'
 require 'git_compound/exceptions'
 
 # Git Compound module
@@ -57,6 +55,8 @@ module GitCompound
   module Worker
     autoload :CircularDependencyChecker,
              'git_compound/worker/circular_dependency_checker'
+    autoload :ComponentBuilder,
+             'git_compound/worker/component_builder'
     autoload :ConflictingDependencyChecker,
              'git_compound/worker/conflicting_dependency_checker'
     autoload :NameConstraintChecker,
