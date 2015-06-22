@@ -3,24 +3,18 @@ require 'digest'
 module GitCompound
   # Manifest
   #
-  class Manifest
+  class Manifest < Node
     attr_accessor :name, :components, :tasks
-    attr_reader :component
 
-    def initialize(contents, component = nil)
-      @contents  = contents
-      @component = component
+    def initialize(contents, parent = nil)
+      @contents = contents
+      @parent   = parent
       DSL::ManifestDSL.new(self, contents)
     end
 
     def process(*workers)
       workers.each { |worker| worker.visit_manifest(self) }
       components.each_value { |component| component.process(*workers) }
-    end
-
-    def ancestors
-      return [] if @component.nil? || @component.parent.nil?
-      @component.parent.ancestors.dup << @component.parent
     end
 
     def ==(other)

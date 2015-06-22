@@ -5,6 +5,7 @@ require 'git_compound/exceptions'
 module GitCompound
   autoload :Component,  'git_compound/component'
   autoload :Manifest,   'git_compound/manifest'
+  autoload :Node,       'git_compound/node'
   autoload :Repository, 'git_compound/repository'
   autoload :Task,       'git_compound/task'
 

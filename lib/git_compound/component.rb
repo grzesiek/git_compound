@@ -1,8 +1,8 @@
 module GitCompound
   # Component
   #
-  class Component
-    attr_reader :name, :parent
+  class Component < Node
+    attr_reader :name
     attr_accessor :version, :source, :destination
 
     def initialize(name, parent = nil, &block)
@@ -20,11 +20,6 @@ module GitCompound
 
     def manifest
       @manifest ||= @source.manifest
-    end
-
-    def ancestors
-      return [] if @parent.nil? || @parent.component.nil?
-      @parent.component.ancestors.dup << @parent.component
     end
 
     def valid?
