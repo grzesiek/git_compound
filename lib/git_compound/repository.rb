@@ -2,7 +2,9 @@ module GitCompound
   # Git repositories module, also repository factory
   #
   module Repository
-    def self.factory(source)
+    extend self
+
+    def factory(source)
       if local?(source)
         RepositoryLocal.new(source)
       else
@@ -10,7 +12,7 @@ module GitCompound
       end
     end
 
-    def self.local?(source)
+    def local?(source)
       source.match(%r{(^\/|file:\/\/).*})
     end
   end

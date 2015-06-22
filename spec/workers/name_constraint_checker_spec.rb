@@ -34,7 +34,7 @@ module GitCompound
               end
             END
           end
-          git_commit('.gitcompound with invalid name of leaf component 1')
+          git_commit('.gitcompound with invalid name of component 1')
           git_tag('v1.3', 'version 1.3')
         end
       end
