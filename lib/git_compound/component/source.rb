@@ -27,6 +27,15 @@ module GitCompound
       rescue FileNotFoundError
         nil
       end
+
+      # Clones source repository to component destination
+      #
+      def clone
+#        destination = @component.destination
+#        destination_path = destination.absolute_path
+#        @repository.clone(destination_path)
+#        destination_path
+      end
     end
   end
 end

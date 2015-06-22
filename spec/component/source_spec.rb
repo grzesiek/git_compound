@@ -16,7 +16,7 @@ module GitCompound
         @component = Component.new(:test_component) do
           version '~>1.1'
           source component_dir
-          destination 'some destination'
+          destination '/test_component_destination'
         end
       end
 
@@ -49,6 +49,12 @@ module GitCompound
         version_strategy =
           Component::Version::GemVersion.new(repository, '5.10.20.pre.rc1')
         expect(version_strategy.sha).to eq @git_commit_tag_5_10_20
+      end
+
+      pending 'should be properly cloned into destination' do
+        destination = "#{@dir}/#{@component.destination.absolute_path}"
+        @component.source.clone
+        expect(File.exist?("#{destination}/leaf_component_1")).to be true
       end
 
       context 'source repository is unreachable' do

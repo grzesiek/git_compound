@@ -6,21 +6,26 @@ module GitCompound
       attr_reader :path
 
       def initialize(path, component)
-        @path      = path
-        @component = component
         raise CompoundSyntaxError, 'Destination cannot be empty' if
           path.nil? || path.empty?
+
+        @path      = path
+        @component = component
       end
 
-      def absolute
+      def absolute_path
         return format_path(@path) if @path.start_with?('/')
 
         components = @component.ancestors
-        absolute = components.each_with_object('') do |ancestor, path|
-          path << ancestor.destination.absolute
+        absolute_path = components.each_with_object('') do |ancestor, path|
+          path << ancestor.destination.absolute_path
         end << @path
 
-        format_path(absolute)
+        format_path(absolute_path)
+      end
+
+      def exists?
+        File.directory?(absolute_path)
       end
 
       private

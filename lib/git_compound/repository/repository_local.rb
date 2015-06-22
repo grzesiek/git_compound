@@ -6,7 +6,7 @@ module GitCompound
       def initialize(source)
         super
         raise RepositoryUnreachableError unless
-          File.directory?("#{@source}/.git")
+        File.directory?("#{@source}/.git")
       end
 
       def file_exists?(file, ref)

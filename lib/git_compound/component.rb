@@ -13,6 +13,10 @@ module GitCompound
       raise GitCompoundError, "Component `#{@name}` invalid" unless valid?
     end
 
+    def valid?
+      [@version, @source, @destination, @name].all?
+    end
+
     def process(*workers)
       workers.each { |worker| worker.visit_component(self) }
       @manifest.process(*workers) if manifest
@@ -22,14 +26,14 @@ module GitCompound
       @manifest ||= @source.manifest
     end
 
-    def valid?
-      [@version, @source, @destination, @name].all?
+    def build
+      @source.clone
+      @destination.checkout
     end
 
     def ==(other)
       tests = [(source.location == other.source.location)]
-      tests << (manifest.md5sum == other.manifest.md5sum) if
-        manifest && other.manifest
+      tests << (manifest == other.manifest) if manifest && other.manifest
       tests.any?
     end
   end

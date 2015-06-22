@@ -14,7 +14,7 @@ module GitTestEnvBuilder
 
     git(@leaf_component_1_dir) do
       git_init
-      git_add_file('component') { 'leaf_component_1' }
+      git_add_file('leaf_component_1') { 'leaf_component_1_content' }
       git_commit('initial commit')
       git_tag('v1.0', 'version 1.0')
     end

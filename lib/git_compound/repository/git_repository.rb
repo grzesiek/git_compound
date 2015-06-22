@@ -7,6 +7,10 @@ module GitCompound
         @source = source
       end
 
+      def clone(destination)
+        GitCommand.new(:clone, "#{@source} #{destination}").execute
+      end
+
       def versions
         version_tags = tags.select do |tag, _|
           tag.match(/^v?#{Gem::Version::VERSION_PATTERN}$/) &&
