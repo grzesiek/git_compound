@@ -45,7 +45,8 @@ module GitCompound
       end
 
       def destination(component_path)
-        @component.destination = Component::Destination.new(component_path)
+        @component.destination =
+          Component::Destination.new(component_path, @component)
       end
     end
   end
