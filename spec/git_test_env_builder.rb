@@ -75,7 +75,7 @@ module GitTestEnvBuilder
           component :leaf_component_2 do
             version '1.0'
             source  '#{@leaf_component_2_dir}'
-            destination '/leaf_component_2_destination'
+            destination 'leaf_component_2_destination/'
           end
         END
       end
@@ -136,13 +136,13 @@ module GitTestEnvBuilder
           component :component_1 do
             version "~>1.1"
             source '#{@component_1_dir}'
-            destination '#{@dir}/compound/component_1'
+            destination '/component_1'
           end
 
           component :component_2 do
             version "1.1"
             source '#{@component_2_dir}'
-            destination '#{@dir}/compound/component_2'
+            destination '/component_2'
           end
         END
       end
