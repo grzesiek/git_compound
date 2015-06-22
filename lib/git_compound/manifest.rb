@@ -18,6 +18,15 @@ module GitCompound
       components.each_value { |component| component.process(*workers) }
     end
 
+    def ancestors
+      return [] if @component.nil? || @component.parent.nil?
+      @component.parent.ancestors.dup << @component.parent
+    end
+
+    def ==(other)
+      md5sum == other.md5sum
+    end
+
     def md5sum
       Digest::MD5.hexdigest(@contents)
     end

@@ -5,17 +5,13 @@ module GitCompound
     before do
       git_build_test_environment!
 
-      component_dir = @base_component_dir
-      @component = Component.new(:base_component) do
-        branch 'master'
-        source component_dir
-        destination '/some/destinaton'
-      end
+      contents = File.read("#{@base_component_dir}/Compoundfile")
+      @manifest = Manifest.new(contents)
     end
 
     context 'circular depenendecy does not exist' do
       it 'should not raise error' do
-        expect { @component.process(described_class.new) }
+        expect { @manifest.process(described_class.new) }
           .to_not raise_error
       end
     end
@@ -40,7 +36,7 @@ module GitCompound
       end
 
       it 'should raise error when circular depenendecy is found' do
-        expect { @component.process(described_class.new) }
+        expect { @manifest.process(described_class.new) }
           .to raise_error CircularDependencyError
       end
     end

@@ -31,10 +31,9 @@ Create `Compoundfile` or `.gitcompound` manifest:
     destination 'src/vendor/component_3'
   end
   
-  task 'remove .git', :each do |component_dir|
+  task 'add components to gitignore', :each do |component_dir|
     script do
-      FileUtils.rm_rf("#{component_dir}/.git")
-    end
+      open('.gitignore', 'a') { |f| f << "#{component_dir}\n" }
   end
 ```
 

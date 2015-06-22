@@ -2,7 +2,7 @@ module GitCompound
   # Component
   #
   class Component
-    attr_reader :name
+    attr_reader :name, :parent
     attr_accessor :version, :source, :destination
 
     def initialize(name, parent = nil, &block)

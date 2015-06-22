@@ -5,12 +5,8 @@ module GitCompound
     before do
       git_build_test_environment!
 
-      component_dir = @base_component_dir
-      @component = Component.new(:base_component) do
-        branch 'master'
-        source component_dir
-        destination '/some/destinaton'
-      end
+      contents = File.read("#{@base_component_dir}/Compoundfile")
+      @manifest = Manifest.new(contents)
     end
   end
 end
