@@ -18,7 +18,10 @@ module GitCompound
         end
 
         def reachable?
-          raise NotImplementedError # TODO
+          # We assume that SHA is always available as we do not want
+          # to clone repository and check it -- this probably needs
+          # to be changed, so -- TODO
+          true
         end
 
         def to_s

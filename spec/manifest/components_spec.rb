@@ -56,7 +56,7 @@ module GitCompound
       it 'should raise error if there is no maching ref' do
         component_dir = @component_1_dir
         component = Component.new(:test) do
-          sha 'a2b0fec89736deba6cc647bcc2b238812c3725ad'
+          branch 'non-existent'
           source component_dir
           destination 'any'
         end
