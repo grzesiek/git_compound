@@ -25,27 +25,27 @@ module GitCompound
       @manifest = Manifest.new(@manifest_contents)
     end
 
-    it 'should not raise error if content is manifest' do
+    it 'should not raise error if content is valid manifest' do
       expect do
         Manifest.new(@manifest_contents)
       end.to_not raise_error
     end
 
-    it 'should raise exception if syntax is inmanifest' do
+    it 'should raise exception for incorrect manifest' do
       expect do
         Manifest.new('non_existent_method')
       end.to raise_error NameError
     end
 
-    it 'should delegate name method' do
+    it 'should set manifest name' do
       expect(@manifest.name).to eq :test_project
     end
 
-    it 'should delegate components method' do
+    it 'should set manifest components' do
       expect(@manifest.components).to include(:test_component)
     end
 
-    it 'should delegate tasks method' do
+    it 'should set manifest tasks' do
       expect(@manifest.tasks).to include(:first_task_name)
     end
   end
