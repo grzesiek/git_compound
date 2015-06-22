@@ -131,12 +131,14 @@ module GitTestEnvBuilder
       git_init
       git_add_file('Compoundfile') do
         <<-END
-          name :test_component
+          name :base_component
+
           component :component_1 do
             version "~>1.1"
             source '#{@component_1_dir}'
             destination '#{@dir}/compound/component_1'
           end
+
           component :component_2 do
             version "1.1"
             source '#{@component_2_dir}'

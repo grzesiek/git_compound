@@ -59,6 +59,8 @@ module GitCompound
              'git_compound/worker/circular_dependency_checker'
     autoload :ConflictingDependencyChecker,
              'git_compound/worker/conflicting_dependency_checker'
+    autoload :NameConstraintChecker,
+             'git_compound/worker/name_constraint_checker'
     autoload :PrettyPrint, 'git_compound/worker/pretty_print'
     autoload :Worker,      'git_compound/worker/worker'
   end
