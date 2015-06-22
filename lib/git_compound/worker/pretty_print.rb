@@ -7,9 +7,6 @@ module GitCompound
         print_component(component)
       end
 
-      def visit_manifest(_manifest)
-      end
-
       private
 
       def print_component(component)

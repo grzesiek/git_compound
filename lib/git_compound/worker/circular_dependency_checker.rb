@@ -9,9 +9,6 @@ module GitCompound
               "Circular dependency detected in component `#{component.name}`!"
       end
 
-      def visit_manifest(_manifest)
-      end
-
       private
 
       def circular_dependency_exists?(component)

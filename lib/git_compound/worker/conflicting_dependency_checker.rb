@@ -15,9 +15,6 @@ module GitCompound
         @components << component
       end
 
-      def visit_manifest(_manifest)
-      end
-
       private
 
       def conflict_exists?(component)
