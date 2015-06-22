@@ -35,7 +35,7 @@ module GitCompound
       tests = [(source.location == other.source.location)]
       tests << (manifest.md5sum == other.manifest.md5sum) if
         manifest && other.manifest
-      tests.all?
+      tests.any?
     end
   end
 end
