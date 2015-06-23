@@ -14,23 +14,22 @@ module GitCompound
       @leaf_component_2 = @component_1.manifest.components[:leaf_component_2]
       @leaf_component_3 = @component_2.manifest.components[:leaf_component_3]
 
+      @components = [ @component_1, @component_2, @leaf_component_1,
+                      @leaf_component_2, @leaf_component_3 ]
+
       @manifest.process(described_class.new)
     end
 
     it 'should build all required components' do
-      expect(@component_1.destination_exists?).to be true
-      expect(@component_2.destination_exists?).to be true
-      expect(@leaf_component_1.destination_exists?).to be true
-      expect(@leaf_component_2.destination_exists?).to be true
-      expect(@leaf_component_3.destination_exists?).to be true
+      expect(@components.all? { |c| c.destination_exists? == true })
+        .to be true
     end
 
-    pending 'should checkout valid refs' do
-      fail
-    end
-
-    pending 'should clone components to valid destinations' do
-      fail
+    it 'should checkout valid refs' do
+      result = @components.all? do |c|
+        git(c.destination_path) { git_current_ref_matches?(c.source.ref) }
+      end
+      expect(result).to be true
     end
   end
 end
