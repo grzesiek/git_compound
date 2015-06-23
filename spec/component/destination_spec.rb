@@ -11,6 +11,7 @@ module GitCompound
         source component_dir
         destination '/'
       end
+
       @component_1 = @component.manifest.components[:component_1]
       @component_2 = @component.manifest.components[:component_2]
       @leaf_component_1 = @component_1.manifest.components[:leaf_component_1]

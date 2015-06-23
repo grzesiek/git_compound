@@ -25,7 +25,7 @@ module GitCompound
         end
 
         def to_s
-          "sha: #{@sha[0..8]}"
+          "sha: #{@sha[0..7]}"
         end
       end
     end

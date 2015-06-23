@@ -25,7 +25,7 @@ module GitCompound
       end
 
       def exists?
-        File.directory?(absolute_path)
+        File.directory?(expanded_path)
       end
 
       def repository

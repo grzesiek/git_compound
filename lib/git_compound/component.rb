@@ -5,6 +5,7 @@ module GitCompound
     extend Forwardable
     def_delegator :@source, :origin
     def_delegator :@destination, :expanded_path, :destination_path
+    def_delegator :@destination, :exists?, :destination_exists?
 
     attr_reader :name
     attr_accessor :version, :source, :destination

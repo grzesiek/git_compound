@@ -4,7 +4,15 @@ module GitCompound
     #
     class ComponentBuilder < Worker
       def visit_component(component)
-        # if component.destination.exists? component.build
+        raise GitCompoundError,
+              "Destination directory  `#{component.destination_path}` " \
+              'already exists !' if component.destination_exists?
+
+        component.build
+
+        raise GitCompoundError,
+              "Destination  `#{component.destination_path}` " \
+              'verification failed !' unless component.destination_exists?
       end
     end
   end
