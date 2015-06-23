@@ -11,12 +11,15 @@ module GitCompound
     end
 
     pending 'should use all required components' do
+      fail
     end
 
     pending 'should checkout valid refs' do
+      fail
     end
 
     pending 'should clone components to valid destinations' do
+      fail
     end
   end
 end
