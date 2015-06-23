@@ -20,8 +20,8 @@ module GitCompound
       end
 
       it 'should set valid sources for required components' do
-        component_1_source = @manifest.components[:component_1].source.location
-        component_2_source = @manifest.components[:component_2].source.location
+        component_1_source = @manifest.components[:component_1].source.origin
+        component_2_source = @manifest.components[:component_2].source.origin
         expect(component_1_source).to eq @component_1_dir
         expect(component_2_source).to eq @component_2_dir
       end

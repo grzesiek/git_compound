@@ -2,8 +2,10 @@ module GitCompound
   # Component
   #
   class Component < Node
+    extend Forwardable
     attr_reader :name
     attr_accessor :version, :source, :destination
+    delegate origin: :@source
 
     def initialize(name, parent = nil, &block)
       @name   = name
@@ -26,11 +28,6 @@ module GitCompound
       @manifest ||= @source.manifest
     end
 
-    def build
-      @source.clone
-      @destination.checkout
-    end
-
     def conflicts?(*components)
       components.any? do |other_component|
         match_destination =
@@ -43,7 +40,7 @@ module GitCompound
     end
 
     def ==(other)
-      tests = [(source.location == other.source.location)]
+      tests = [(origin == other.origin)]
       tests << (manifest == other.manifest) if manifest && other.manifest
       tests.any?
     end
