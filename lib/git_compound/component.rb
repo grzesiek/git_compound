@@ -31,6 +31,17 @@ module GitCompound
       @destination.checkout
     end
 
+    def conflicts?(*components)
+      components.any? do |other_component|
+        match_destination =
+          (destination.absolute_path == other_component.destination.absolute_path)
+        match_identity_and_version =
+          (self == other_component && version == other_component.version)
+
+        match_destination && !match_identity_and_version
+      end
+    end
+
     def ==(other)
       tests = [(source.location == other.source.location)]
       tests << (manifest == other.manifest) if manifest && other.manifest
