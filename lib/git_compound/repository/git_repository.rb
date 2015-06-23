@@ -12,11 +12,8 @@ module GitCompound
       end
 
       def versions
-        version_tags = tags.select do |tag, _|
-          tag.match(/^v?#{Gem::Version::VERSION_PATTERN}$/) &&
-          !tag.match(/.*\^\{\}$/) # annotated tag objects
-        end
-        Hash[version_tags.map { |k, v| [k.sub(/^v/, ''), v] }]
+        git_versions = tags.map { |tag, sha| GitVersion.new(tag, sha) }
+        git_versions.select { |version| version.valid? }
       end
 
       def refs
@@ -27,11 +24,11 @@ module GitCompound
       end
 
       def branches
-        select_refs('heads')
+        refs_select('heads')
       end
 
       def tags
-        select_refs('tags')
+        refs_select('tags')
       end
 
       def ref_exists?(ref)
@@ -65,7 +62,7 @@ module GitCompound
 
       private
 
-      def select_refs(name)
+      def refs_select(name)
         selected_refs = refs.select { |ref| ref[1] == name }
         selected_refs.collect! { |r| [r.last, r.first] }
         Hash[selected_refs]

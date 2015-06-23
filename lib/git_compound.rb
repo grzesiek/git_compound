@@ -37,6 +37,7 @@ module GitCompound
   module Repository
     autoload :GitCommand,       'git_compound/repository/git_command'
     autoload :GitRepository,    'git_compound/repository/git_repository'
+    autoload :GitVersion,       'git_compound/repository/git_version'
     autoload :RemoteFile,       'git_compound/repository/remote_file'
     autoload :RepositoryLocal,  'git_compound/repository/repository_local'
     autoload :RepositoryRemote, 'git_compound/repository/repository_remote'

@@ -7,34 +7,35 @@ module GitCompound
         attr_reader :requirement
 
         def initialize(repository, requirement)
+          raise CompoundSyntaxError, 'Malformed version requirement string' unless
+            requirement =~ Gem::Requirement::PATTERN
+
           @repository  = repository
           @requirement = requirement
-          raise CompoundSyntaxError, 'Malformed version requirement string' unless
-            @requirement =~ Gem::Requirement::PATTERN
         end
 
-        # Lastest matching version
-        #
-        def ref
+        def lastest_version
           matches.first
         end
 
+        def ref
+          lastest_version.tag
+        end
+
         def sha
-          @repository.versions[ref]
+          lastest_version.sha
         end
 
         def matches
-          gem_versions = @repository.versions.map { |k, _| Gem::Version.new(k) }
-          matching_versions = gem_versions.sort.reverse.select do |gem_version|
+          versions = @repository.versions
+          matching_versions = versions.sort.reverse.select do |version|
             dependency = Gem::Dependency.new('component', @requirement)
-            dependency.match?('component', gem_version, false)
+            dependency.match?('component', version.to_gem_version, false)
           end
-
-          matching_versions.map(&:to_s)
         end
 
         def reachable?
-          @repository.versions[ref] ? true : false
+          matches.any?
         end
 
         def to_s

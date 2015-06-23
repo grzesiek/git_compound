@@ -24,7 +24,7 @@ module GitCompound
 
     it 'should checkout valid ref' do
       expect(File.read(@destination + 'Compoundfile'))
-        .to eq "          name :component_2_test\n"
+        .to eq "name :component_2_test\n"
     end
   end
 end
