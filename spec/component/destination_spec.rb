@@ -18,11 +18,11 @@ module GitCompound
     end
 
     it 'should have valid absolute destinations' do
-      expect(@component_1.destination.expanded_path).to eq 'component_1/'
-      expect(@component_2.destination.expanded_path).to eq 'component_2/'
-      expect(@leaf_component_1.destination.expanded_path)
+      expect(@component_1.destination_path).to eq 'component_1/'
+      expect(@component_2.destination_path).to eq 'component_2/'
+      expect(@leaf_component_1.destination_path)
         .to eq 'leaf_component_1_destination/'
-      expect(@leaf_component_2.destination.expanded_path)
+      expect(@leaf_component_2.destination_path)
         .to eq 'component_1/leaf_component_2_destination/'
     end
   end

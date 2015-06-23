@@ -3,9 +3,11 @@ module GitCompound
   #
   class Component < Node
     extend Forwardable
+    def_delegator :@source, :origin
+    def_delegator :@destination, :expanded_path, :destination_path
+
     attr_reader :name
     attr_accessor :version, :source, :destination
-    delegate origin: :@source
 
     def initialize(name, parent = nil, &block)
       @name   = name
@@ -28,10 +30,16 @@ module GitCompound
       @manifest ||= @source.manifest
     end
 
+    def build
+      destination = @destination.expanded_path
+      @source.clone(destination)
+      @destination.repository { |repo| repo.checkout(@source.ref)}
+    end
+
     def conflicts?(*components)
       components.any? do |other_component|
         match_destination =
-          (destination.expanded_path == other_component.destination.expanded_path)
+          (destination.expanded_path == other_component.destination_path)
         match_identity_and_version =
           (self == other_component && version == other_component.version)
 

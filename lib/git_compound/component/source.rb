@@ -4,8 +4,10 @@ module GitCompound
     #
     class Source
       extend Forwardable
-      attr_reader :origin, :repository, :version
       delegate clone: :@repository
+      delegate ref: :@version
+
+      attr_reader :origin, :repository, :version
 
       def initialize(origin, strategy, component)
         raise CompoundSyntaxError, 'Source cannot be empty' if

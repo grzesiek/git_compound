@@ -93,7 +93,7 @@ module GitTestEnvBuilder
     git(@component_2_dir) do
       git_init
       git_add_file('Compoundfile') do
-        'name :component_2'
+        'name :component_2_test'
       end
       git_commit('compoundfile commit')
       git_tag('v0.1', 'version 0.1')

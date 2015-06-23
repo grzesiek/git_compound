@@ -51,9 +51,9 @@ module GitCompound
         expect(version_strategy.sha).to eq @git_commit_tag_5_10_20
       end
 
-      pending 'should be properly cloned into destination' do
-        destination = "#{@dir}/#{@component.destination.absolute_path}"
-        @component.source.clone
+      it 'should be properly cloned into destination' do
+        destination = "#{@dir}/#{@component.destination.expanded_path}"
+        @component.source.clone(destination)
         expect(File.exist?("#{destination}/leaf_component_1")).to be true
       end
 

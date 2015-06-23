@@ -28,6 +28,11 @@ module GitCompound
         File.directory?(absolute_path)
       end
 
+      def repository
+        repo = Repository::RepositoryLocal.new(expanded_path)
+        yield repo if block_given?
+      end
+
       private
 
       def format_path(path)
