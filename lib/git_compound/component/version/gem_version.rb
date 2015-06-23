@@ -28,7 +28,8 @@ module GitCompound
 
         def matches
           versions = @repository.versions
-          versions.sort.reverse.select { |version| version.matches?(@requirement) }
+          versions.select! { |version| version.matches?(@requirement) }
+          versions.sort.reverse
         end
 
         def reachable?
