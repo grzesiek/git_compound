@@ -13,15 +13,15 @@ module GitCompound
         @component = component
       end
 
-      def absolute_path
+      def expanded_path
         return format_path(@path) if @path.start_with?('/')
 
         components = @component.ancestors
-        absolute_path = components.each_with_object('') do |ancestor, path|
-          path << ancestor.destination.absolute_path
+        expanded_path = components.each_with_object('') do |ancestor, path|
+          path << ancestor.destination.expanded_path
         end << @path
 
-        format_path(absolute_path)
+        format_path(expanded_path)
       end
 
       def exists?

@@ -34,7 +34,7 @@ module GitCompound
     def conflicts?(*components)
       components.any? do |other_component|
         match_destination =
-          (destination.absolute_path == other_component.destination.absolute_path)
+          (destination.expanded_path == other_component.destination.expanded_path)
         match_identity_and_version =
           (self == other_component && version == other_component.version)
 
