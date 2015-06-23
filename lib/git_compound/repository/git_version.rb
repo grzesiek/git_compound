@@ -20,8 +20,13 @@ module GitCompound
           !@tag.match(/.*\^\{\}$/) # annotated tag objects
       end
 
+      def matches?(requirement)
+        dependency = Gem::Dependency.new('component', requirement)
+        dependency.match?('component', to_gem_version, true)
+      end
+
       def <=>(other)
-        self.to_gem_version <=> other.to_gem_version
+        to_gem_version <=> other.to_gem_version
       end
 
       def ==(other)

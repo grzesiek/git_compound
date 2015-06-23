@@ -33,7 +33,7 @@ module GitCompound
     def build
       destination = @destination.expanded_path
       @source.clone(destination)
-      @destination.repository { |repo| repo.checkout(@source.ref)}
+      @destination.repository { |repo| repo.checkout(@source.ref) }
     end
 
     def conflicts?(*components)

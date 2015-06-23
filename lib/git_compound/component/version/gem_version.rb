@@ -28,10 +28,7 @@ module GitCompound
 
         def matches
           versions = @repository.versions
-          matching_versions = versions.sort.reverse.select do |version|
-            dependency = Gem::Dependency.new('component', @requirement)
-            dependency.match?('component', version.to_gem_version, false)
-          end
+          versions.sort.reverse.select { |version| version.matches?(@requirement) }
         end
 
         def reachable?

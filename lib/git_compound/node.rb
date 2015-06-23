@@ -4,7 +4,7 @@ module GitCompound
   class Node
     attr_reader :parent
 
-    def process(*workers)
+    def process(*_workers)
       raise NotImplementedError
     end
 

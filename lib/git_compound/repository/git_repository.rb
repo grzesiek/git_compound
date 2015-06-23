@@ -13,7 +13,7 @@ module GitCompound
 
       def versions
         git_versions = tags.map { |tag, sha| GitVersion.new(tag, sha) }
-        git_versions.select { |version| version.valid? }
+        git_versions.select(&:valid?)
       end
 
       def refs
