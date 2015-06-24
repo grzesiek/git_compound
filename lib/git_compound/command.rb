@@ -12,11 +12,27 @@ module GitCompound
       raise NotImplementedError
     end
 
+    def check(*args)
+      manifest(args.first).process(
+        Worker::CircularDependencyChecker.new,
+        Worker::NameConstraintChecker.new,
+        Worker::ConflictingDependencyChecker.new)
+    end
+
     def show(*args)
+      manifest(args.first).process(
+        Worker::CircularDependencyChecker.new,
+        Worker::PrettPrint.new)
+    end
+
+    def help(*args)
+      print_usage
     end
 
     def run(command, args)
       public_send(command, *args)
+    rescue NoMethodError
+      print_usage
     end
 
     private
@@ -30,6 +46,12 @@ module GitCompound
 
       contents = File.read(files.first)
       Manifest.new(contents)
+    end
+
+    def print_usage
+      puts <<-END
+      Usage: ...
+      END
     end
   end
 end

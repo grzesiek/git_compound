@@ -7,7 +7,6 @@ module GitCompound
     before do
       git_build_test_environment!
       @components = git_test_env_components
-      @build_dir  = @dir
       @manifest.process(described_class.new)
     end
 
