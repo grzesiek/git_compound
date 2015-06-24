@@ -3,6 +3,7 @@ require 'git_compound/exceptions'
 # Git Compound module
 #
 module GitCompound
+  autoload :Command,    'git_compound/command'
   autoload :Component,  'git_compound/component'
   autoload :Manifest,   'git_compound/manifest'
   autoload :Node,       'git_compound/node'
@@ -66,4 +67,6 @@ module GitCompound
     autoload :PrettyPrint, 'git_compound/worker/pretty_print'
     autoload :Worker,      'git_compound/worker/worker'
   end
+
+  extend Command
 end

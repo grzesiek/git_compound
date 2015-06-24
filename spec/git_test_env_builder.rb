@@ -8,6 +8,20 @@ module GitTestEnvBuilder
     git_create_base_component
   end
 
+  def git_test_env_components
+    base_manifest_contents = File.read("#{@base_component_dir}/Compoundfile")
+    @manifest = GitCompound::Manifest.new(base_manifest_contents)
+
+    @component_1 = @manifest.components[:component_1]
+    @component_2 = @manifest.components[:component_2]
+    @leaf_component_1 = @component_1.manifest.components[:leaf_component_1]
+    @leaf_component_2 = @component_1.manifest.components[:leaf_component_2]
+    @leaf_component_3 = @component_2.manifest.components[:leaf_component_3]
+
+    [ @component_1, @component_2, @leaf_component_1,
+      @leaf_component_2, @leaf_component_3 ]
+  end
+
   def git_create_leaf_component_1
     @leaf_component_1_dir = "#{@dir}/leaf_component_1.git"
     Dir.mkdir(@leaf_component_1_dir)
