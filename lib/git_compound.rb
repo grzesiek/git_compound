@@ -33,6 +33,14 @@ module GitCompound
     end
   end
 
+  # Task module
+  #
+  module Task
+    autoload :TaskMulti,  'git_compound/task/task_multi'
+    autoload :TaskSingle, 'git_compound/task/task_single'
+    autoload :Task,       'git_compound/task/task'
+  end
+
   # Repository
   #
   module Repository

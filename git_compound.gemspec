@@ -27,6 +27,6 @@ Gem::Specification.new do |spec|
 
   spec.requirements << 'git scm version > 2'
   spec.requirements << 'gnu tar'
-  
+
   spec.required_ruby_version = '>= 2.2'
 end

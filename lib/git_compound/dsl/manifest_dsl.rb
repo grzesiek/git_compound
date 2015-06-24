@@ -21,8 +21,9 @@ module GitCompound
         @manifest.components.store(name.to_sym, Component.new(name, @manifest, &block))
       end
 
-      def task(name, &block)
-        @manifest.tasks.store(name.to_sym, Task.new(name, @manifest, &block))
+      def task(name, type = nil, &block)
+        new_task = Task.factory(name, type, @manifest, &block)
+        @manifest.tasks.store(name.to_sym, new_task) if new_task
       end
     end
   end

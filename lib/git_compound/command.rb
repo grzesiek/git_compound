@@ -1,4 +1,6 @@
 module GitCompound
+  # GitCompount command facade
+  #
   module Command
     def build(*args)
       manifest(args.first).process(
@@ -8,7 +10,7 @@ module GitCompound
         Worker::ComponentBuilder.new)
     end
 
-    def update(*args)
+    def update(*_args)
       raise NotImplementedError
     end
 
@@ -25,7 +27,7 @@ module GitCompound
         Worker::PrettPrint.new)
     end
 
-    def help(*args)
+    def help(*_args)
       print_usage
     end
 
@@ -38,7 +40,7 @@ module GitCompound
     private
 
     def manifest(filename)
-      files = filename ? [ filename ] : [ 'Compoundfile', '.gitcompound' ]
+      files = filename ? [filename] : ['Compoundfile', '.gitcompound']
       files.select! { |file| File.exist?(file) }
 
       raise GitCompoundError,

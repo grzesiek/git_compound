@@ -11,15 +11,13 @@ module GitCompound
           destination 'application/modules/core_module1'
         end
 
-        task :first_task_name do
+        task :first_task_name do |dir, component|
+          puts dir
         end
 
-        # task :each_task, :each do |t|
-        #   exclude :a
-        #   script do
-        #     puts '123'
-        #   end
-        # end
+        task :foreach_task, :each do |dir, component|
+          puts component
+        end
       END
 
       @manifest = Manifest.new(@manifest_contents)
@@ -47,6 +45,7 @@ module GitCompound
 
     it 'should set manifest tasks' do
       expect(@manifest.tasks).to include(:first_task_name)
+      expect(@manifest.tasks).to include(:foreach_task)
     end
   end
 end

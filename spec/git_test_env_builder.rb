@@ -18,8 +18,8 @@ module GitTestEnvBuilder
     @leaf_component_2 = @component_1.manifest.components[:leaf_component_2]
     @leaf_component_3 = @component_2.manifest.components[:leaf_component_3]
 
-    [ @component_1, @component_2, @leaf_component_1,
-      @leaf_component_2, @leaf_component_3 ]
+    [@component_1, @component_2, @leaf_component_1,
+     @leaf_component_2, @leaf_component_3]
   end
 
   def git_create_leaf_component_1
