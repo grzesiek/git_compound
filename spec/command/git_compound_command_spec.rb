@@ -1,5 +1,3 @@
-require 'shared_examples/component_builder'
-
 describe GitCompound do
   describe '#build' do
     before do
@@ -8,6 +6,8 @@ describe GitCompound do
       GitCompound.build("#{@base_component_dir}/Compoundfile")
     end
 
-    it_behaves_like 'component builder'
+    pending 'todo' do
+      fail
+    end
   end
 end
