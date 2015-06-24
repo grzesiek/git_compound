@@ -35,6 +35,8 @@ module GitCompound
           version == other
         when GitVersion
           version == other.version
+        else
+          false
         end
       end
     end
