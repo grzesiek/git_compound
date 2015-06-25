@@ -55,9 +55,9 @@ module GitCompound
       puts <<-END
       Usage:
           gitcompound build [ manifest ]
-            -- builds project from given manifest
+            -- builds project from manifest
 
-               If manifest is not specified uses `Compoundfile`
+               If manifest is not specified it uses `Compoundfile`
                or `.gitcompound`
 
           gitcompound update [ manifest ]
@@ -68,10 +68,10 @@ module GitCompound
                and checks for name contraints
 
           gitcompound show [ manifest ]
-            -- shows structure of project (pretty print)
+            -- prints structure of project
 
           gitcompound help
-            -- print this help
+            -- prints this help
       END
     end
   end
