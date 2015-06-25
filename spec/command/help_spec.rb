@@ -1,7 +1,5 @@
 describe GitCompound do
   describe '#help' do
-    before { git_build_test_environment! }
-
     subject do
       -> { GitCompound.help }
     end
