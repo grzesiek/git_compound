@@ -42,12 +42,12 @@ module GitCompound
 
     def manifest(filename)
       files = filename ? [filename] : ['Compoundfile', '.gitcompound']
-      files.select! { |file| File.exist?(file) }
+      found = files.select { |file| File.exist?(file) }
 
       raise GitCompoundError,
-            "None of `#{files.inspect}` manifests found !" if files.empty?
+            "Manifest `#{filename || files.inspect}` not found !" if found.empty?
 
-      contents = File.read(files.first)
+      contents = File.read(found.first)
       Manifest.new(contents)
     end
 
