@@ -15,7 +15,7 @@ module GitCompound
     def process(*workers)
       workers.each { |worker| worker.visit_manifest(self) }
       components.each_value { |component| component.process(*workers) }
-      workers.each { |worker| tasks.each { |task| worker.visit_manifest(task) } }
+      tasks.each_value { |task| workers.each { |worker| worker.visit_task(task) } }
     end
 
     def ==(other)

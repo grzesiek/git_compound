@@ -73,6 +73,7 @@ module GitCompound
     autoload :NameConstraintChecker,
              'git_compound/worker/name_constraint_checker'
     autoload :PrettyPrint, 'git_compound/worker/pretty_print'
+    autoload :TaskRunner,  'git_compound/worker/task_runner'
     autoload :Worker,      'git_compound/worker/worker'
   end
 

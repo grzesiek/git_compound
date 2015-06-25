@@ -3,8 +3,15 @@ module GitCompound
     # Task for each component
     #
     class TaskMulti < Task
+      def initialize(name, subject, &block)
+        super
+        @components = subject
+      end
+
       def execute
-        @subject.each { |component| execute_on(component) }
+        @components.each_value do |component|
+          execute_on(component.destination_path, component)
+        end
       end
     end
   end

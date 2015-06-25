@@ -158,6 +158,14 @@ module GitTestEnvBuilder
             source '#{@component_2_dir}'
             destination '/component_2'
           end
+
+          task :first_task do
+            puts 'first task running'
+          end
+
+          task :second_task, :each do |dir, component|
+            puts "second task for " + component.name.to_s
+          end
         END
       end
       git_commit('compoundfile commit')
