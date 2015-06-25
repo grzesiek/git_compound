@@ -1,13 +1,15 @@
+require 'workers/shared_examples/component_builder'
+require 'workers/shared_examples/task_runner'
+
 describe GitCompound do
   describe '#build' do
-    before do
-      git_build_test_environment!
-      @components = git_test_env_components
-      GitCompound.build("#{@base_component_dir}/Compoundfile")
+    before { git_build_test_environment! }
+
+    subject do
+      -> { GitCompound.build("#{@base_component_dir}/Compoundfile") }
     end
 
-    pending 'todo' do
-      fail
-    end
+    it_behaves_like 'component builder worker'
+    it_behaves_like 'task runner worker'
   end
 end

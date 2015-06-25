@@ -7,7 +7,8 @@ module GitCompound
         Worker::CircularDependencyChecker.new,
         Worker::NameConstraintChecker.new,
         Worker::ConflictingDependencyChecker.new,
-        Worker::ComponentBuilder.new)
+        Worker::ComponentBuilder.new,
+        Worker::TaskRunner.new)
     end
 
     def update(*_args)

@@ -1,23 +1,17 @@
+require 'workers/shared_examples/component_builder'
+
 # GitCompound
 #
 module GitCompound
   describe Worker::ComponentBuilder do
-    before do
-      git_build_test_environment!
-      @components = git_test_env_components
-      @manifest.process(described_class.new)
+    before { git_build_test_environment! }
+
+    subject do
+      manifest_contents = File.read("#{@base_component_dir}/Compoundfile")
+      manifest = Manifest.new(manifest_contents)
+      -> { manifest.process(described_class.new) }
     end
 
-    it 'should build all required components' do
-      expect(@components.all? { |c| c.destination_exists? == true })
-        .to be true
-    end
-
-    it 'should checkout valid refs' do
-      result = @components.all? do |c|
-        git(c.destination_path) { git_current_ref_matches?(c.source.ref) }
-      end
-      expect(result).to be true
-    end
+    it_behaves_like 'component builder worker'
   end
 end

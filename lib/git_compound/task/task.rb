@@ -10,6 +10,7 @@ module GitCompound
               "Block not given for task `#{name}`" unless block
 
         @name      = name
+        @subject   = subject
         @block     = block
       end
 
