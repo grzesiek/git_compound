@@ -91,6 +91,10 @@ module GitTestEnvBuilder
             source  '#{@leaf_component_2_dir}'
             destination 'leaf_component_2_destination/'
           end
+
+          task :component_1_tasks, :each do |_, component|
+            puts "component_1_tasks for " + component.name.to_s
+          end
         END
       end
       git_commit('v1.2 commit')
@@ -119,6 +123,10 @@ module GitTestEnvBuilder
             version '~>1.0'
             source  '#{@leaf_component_3_dir}'
             destination '/leaf_component_3_destination'
+          end
+
+          task :component_2_task do
+            puts 'component_2_task'
           end
         END
       end
@@ -159,12 +167,12 @@ module GitTestEnvBuilder
             destination '/component_2'
           end
 
-          task :first_task do
-            puts 'first task running'
+          task :base_component_second_tasks, :each do |dir, component|
+            puts "base_component_second_tasks for " + component.name.to_s
           end
 
-          task :second_task, :each do |dir, component|
-            puts "second task for " + component.name.to_s
+          task :base_component_first_task do
+            puts 'base_component_first_task'
           end
         END
       end
