@@ -1,3 +1,5 @@
+require 'forwardable'
+
 module GitCompound
   class Component
     # Component source
