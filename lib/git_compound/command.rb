@@ -25,7 +25,7 @@ module GitCompound
     def show(*args)
       manifest(args.first).process(
         Worker::CircularDependencyChecker.new,
-        Worker::PrettPrint.new)
+        Worker::PrettyPrint.new)
     end
 
     def help(*_args)
