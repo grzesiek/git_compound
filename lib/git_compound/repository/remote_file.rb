@@ -24,9 +24,8 @@ module GitCompound
       end
 
       def strategies_available
-        [GitArchiveStrategy]
-        # GitArchiveStrategy,
-        # GitHubStrategy]
+        [GitArchiveStrategy,
+         GithubStrategy]
       end
     end
   end
