@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'git_compound'
-  spec.version       = '0.0.1'
+  spec.version       = '0.0.2'
   spec.authors       = ['Grzegorz Bizon']
   spec.email         = ['grzegorz.bizon@ntsn.pl']
   spec.summary       = 'Compose you project using git repositories and ruby tasks'
