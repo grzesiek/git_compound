@@ -39,6 +39,27 @@ Create `Compoundfile` or `.gitcompound` manifest:
 
 GitCompound will also process similar manifests found in required components in hierarchical way.
 
+## Commands
+
+    gitcompound build [ manifest ]
+      -- builds project from manifest
+
+      If manifest is not specified it uses `Compoundfile`
+      or `.gitcompound` if present
+
+    gitcompound update [ manifest ]
+      -- updates current project
+
+    gitcompound check [ manifest ]
+      -- detects circular depenencies, conflicting dependencies
+      and checks for name constraints
+
+    gitcompound show [ manifest ]
+      -- prints structure of project
+
+    gitcompound help
+      -- prints help
+
 ## License
 
 This is free software licensed under MIT license
