@@ -12,8 +12,7 @@ module GitCompound
 
         def initialize(source, ref, file)
           super
-          @uri      = github_uri
-          @response = http_response(@uri)
+          @uri = github_uri
         end
 
         def contents
@@ -27,6 +26,7 @@ module GitCompound
         end
 
         def exists?
+          @response ||= http_response(@uri)
           @response.code == 200.to_s
         end
 
