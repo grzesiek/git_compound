@@ -6,10 +6,10 @@ module GitCompound
       git_create_component_2
       @repository = Repository::RepositoryLocal.new(@component_2_dir)
     end
-    
+
     context 'repository contains valid sha' do
       before do
-        @version = 
+        @version =
           Component::Version::SHA.new(@repository, @component_2_commit_tag_v1_2_sha)
       end
 
@@ -24,5 +24,5 @@ module GitCompound
 
     context 'repository does not contain valid sha' do
     end
-  end 
+  end
 end
