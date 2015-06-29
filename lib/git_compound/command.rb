@@ -53,25 +53,25 @@ module GitCompound
 
     def print_usage
       puts <<-END
-      Usage:
-          gitcompound build [ manifest ]
-            -- builds project from manifest
+Usage:
+    gitcompound build [ manifest ]
+      -- builds project from manifest
 
-               If manifest is not specified it uses `Compoundfile`
-               or `.gitcompound`
+         If manifest is not specified it uses `Compoundfile`
+         or `.gitcompound`
 
-          gitcompound update [ manifest ]
-            -- updates current project
+    gitcompound update [ manifest ]
+      -- updates project
 
-          gitcompound check [ manifest ]
-            -- detects circular depenencies, conflicting dependencies
-               and checks for name contraints
+    gitcompound check [ manifest ]
+      -- detects circular depenencies, conflicting dependencies
+         and checks for name contraints
 
-          gitcompound show [ manifest ]
-            -- prints structure of project
+    gitcompound show [ manifest ]
+      -- prints structure of project
 
-          gitcompound help
-            -- prints this help
+    gitcompound help
+      -- prints this help
       END
     end
   end
