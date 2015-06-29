@@ -29,6 +29,7 @@ module GitCompound
       autoload :Branch,          'git_compound/component/version/branch'
       autoload :GemVersion,      'git_compound/component/version/gem_version'
       autoload :SHA,             'git_compound/component/version/sha'
+      autoload :Tag,             'git_compound/component/version/tag'
       autoload :VersionStrategy, 'git_compound/component/version/version_strategy'
     end
   end

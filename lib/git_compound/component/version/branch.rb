@@ -6,7 +6,7 @@ module GitCompound
       class Branch < VersionStrategy
         def initialize(repository, branch)
           @repository = repository
-          @branch = branch
+          @branch     = branch
         end
 
         def ref
@@ -18,7 +18,7 @@ module GitCompound
         end
 
         def reachable?
-          @repository.branches.has_key?(@branch)
+          @repository.branches.key?(@branch)
         end
 
         def to_s
