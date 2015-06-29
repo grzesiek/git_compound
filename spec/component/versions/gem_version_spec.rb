@@ -1,7 +1,7 @@
 # GitCompound
 #
 module GitCompound
-  describe Component::Version::SHA do
+  describe Component::Version::GemVersion do
     before do
       git_create_component_2
       @repository = Repository::RepositoryLocal.new(@component_2_dir)
