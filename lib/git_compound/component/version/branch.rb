@@ -18,7 +18,7 @@ module GitCompound
         end
 
         def reachable?
-          @repository.ref_exists?(@branch)
+          @repository.branches.has_key?(@branch)
         end
 
         def to_s
