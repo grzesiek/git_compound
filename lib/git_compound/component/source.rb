@@ -24,7 +24,6 @@ module GitCompound
       # Loads manifest from source repository
       #
       def manifest
-        puts 'loads manifest'
         manifests = ['Compoundfile', '.gitcompound']
         raise DependencyError,
               "Version #{@version} unreachable" unless @version.reachable?

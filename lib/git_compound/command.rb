@@ -36,6 +36,8 @@ module GitCompound
       public_send(command, *args)
     rescue NoMethodError
       print_usage
+    rescue GitCompoundError => e
+      abort "[-] Error: #{e.message}"
     end
 
     private
