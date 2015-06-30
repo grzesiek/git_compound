@@ -11,7 +11,7 @@ module GitCompound
 
       def clone(destination, options = nil)
         # Prefer ^file:/// instead of ^/ as latter does not work with --depth
-        source = @source.sub(/^\//, 'file:///')
+        source = @source.sub(%r{^\/}, 'file:///')
         super(destination, options, source)
       end
 

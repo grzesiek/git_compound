@@ -39,21 +39,26 @@ module GitCompound
       @destination.repository { |repo| repo.checkout(@source.ref) }
     end
 
-    def conflicts?(*components)
-      components.any? do |other_component|
-        match_destination =
-          (destination.expanded_path == other_component.destination_path)
-        match_identity_and_version =
-          (self == other_component && version == other_component.version)
+    # components comparison
 
-        match_destination && !match_identity_and_version
+    def conflicts?(*components)
+      components.any? do |other|
+        match_destination?(other) &&
+          !match_identity_and_version?(other)
       end
     end
 
+    def match_destination?(other)
+      destination_path == other.destination_path
+    end
+
+    def match_identity_and_version?(other)
+      self == other && version == other.version
+    end
+
     def ==(other)
-      tests = [(origin == other.origin)]
-      tests << (manifest == other.manifest) if manifest && other.manifest
-      tests.any?
+      origin == other.origin ||
+        manifest == other.manifest
     end
   end
 end
