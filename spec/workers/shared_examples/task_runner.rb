@@ -11,6 +11,6 @@ shared_examples 'task runner worker' do
         "base_component_second_tasks for component_1\n"        \
         "base_component_second_tasks for component_2\n"        \
         "base_component_first_task\n"
-      ).to_stdout
+      ).to_stderr
   end
 end

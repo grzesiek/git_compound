@@ -93,7 +93,7 @@ module GitTestEnvBuilder
           end
 
           task :component_1_tasks, :each do |dir, component|
-            puts "component_1_tasks for " + component.name.to_s +
+            $stderr.puts "component_1_tasks for " + component.name.to_s +
               " dir: " + dir
           end
         END
@@ -127,11 +127,11 @@ module GitTestEnvBuilder
           end
 
           task :component_2_task do
-            puts 'component_2_task'
+            $stderr.puts 'component_2_task'
           end
 
           task :component_2_leaf_component_3_task, :each do |dir|
-            puts 'leaf_component_3_dir ' + dir
+            $stderr.puts 'leaf_component_3_dir ' + dir
           end
         END
       end
@@ -173,11 +173,11 @@ module GitTestEnvBuilder
           end
 
           task :base_component_second_tasks, :each do |dir, component|
-            puts "base_component_second_tasks for " + component.name.to_s
+            $stderr.puts "base_component_second_tasks for " + component.name.to_s
           end
 
           task :base_component_first_task do
-            puts 'base_component_first_task'
+            $stderr.puts 'base_component_first_task'
           end
         END
       end
