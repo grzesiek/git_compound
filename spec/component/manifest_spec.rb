@@ -48,8 +48,8 @@ module GitCompound
       end
 
       context 'manifest file is not found' do
-        it 'should return nil if manifest is not found' do
-          expect(@component.manifest).to eq nil
+        it 'manifest.exists? should return false' do
+          expect(@component.manifest.exists?).to eq false
         end
       end
     end
