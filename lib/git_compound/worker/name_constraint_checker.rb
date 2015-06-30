@@ -6,7 +6,7 @@ module GitCompound
     #
     class NameConstraintChecker < Worker
       def visit_component(component)
-        return unless component.manifest # component does not have manifest
+        return unless component.manifest.exists?
 
         component_name = component.name
         manifest_name  = component.manifest.name

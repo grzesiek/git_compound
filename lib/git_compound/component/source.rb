@@ -24,6 +24,7 @@ module GitCompound
       # Loads manifest from source repository
       #
       def manifest
+        puts 'loads manifest'
         manifests = ['Compoundfile', '.gitcompound']
         raise DependencyError,
               "Version #{@version} unreachable" unless @version.reachable?
@@ -31,7 +32,7 @@ module GitCompound
         contents = @repository.files_contents(manifests, @version.sha)
         Manifest.new(contents, @component)
       rescue FileNotFoundError
-        nil
+        Manifest.new(nil, @component)
       end
     end
   end

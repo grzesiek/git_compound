@@ -6,10 +6,7 @@ module GitCompound
     #
     class ManifestDSL
       def initialize(manifest, contents)
-        @manifest            = manifest
-        @manifest.name       = ''
-        @manifest.components = {}
-        @manifest.tasks      = {}
+        @manifest = manifest
         instance_eval(contents)
       end
 

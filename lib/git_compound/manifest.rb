@@ -7,9 +7,12 @@ module GitCompound
     attr_accessor :name, :components, :tasks
 
     def initialize(contents, parent = nil)
-      @contents = contents
-      @parent   = parent
-      DSL::ManifestDSL.new(self, contents)
+      @contents   = contents
+      @parent     = parent
+      @name       = ''
+      @components = {}
+      @tasks      = {}
+      DSL::ManifestDSL.new(self, contents) if contents
     end
 
     def process(*workers)
@@ -19,11 +22,16 @@ module GitCompound
     end
 
     def ==(other)
+      return false unless other.instance_of? Manifest
       md5sum == other.md5sum
     end
 
+    def exists?
+      @contents ? true : false
+    end
+
     def md5sum
-      Digest::MD5.hexdigest(@contents)
+      Digest::MD5.hexdigest(@contents) if exists?
     end
   end
 end
