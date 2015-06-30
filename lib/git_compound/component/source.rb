@@ -8,15 +8,16 @@ module GitCompound
       extend Forwardable
       delegate ref: :@version
 
-      attr_reader :origin, :repository, :version
+      attr_reader :origin, :repository, :version, :options
 
       def initialize(origin, strategy, options, component)
         raise CompoundSyntaxError, 'Source cannot be empty' if
           origin.nil? || origin.empty?
 
-        @component  = component
         @origin     = origin
+        @strategy   = strategy
         @options    = options
+        @component  = component
         @repository = Repository.factory(@origin)
         @version    = strategy.new(@repository, @component.version)
       end
@@ -35,12 +36,19 @@ module GitCompound
       end
 
       def clone(destination)
-        # it can be string pointed by :options key
-        opts = @options[:options] if @options
-        opts = "--branch '#{@version.ref}' --depth 1" if
-          @options == { shallow: true }
+        @repository.clone(destination, clone_args)
+      end
 
-        @repository.clone(destination, opts)
+      private
+
+      def clone_args
+        raise CompoundSyntaxError,
+              '`shallow` keyword not available for sha version strategy' if
+         @options.include?(:shallow) && @strategy == Component::Version::SHA
+
+         opts = []
+         opts << "--branch '#{@version.ref}' --depth 1" if @options.include? :shallow
+         opts.join(' ')
       end
     end
   end

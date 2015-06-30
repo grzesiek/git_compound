@@ -33,13 +33,12 @@ Create `Compoundfile` or `.gitcompound` manifest:
 
   component :some_big_component_4 do
     tag 'fix/tag-name'
-    source 'https://github.com/org/big_component', shallow: true
+    source 'https://github.com/org/big_component', :shallow
     destination 'src/vendor/component_4'
   end
   
   task 'add components to gitignore', :each do |component_dir|
-    script do
-      open('.gitignore', 'a') { |f| f << "#{component_dir}\n" }
+      File.open('.gitignore', 'a') { |f| f.write "#{component_dir}\n" }
   end
 ```
 

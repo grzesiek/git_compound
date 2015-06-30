@@ -9,7 +9,7 @@ module GitCompound
         component_dir = @component_2_dir
         @component = Component.new(:component_2) do
           tag 'v1.1'
-          source component_dir, shallow: true
+          source component_dir, :shallow
           destination '/component_2_test_dir'
         end
 

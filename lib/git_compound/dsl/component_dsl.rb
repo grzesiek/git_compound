@@ -39,12 +39,9 @@ module GitCompound
         version_strategy(component_sha, Component::Version::SHA)
       end
 
-      def source(component_source, source_options = {})
+      def source(component_source, *source_options)
         raise CompoundSyntaxError,
               'Version/branch/tag/sha needed first' unless @component.version
-        raise CompoundSyntaxError,
-              '`shallow` keyword not available for sha version strategy' if
-          source_options.key?(:shallow) && @version_strategy == Component::Version::SHA
 
         @component.source =
           Component::Source.new(component_source,
