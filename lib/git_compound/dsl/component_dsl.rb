@@ -10,38 +10,47 @@ module GitCompound
         instance_eval(&block)
       end
 
-      def version(component_version)
+      # Custom version strategy, also available via DSL
+      #
+      def version_strategy(version, strategy)
         raise CompoundSyntaxError,
-              'Version already set (branch, sha ?)' if @component.version
+              'Version strategy already set !' if @version_strategy
 
-        @component.version = component_version
-        @version_strategy  = Component::Version::GemVersion
+        @component.version = version
+        @version_strategy  = strategy
       end
 
-      def sha(component_sha)
-        raise CompoundSyntaxError,
-              'Version already set (version, branch ?)' if @component.version
-        raise CompoundSyntaxError, 'Invalid SHA1 format' unless
-          component_sha.match(/[0-9a-f]{5,40}/)
-
-        @version_strategy  = Component::Version::SHA
-        @component.version = component_sha
+      def version(component_version)
+        version_strategy(component_version, Component::Version::GemVersion)
       end
 
       def branch(component_branch)
-        raise CompoundSyntaxError,
-              'Version already set (sha, branch ?)' if @component.version
-
-        @version_strategy  = Component::Version::Branch
-        @component.version = component_branch
+        version_strategy(component_branch, Component::Version::Branch)
       end
 
-      def source(component_source)
+      def tag(component_tag)
+        version_strategy(component_tag, Component::Version::Tag)
+      end
+
+      def sha(component_sha)
+        raise CompoundSyntaxError, 'Invalid SHA1 format' unless
+          component_sha.match(/[0-9a-f]{5,40}/)
+
+        version_strategy(component_sha, Component::Version::SHA)
+      end
+
+      def source(component_source, source_options = {})
         raise CompoundSyntaxError,
-              'Version/branch/sha needed first' unless @component.version
+              'Version/branch/tag/sha needed first' unless @component.version
+        raise CompoundSyntaxError,
+              '`shallow` keyword not available for sha version strategy' if
+          source_options.key?(:shallow) && @version_strategy == Component::Version::SHA
 
         @component.source =
-          Component::Source.new(component_source, @version_strategy, @component)
+          Component::Source.new(component_source,
+                                @version_strategy,
+                                source_options,
+                                @component)
       end
 
       def destination(component_path)

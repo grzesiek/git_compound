@@ -9,6 +9,12 @@ module GitCompound
         File.directory?("#{@source}/.git")
       end
 
+      def clone(destination, options = nil)
+        # Prefer ^file:/// instead of ^/ as latter does not work with --depth
+        source = @source.sub(/^\//, 'file:///')
+        super(destination, options, source)
+      end
+
       def file_exists?(file, ref)
         cmd = GitCommand.new(:show, "#{ref}:#{file}", @source)
         cmd.execute!

@@ -53,4 +53,8 @@ module GitHelper
                git rev-parse --short HEAD 2>/dev/null`
     ref.strip == current.strip
   end
+
+  def git_commits
+    `git log --oneline`.strip
+  end
 end

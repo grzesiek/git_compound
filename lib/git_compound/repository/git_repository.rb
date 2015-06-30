@@ -7,8 +7,10 @@ module GitCompound
         @source = source
       end
 
-      def clone(destination)
-        GitCommand.new(:clone, "#{@source} #{destination}").execute
+      def clone(destination, options = nil, source = @source)
+        args = "#{source} #{destination}"
+        args.prepend(options + ' ') if options
+        GitCommand.new(:clone, args).execute
       end
 
       def versions
