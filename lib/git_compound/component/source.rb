@@ -6,6 +6,7 @@ module GitCompound
     #
     class Source
       extend Forwardable
+      delegate sha: :@version
       delegate ref: :@version
 
       attr_reader :origin, :repository, :version, :options
@@ -44,11 +45,11 @@ module GitCompound
       def clone_args
         raise CompoundSyntaxError,
               '`shallow` keyword not available for sha version strategy' if
-         @options.include?(:shallow) && @strategy == Component::Version::SHA
+          @options.include?(:shallow) && @strategy == Component::Version::SHA
 
-         opts = []
-         opts << "--branch '#{@version.ref}' --depth 1" if @options.include? :shallow
-         opts.join(' ')
+        opts = []
+        opts << "--branch '#{@version.ref}' --depth 1" if @options.include? :shallow
+        opts.join(' ')
       end
     end
   end

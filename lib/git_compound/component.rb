@@ -60,5 +60,13 @@ module GitCompound
       origin == other.origin ||
         manifest == other.manifest
     end
+
+    def to_hash
+      { @name => {
+        sha:  @source.sha,
+        source: [@source.origin, @source.options],
+        destination: @destination.expanded_path
+      } }
+    end
   end
 end
