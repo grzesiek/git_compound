@@ -1,10 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'git_compound/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'git_compound'
-  spec.version       = '0.0.2'
+  spec.version       = GitCompound::VERSION
   spec.authors       = ['Grzegorz Bizon']
   spec.email         = ['grzegorz.bizon@ntsn.pl']
   spec.summary       = 'Compose you project using git repositories and ruby tasks'

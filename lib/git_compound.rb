@@ -1,4 +1,5 @@
 require 'git_compound/exceptions'
+require 'git_compound/version'
 
 # Git Compound module
 #

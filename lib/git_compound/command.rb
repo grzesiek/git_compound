@@ -55,6 +55,8 @@ module GitCompound
 
     def print_usage
       puts <<-END
+GitCompound version #{GitCompound::VERSION}
+
 Usage:
     gitcompound build [ manifest ]
       -- builds project from manifest
