@@ -7,8 +7,7 @@ module GitCompound
     before { git_build_test_environment! }
 
     subject do
-      manifest_contents = File.read("#{@base_component_dir}/Compoundfile")
-      manifest = Manifest.new(manifest_contents)
+      manifest = git_base_component_manifest
       -> { manifest.process(described_class.new) }
     end
 

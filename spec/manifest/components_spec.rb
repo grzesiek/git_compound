@@ -5,9 +5,7 @@ module GitCompound
     describe 'dependencies' do
       before do
         git_build_test_environment!
-
-        manifest_contents = File.read("#{@base_component_dir}/Compoundfile")
-        @manifest = Manifest.new(manifest_contents)
+        @manifest = git_base_component_manifest
       end
 
       it 'should load all dependencies' do

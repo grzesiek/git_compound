@@ -4,9 +4,7 @@ module GitCompound
   describe Worker::CircularDependencyChecker do
     before do
       git_build_test_environment!
-
-      contents = File.read("#{@base_component_dir}/Compoundfile")
-      @manifest = Manifest.new(contents)
+      @manifest = git_base_component_manifest
     end
 
     context 'circular depenendecy does not exist' do
