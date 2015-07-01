@@ -26,11 +26,11 @@ describe GitCompound do
       end
 
       it 'does not raise error if command is invalid' do
-        expect { subject.call }.to_not raise_error
+        expect { subject.call }.to raise_error SystemExit
       end
 
       it 'print usage if command is invalid' do
-        expect { subject.call }.to output(/Usage:/).to_stdout
+        expect { subject.call }.to raise_error(SystemExit, /Usage:/)
       end
     end
   end

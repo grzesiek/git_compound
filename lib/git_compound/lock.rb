@@ -7,32 +7,36 @@ module GitCompound
     FILENAME = '.gitcompound.lock'
 
     def self.exist?
-      super(FILENAME)
+      File.exist?(FILENAME)
     end
-
-    attr_reader :lock
 
     def initialize(file = FILENAME)
-      @file = file
-      @lock = YAML.load(File.read(file))
-      @lock = {} unless @lock.is_a? Hash
+      @file   = file
+      @locked = YAML.load(File.read(file)) if self.class.exist?
+      @locked = {} unless @locked.is_a? Hash
     end
 
-    def lock_component(component)
-      @lock[:components].store(component.name, component.to_hash)
+    def lock_components(components)
+      components.each do |component|
+        @locked[:components] << component.to_hash
+      end
     end
 
     def lock_manifest(manifest)
-      @lock[:manifest] = manifest.md5sum
+      @locked[:manifest] = manifest.md5sum
     end
 
     def write
-      File.open(@file, 'w') { |f| f.write @lock.to_yaml }
+      File.open(@file, 'w') { |f| f.puts @locked.to_yaml }
+    end
+
+    def contents
+      @locked
     end
 
     def components
-      @lock[:components].to_h.map do |name, locked|
-        Component.new(name) do
+      @locked[:components].to_a.map do |locked|
+        Component.new(locked[:name].to_sym) do
           sha locked[:sha]
           source locked[:source]
           destination locked[:destination]
@@ -41,7 +45,7 @@ module GitCompound
     end
 
     def manifest
-      @lock[:manifest]
+      @locked[:manifest]
     end
   end
 end

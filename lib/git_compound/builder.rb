@@ -13,7 +13,7 @@ module GitCompound
 
       @manifest.process(Worker::ComponentBuilder.new)
 
-      if @opts.include?('--unsafe-stacked-tasks')
+      if @opts.include?(:unsafe_stacked_tasks)
         @manifest.process(Worker::TaskRunner.new)
       else
         @manifest.tasks.each_value(&:execute)

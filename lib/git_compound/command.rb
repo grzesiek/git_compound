@@ -19,13 +19,12 @@ module GitCompound
     end
 
     def help(*_args)
-      print_usage
+      puts usage
     end
 
     def run(command, args)
+      abort(usage) unless methods.include?(command.to_sym)
       public_send(command, *args)
-    rescue NoMethodError
-      print_usage
     rescue GitCompoundError => e
       abort "[-] Error: #{e.message}"
     end
@@ -33,7 +32,9 @@ module GitCompound
     private
 
     def builder(args)
-      Builder.new(manifest(args.shift), args)
+      opts = args.select { |opt| opt.start_with?('--') }
+      opts.collect! { |opt| opt.sub(/^--/, '').gsub('-', '_').to_sym }
+      Builder.new(manifest(args.shift), opts)
     end
 
     def manifest(filename)
@@ -47,8 +48,8 @@ module GitCompound
       Manifest.new(contents)
     end
 
-    def print_usage
-      puts <<-END
+    def usage
+      <<-END
 GitCompound version #{GitCompound::VERSION}
 
 Usage:
