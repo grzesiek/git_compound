@@ -9,7 +9,7 @@ module GitCompound
         raise GitCompoundError, 'Collection should be a Hash' unless
           collection.is_a? Hash
 
-          @components = collection
+        @components = collection
       end
 
       def visit_component(component)

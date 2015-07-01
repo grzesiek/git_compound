@@ -6,14 +6,18 @@ module GitCompound
     extend self
 
     def factory(name, type, manifest, &block)
-      return TaskSingle.new(name, manifest, &block) if
-        type.nil? || type == :manfiest
-      return TaskEach.new(name, manifest, &block) if
-        type == :each # each component in manifest
-      return TaskAll.new(name, manifest, &block) if
-        type == :all  # all descendant components of manifest
+      case
+      # manifest task
+      when type.nil? || type == :manfiest then task_class = TaskSingle
+      # task for each component defined in manifest
+      when type == :each                  then task_class = TaskEach
+      # task for all descendant components of manifest
+      when type == :all                   then task_class = TaskAll
+      else
+        raise GitCompoundError, "Unrecognized task type `#{type}`"
+      end
 
-      raise GitCompoundError, "Unrecognized task type `#{type}`"
+      task_class.new(name, manifest, &block)
     end
     # rubocop:enable Style/ModuleFunction
   end
