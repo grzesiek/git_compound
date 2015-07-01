@@ -3,9 +3,8 @@ module GitCompound
     # Task for all descendant components in manifest
     #
     class TaskAll < Task
-      def initialize(name, subject, &block)
+      def initialize(name, manifest, &block)
         super
-        @manifest   = subject
         @components = components_collect!
       end
 
@@ -18,6 +17,10 @@ module GitCompound
       private
 
       def components_collect!
+        components = {}
+        @manifest.process(Worker::CircularDependencyChecker.new,
+                          Worker::ComponentsCollector.new(components))
+        components
       end
     end
   end

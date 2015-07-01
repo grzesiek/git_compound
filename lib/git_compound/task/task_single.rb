@@ -3,9 +3,8 @@ module GitCompound
     # Single task for single component
     #
     class TaskSingle < Task
-      def initialize(name, subject, &block)
+      def initialize(name, manifest, &block)
         super
-        @manifest  = subject
         @component = @manifest.parent
       end
 

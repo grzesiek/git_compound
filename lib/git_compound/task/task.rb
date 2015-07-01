@@ -5,13 +5,13 @@ module GitCompound
     class Task
       attr_reader :name
 
-      def initialize(name, subject, &block)
+      def initialize(name, manifest, &block)
         raise GitCompoundError,
               "Block not given for task `#{name}`" unless block
 
-        @name      = name
-        @subject   = subject
-        @block     = block
+        @name       = name
+        @manifest   = manifest
+        @block      = block
       end
 
       def execute

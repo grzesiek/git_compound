@@ -8,7 +8,7 @@ module GitCompound
     def factory(name, type, manifest, &block)
       return TaskSingle.new(name, manifest, &block) if
         type.nil? || type == :manfiest
-      return TaskEach.new(name, manifest.components, &block) if
+      return TaskEach.new(name, manifest, &block) if
         type == :each # each component in manifest
       return TaskAll.new(name, manifest, &block) if
         type == :all  # all descendant components of manifest

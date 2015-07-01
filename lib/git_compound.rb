@@ -74,6 +74,8 @@ module GitCompound
              'git_compound/worker/circular_dependency_checker'
     autoload :ComponentBuilder,
              'git_compound/worker/component_builder'
+    autoload :ComponentsCollector,
+             'git_compound/worker/components_collector'
     autoload :ConflictingDependencyChecker,
              'git_compound/worker/conflicting_dependency_checker'
     autoload :NameConstraintChecker,

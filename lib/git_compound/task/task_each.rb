@@ -3,9 +3,9 @@ module GitCompound
     # Task for each component defined in manifest
     #
     class TaskEach < Task
-      def initialize(name, subject, &block)
+      def initialize(name, manifest, &block)
         super
-        @components = subject
+        @components = manifest.components
       end
 
       def execute
