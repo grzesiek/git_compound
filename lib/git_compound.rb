@@ -4,6 +4,7 @@ require 'git_compound/version'
 # Git Compound module
 #
 module GitCompound
+  autoload :Builder,    'git_compound/builder'
   autoload :Command,    'git_compound/command'
   autoload :Component,  'git_compound/component'
   autoload :Lock,       'git_compound/lock'
