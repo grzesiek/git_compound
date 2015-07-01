@@ -3,12 +3,20 @@ module GitCompound
   #
   module Command
     def build(*args)
-      manifest(args.first).process(
+      manifest(args.first)
+
+      @manifest.process(
         Worker::CircularDependencyChecker.new,
         Worker::NameConstraintChecker.new,
-        Worker::ConflictingDependencyChecker.new,
-        Worker::ComponentBuilder.new,
-        Worker::TaskRunner.new)
+        Worker::ConflictingDependencyChecker.new)
+
+      @manifest.process(Worker::ComponentBuilder.new)
+
+      if args.include?('--unsafe-stacked-tasks')
+        @manifest.process(Worker::TaskRunner.new)
+      else
+        @manifest.tasks.each_value(&:execute)
+      end
     end
 
     def update(*_args)
@@ -16,14 +24,18 @@ module GitCompound
     end
 
     def check(*args)
-      manifest(args.first).process(
+      manifest(args.first)
+
+      @manifest.process(
         Worker::CircularDependencyChecker.new,
         Worker::NameConstraintChecker.new,
         Worker::ConflictingDependencyChecker.new)
     end
 
     def show(*args)
-      manifest(args.first).process(
+      manifest(args.first)
+
+      @manifest.process(
         Worker::CircularDependencyChecker.new,
         Worker::PrettyPrint.new)
     end
@@ -50,7 +62,7 @@ module GitCompound
             "Manifest `#{filename || files.inspect}` not found !" if found.empty?
 
       contents = File.read(found.first)
-      Manifest.new(contents)
+      @manifest = Manifest.new(contents)
     end
 
     def print_usage

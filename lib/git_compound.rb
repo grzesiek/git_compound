@@ -39,9 +39,10 @@ module GitCompound
   # Task module
   #
   module Task
-    autoload :TaskMulti,  'git_compound/task/task_multi'
-    autoload :TaskSingle, 'git_compound/task/task_single'
     autoload :Task,       'git_compound/task/task'
+    autoload :TaskAll,    'git_compound/task/task_all'
+    autoload :TaskEach,   'git_compound/task/task_each'
+    autoload :TaskSingle, 'git_compound/task/task_single'
   end
 
   # Repository

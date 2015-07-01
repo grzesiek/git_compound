@@ -64,7 +64,7 @@ module GitCompound
     def to_hash
       { @name => {
         sha:  @source.sha,
-        source: [@source.origin, @source.options],
+        source: @source.origin,
         destination: @destination.expanded_path
       } }
     end

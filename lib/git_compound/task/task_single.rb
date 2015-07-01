@@ -5,15 +5,16 @@ module GitCompound
     class TaskSingle < Task
       def initialize(name, subject, &block)
         super
-        @component = subject
+        @manifest  = subject
+        @component = @manifest.parent
       end
 
       def execute
         if @component
-          execute_on(@component.destination_path, @component)
+          execute_on(@component.destination_path, @component.manifest)
         else
           # Root manifest without parent
-          execute_on(Dir.pwd, nil)
+          execute_on(Dir.pwd, @manifest)
         end
       end
     end
