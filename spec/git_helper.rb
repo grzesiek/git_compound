@@ -50,7 +50,7 @@ module GitHelper
   def git_current_ref_matches?(ref)
     current = `git symbolic-ref --short HEAD 2>/dev/null || \
                git describe --tags --exact-match HEAD 2>/dev/null || \
-               git rev-parse --short HEAD 2>/dev/null`
+               git rev-parse HEAD 2>/dev/null`
     ref.strip == current.strip
   end
 

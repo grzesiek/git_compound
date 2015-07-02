@@ -1,27 +1,11 @@
+require 'lock/shared_context/lock_file'
+
 # GitCompound
 #
 module GitCompound
   describe Lock do
     context 'lock exists and is valid' do
-      before do
-        git_create_component_2
-
-        File.open(Lock::FILENAME, 'w') do |f|
-          f.puts '---'
-          f.puts ':manifest: "123123123123"'
-          f.puts ':components:'
-          f.puts '  - :name: :component_2'
-          f.puts "    :sha: #{@component_2_commit_tag_v1_2_sha}"
-          f.puts "    :source: #{@component_2_dir}"
-          f.puts '    :destination: component_2_test/destination_1/'
-          f.puts '  - :name: :component_2'
-          f.puts "    :sha: #{@component_2_commit_tag_v1_2_sha}"
-          f.puts "    :source: #{@component_2_dir}"
-          f.puts '    :destination: component_2_test/destination_2/'
-        end
-
-        @lock = Lock.new
-      end
+      include_context 'existing lockfile'
 
       it 'should return valid lock content' do
         expect(@lock.contents).to be_instance_of Hash
@@ -85,11 +69,6 @@ module GitCompound
             "  :destination: some/component_2_new_test_destination/\n"
         end
       end
-    end
-
-    after do
-      FileUtils.rm(Lock::FILENAME) if
-        Lock.exist?
     end
   end
 end

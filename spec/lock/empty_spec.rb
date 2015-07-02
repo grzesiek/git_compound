@@ -2,7 +2,6 @@
 #
 module GitCompound
   describe Lock do
-
     context 'lock exists and is empty' do
       before do
         FileUtils.touch(Lock::FILENAME)

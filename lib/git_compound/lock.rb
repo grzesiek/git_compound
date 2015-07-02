@@ -16,22 +16,18 @@ module GitCompound
       @locked = {} unless @locked.is_a? Hash
     end
 
+    def lock_manifest(manifest)
+      @locked[:manifest] = manifest.md5sum
+    end
+
     def lock_components(components)
       components.each do |component|
         @locked[:components] << component.to_hash
       end
     end
 
-    def lock_manifest(manifest)
-      @locked[:manifest] = manifest.md5sum
-    end
-
-    def write
-      File.open(@file, 'w') { |f| f.puts @locked.to_yaml }
-    end
-
-    def contents
-      @locked
+    def manifest
+      @locked[:manifest]
     end
 
     def components
@@ -44,8 +40,19 @@ module GitCompound
       end
     end
 
-    def manifest
-      @locked[:manifest]
+    def contents
+      @locked
+    end
+
+    def build
+      components.each do |component|
+        Logger.info "Building component `#{component.name}` ..."
+        component.build
+      end
+    end
+
+    def write
+      File.open(@file, 'w') { |f| f.puts @locked.to_yaml }
     end
   end
 end

@@ -11,6 +11,8 @@ module GitCompound
       -> { manifest.process(described_class.new) }
     end
 
+    let(:components) { git_test_env_components }
+
     it_behaves_like 'component builder worker'
   end
 end

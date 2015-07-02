@@ -4,6 +4,7 @@ require 'workers/shared_examples/task_runner'
 describe GitCompound do
   describe '#build' do
     before { git_build_test_environment! }
+    let(:components) { git_test_env_components }
 
     context 'safe build' do
       subject do
