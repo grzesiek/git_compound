@@ -10,8 +10,8 @@ module GitCompound
       private
 
       def print_component(component)
-        print '  ' * component.ancestors.count
-        puts "`#{component.name}` component, #{component.source.version}"
+        Logger.inline '  ' * component.ancestors.count
+        Logger.info "`#{component.name}` component, #{component.source.version}"
       end
     end
   end

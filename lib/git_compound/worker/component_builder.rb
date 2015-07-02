@@ -8,7 +8,7 @@ module GitCompound
       end
 
       def visit_component(component)
-        print 'Building: '
+        Logger.inline 'Building: '
         @print.visit_component(component)
 
         raise GitCompoundError,

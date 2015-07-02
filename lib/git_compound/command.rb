@@ -19,7 +19,7 @@ module GitCompound
     end
 
     def help(*_args)
-      puts usage
+      Logger.info usage
     end
 
     def run(command, args)
