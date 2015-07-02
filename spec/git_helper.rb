@@ -54,6 +54,10 @@ module GitHelper
     ref.strip == current.strip
   end
 
+  def git_head_sha
+    `git rev-parse HEAD 2>/dev/null`.strip
+  end
+
   def git_commits
     `git log --oneline`.strip
   end
