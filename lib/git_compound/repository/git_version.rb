@@ -16,8 +16,7 @@ module GitCompound
       end
 
       def valid?
-        @tag.match(/^v?#{Gem::Version::VERSION_PATTERN}$/) &&
-          !@tag.match(/.*\^\{\}$/) # annotated tag objects
+        @tag.match(/^v?#{Gem::Version::VERSION_PATTERN}$/)
       end
 
       def matches?(requirement)

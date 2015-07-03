@@ -30,7 +30,14 @@ module GitCompound
       end
 
       def tags
-        refs_select('tags')
+        all = refs_select('tags')
+        annotated = all.select { |tag, _| tag =~ /\^\{\}$/}
+        annotated.each_pair do |annotated_tag, annotated_tag_sha|
+          tag = annotated_tag.sub(/\^\{\}$/, '')
+          all.delete(annotated_tag)
+          all[tag] = annotated_tag_sha
+        end
+        all
       end
 
       def ref_exists?(ref)

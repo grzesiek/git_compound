@@ -35,7 +35,7 @@ module GitHelper
 
   def git_tag(name, message)
     `git tag -a "#{name}" -m "#{message}"`
-    sha = `git rev-parse #{name}`
+    sha = `git rev-parse #{name}^{}`
     sha.strip
   end
 
