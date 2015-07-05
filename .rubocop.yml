@@ -4,3 +4,5 @@ Metrics/MethodLength:
   Max: 18
 Style/SignalException:
   Enabled: false
+Style/ModuleFunction:
+  Enabled: false

@@ -20,8 +20,6 @@ module GitCompound
       else
         @manifest.tasks.each_value(&:execute)
       end
-
-      Logger.info 'Done.'
     end
 
     def update
@@ -29,6 +27,7 @@ module GitCompound
 
     def check
       Logger.info 'Checking dependencies ...'
+
       @manifest.process(
         Worker::CircularDependencyChecker.new,
         Worker::NameConstraintChecker.new,

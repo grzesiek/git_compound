@@ -2,7 +2,6 @@ module GitCompound
   # Task module and factory
   #
   module Task
-    # rubocop:disable Style/ModuleFunction
     extend self
 
     def factory(name, type, manifest, &block)
@@ -19,6 +18,5 @@ module GitCompound
 
       task_class.new(name, manifest, &block)
     end
-    # rubocop:enable Style/ModuleFunction
   end
 end
