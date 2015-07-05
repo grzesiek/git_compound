@@ -1,3 +1,5 @@
+# GitCompound
+#
 module GitCompound
   shared_context 'existing lockfile' do
     before do

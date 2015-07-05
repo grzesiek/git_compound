@@ -8,7 +8,7 @@ module GitCompound
       #
       class GithubStrategy < RemoteFileStrategy
         GITHUB_URI     = 'https://raw.githubusercontent.com'
-        GITHUB_PATTERN = 'git@github.com:\/|https:\/\/github.com\/'
+        GITHUB_PATTERN = 'git@github.com:|https:\/\/github.com'
 
         def initialize(source, ref, file)
           super
@@ -34,6 +34,7 @@ module GitCompound
 
         def github_uri
           github_location = @source.sub(/^#{GITHUB_PATTERN}/, '')
+          github_location.gsub!(%r{^/|/$}, '')
           file_uri = "#{GITHUB_URI}/#{github_location}/#{@ref}/#{@file}"
           URI.parse(file_uri)
         end
