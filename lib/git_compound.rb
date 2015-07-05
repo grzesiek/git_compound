@@ -80,6 +80,8 @@ module GitCompound
              'git_compound/worker/components_collector'
     autoload :ConflictingDependencyChecker,
              'git_compound/worker/conflicting_dependency_checker'
+    autoload :LocalChangesGuard,
+             'git_compound/worker/local_changes_guard'
     autoload :NameConstraintChecker,
              'git_compound/worker/name_constraint_checker'
     autoload :PrettyPrint, 'git_compound/worker/pretty_print'

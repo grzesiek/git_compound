@@ -12,4 +12,5 @@ module GitCompound
   class CircularDependencyError < GitCompoundError; end
   class ConflictingDependencyError < GitCompoundError; end
   class NameConstraintError < GitCompoundError; end
+  class LocalChangesError < GitCompoundError; end
 end

@@ -29,8 +29,10 @@ module GitCompound
       end
 
       def repository
-        repo = Repository::RepositoryLocal.new(expanded_path)
-        yield repo if block_given?
+        destination_repository =
+          Repository::RepositoryLocal.new(expanded_path)
+        yield destination_repository if block_given?
+        destination_repository
       end
 
       private
