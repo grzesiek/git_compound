@@ -3,19 +3,27 @@ module GitCompound
   #
   module Command
     def build(*args)
-      builder(args).build
+      builder(args)
+        .lock_initialize
+        .manifest_verify
+        .dependencies_check
+        .components_build
+        .tasks_execute
+        .manifest_lock
+        .lock_write
     end
 
-    def update(*args)
-      builder(args).update
+    def update(*_args)
+      raise NotImplementedError
     end
 
     def check(*args)
-      builder(args).check
+      builder(args).dependencies_check
+      Logger.info 'OK'
     end
 
     def show(*args)
-      builder(args).show
+      builder(args).components_show
     end
 
     def help(*_args)
@@ -54,7 +62,7 @@ GitCompound version #{GitCompound::VERSION}
 
 Usage:
     gitcompound build [ manifest ]
-      -- builds project from manifest
+      -- builds project from manifest (or lockfile if present)
 
          If manifest is not specified it uses `Compoundfile`
          or `.gitcompound`

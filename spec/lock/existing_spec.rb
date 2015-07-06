@@ -43,12 +43,12 @@ module GitCompound
         end
 
         it 'should be able to lock new components properly' do
-          @lock.lock_components([@new_component])
+          @lock.lock_component(@new_component)
           expect(@lock.components.count).to eq 3
         end
 
         it 'should be able to append newly locked component' do
-          @lock.lock_components([@new_component])
+          @lock.lock_component(@new_component)
           @lock.write
           new_contents = File.read(Lock::FILENAME)
           expect(new_contents).to eq \

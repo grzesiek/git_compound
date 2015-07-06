@@ -9,13 +9,12 @@ module GitCompound
         expect(Lock.exist?).to be false
       end
 
-      it 'should initialize empty hash' do
-        expect(@lock.contents).to be_empty
-        expect(@lock.contents).to be_instance_of Hash
+      it 'should initialize hash' do
+        expect(@lock.contents).to eq manifest: '', components: []
       end
 
-      it 'should return nil manifest' do
-        expect(@lock.manifest).to eq nil
+      it 'should return empty manifest md5sum' do
+        expect(@lock.manifest).to be_empty
       end
 
       it 'should return empty array of components' do

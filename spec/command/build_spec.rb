@@ -34,5 +34,19 @@ describe GitCompound do
       it_behaves_like 'component builder worker'
       it_behaves_like 'task runner worker'
     end
+
+    it 'creates valid lockfile' do
+      GitCompound.build("#{@base_component_dir}/Compoundfile")
+      lock = File.read(GitCompound::Lock::FILENAME)
+
+      expect(GitCompound::Lock.exist?).to be true
+      expect(lock).to match(/^:manifest: .{32}/)
+      expect(lock).to match(/^:components:/)
+      expect(lock).to match(/:name: :component_1/)
+      expect(lock).to match(/:name: :component_2/)
+      expect(lock).to match(/:name: :leaf_component_1/)
+      expect(lock).to match(/:name: :leaf_component_2/)
+      expect(lock).to match(/:name: :leaf_component_3/)
+    end
   end
 end

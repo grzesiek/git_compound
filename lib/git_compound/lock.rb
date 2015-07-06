@@ -13,17 +13,15 @@ module GitCompound
     def initialize(file = FILENAME)
       @file   = file
       @locked = YAML.load(File.read(file)) if self.class.exist?
-      @locked = {} unless @locked.is_a? Hash
+      @locked = { manifest: '', components: [] } unless @locked.is_a? Hash
     end
 
     def lock_manifest(manifest)
       @locked[:manifest] = manifest.md5sum
     end
 
-    def lock_components(components)
-      components.each do |component|
-        @locked[:components] << component.to_hash
-      end
+    def lock_component(component)
+      @locked[:components] << component.to_hash
     end
 
     def manifest
