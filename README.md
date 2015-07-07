@@ -43,7 +43,8 @@ Create `Compoundfile` or `.gitcompound` manifest:
 ```
 
 GitCompound will also process similar manifests found in required components in hierarchical way.
-Then `gitcompound build`.
+
+Then run `gitcompound build`.
 
 ## Commands
 
@@ -66,9 +67,9 @@ Then `gitcompound build`.
     gitcompound help
       -- prints help
 
-## Manifest Domain Specific Language
+## Details
 
-1.  Use `name` method to specify name of manifest or component that this manifest in included in.
+1.  Use `name` method to specify name of manifest or component that this manifest is included in.
 
 2.  Add dependency to required component using `component` method.
 
@@ -78,7 +79,7 @@ Then `gitcompound build`.
     with name `:component_1`, and this component has Compoundfile manifest inside that declares 
     it's name as something else than `:component_1` -- `GitCompound` will raise exception.
 
-3.  Components can use follow version strategies:
+3.  Components can use following version strategies:
 
     *   `version` -- Rubygems-like version strategy
         
@@ -88,7 +89,9 @@ Then `gitcompound build`.
         (like pessimistic version constraint operator)
       
     *   `tag` -- use component sources specified by tag
+
     *   `branch` -- use HEAD of given branch
+
     *   `sha` -- use explicitly set commit SHA
 
 4.  Provide path to repository using `source` method in manifest DSL.
@@ -104,32 +107,32 @@ Then `gitcompound build`.
 
     This should be relative path in most cases. 
 
-    lative path is always relative to parent component directory. So if you define 
+    Relative path is always relative to parent component directory. So if you define 
     `component_1` with destination path `component_1/`, and this component will
     depend on `component_2` with destination path set to `src/component_2`, you will
     end with `./component_1/src/component_2` directory after building components.
 
-    When this path is absolute -- it will be always relative to `Dir.pwd` where 
+    When path is absolute -- it will be always relative to `Dir.pwd` where 
     you invoke `gitcompound *` commands. So if you have `component_1` with destination path
-    set to `/component_1` and `component_1` has manifest that depends on `component_2` with
+    set to `/component_1` and `component_1` which has manifest that depends on `component_2` with
     destination path set to `/component_2`, then `GitCompound` will create two separate
     directories in `Dir.pwd`: `./component_1` and `./component_2`.
 
-    Use absolute paths with caution as it affects how parent projects are being built.
+    Use absolute paths with caution as it affects how parent projects will be built.
     Ceraintly components that are libraries should not use it at all. If component is project --
     it can take benefit from using absolute paths in component destination.
 
 6.  Running tasks
 
     It is possible to use `task` method to define new task. `task` method takes 2 or 3 arguments.
-    First one is task name (symbol), second one is optional task type and define how task and 
-    in which context task will be executed, third one is block that will be excuted.
+    First one is task name (symbol). Second one is optional task type that define how, and 
+    in which context, task will be executed. Third one is block that will be excuted.
 
     Currently there are three task types:
 
-    *   `:manifest` type (this is default, and optional) -- run task for current manifest
+    *   `:manifest` type (this is default) -- run task in context of current manifest
         
-        Manifest task will be executed only once, in context of current manifest this task is
+        Task will be executed only once, in context of current manifest this task is
         defined in. Example:
 
         ```ruby
@@ -153,7 +156,7 @@ Then `gitcompound build`.
         end
         ```
 
-        Note that `dir` here is the same as `component.destination_path`
+        Note that `dir` here is the same as `component.destination_path`.
         
     *   `:all` type -- run task for all child components of this manifest
 
@@ -162,7 +165,7 @@ Then `gitcompound build`.
 
         It will be executed for all components defined in manifest itself and for all 
         components that are included in child manifests (obviously child manifests are 
-        manifests included in components defined in parent manifest)
+        manifests included in components defined in parent manifest).
 
         Example:
 
@@ -171,6 +174,15 @@ Then `gitcompound build`.
           puts "Component #{component.name} destination dir: #{dir}"
         end
         ```
+
+    By default `GitCompound` executes only tasks defined in root manifest.
+
+    This is default behaviour dictated by security reasons. Since all tasks (also those defined 
+    in child component) are visited in reverse order it is possible to execute then too. 
+
+    If you know what you are doing and it is your conscious decision to run all tasks in project 
+    pass `--unsafe-stacked-tasks` options to `build` command. It can be beneficial approach, but
+    it has to be done with caution.
  
 7.  Accessing manifests -- fast
 
@@ -179,8 +191,9 @@ Then `gitcompound build`.
     achieve this. Currently only two strategies are available:
     
     *   `GitArchiveStrategy` -- it uses `git archive` command to access single file in remote
-        repository
-    *   `GithubStrategy` -- it uses http request to `raw.githubusercontent.com` to access manifest
+        repository,
+    *   `GithubStrategy` -- it uses http request to `raw.githubusercontent.com` to access 
+        manifest file at GitHub.
 
     It is possible to create new strategies by implementing new strategy base on
     `GitCompound::Repository::RemoteFile::RemoteFileStrategy` abstraction.
