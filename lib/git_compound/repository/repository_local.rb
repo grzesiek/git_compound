@@ -19,6 +19,10 @@ module GitCompound
         GitCommand.new(:checkout, ref, @source).execute
       end
 
+      def fetch
+        GitCommand.new(:fetch, '', @source).execute
+      end
+
       def file_exists?(file, ref)
         cmd = GitCommand.new(:show, "#{ref}:#{file}", @source)
         cmd.execute!

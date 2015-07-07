@@ -41,6 +41,13 @@ module GitCompound
       @destination.repository { |repo| repo.checkout(@source.ref) }
     end
 
+    def update
+      @destination.repository do|repo|
+        repo.fetch
+        repo.checkout(@source.ref)
+      end
+    end
+
     # components comparison
 
     def conflicts?(*components)
