@@ -31,12 +31,6 @@ Create `Compoundfile` or `.gitcompound` manifest:
     destination 'src/component_3'
   end
   
-  component :some_component_4 do
-    sha '5b1d43c08619f958862dded940332c3f91eb35dd'
-    source 'git@github.com:/vendor/component_4'
-    destination 'src/vendor/component_4'
-  end
-
   task 'add components to gitignore', :each do |component_dir|
     File.open('.gitignore', 'a') { |f| f.write "#{component_dir}\n" }
   end
@@ -45,6 +39,28 @@ Create `Compoundfile` or `.gitcompound` manifest:
 GitCompound will also process similar manifests found in required components in hierarchical way.
 
 Then run `gitcompound build`.
+
+## Base features 
+
+`GitCompound` is more a distributed packaging system than alternative to Git submodules. Base features:
+
+*   It is possible to create multiple manifest files (`Compoundfile`, `.gitcompound` or something else)
+    and build them when necessary.
+
+*   Manifests can declare dependencies on different versions of components using different version strategies
+    (Rubygems-like version, tag, branch or explicit SHA).
+
+*   Manifests can be processed in hierarchical way. Manifest that `gitcompound` command is run against
+    is root manifest. `GitCompound` processes all subsequent manifests using depth-first search of
+    dependency graph.
+
+*   Manifest of each subsequent component can declare Ruby tasks that will be executed when component is built.
+
+*   It is possible to install dependencies in root directory (`Dir.pwd` where `gitcompound` command is invoked).
+    Each subsequent component can install their dependencies into root directory (see overview for **destination** DSL method).
+
+*   Build process creates lockfile in `.gitcompound.lock`. It locks components on specific commit SHAs.
+    It is then possible to build components directly, depending on versions (SHAs) from lockfile.
 
 ## Commands
 
@@ -69,41 +85,54 @@ Then run `gitcompound build`.
 
 ## Details
 
-1.  Use `name` method to specify name of manifest or component that this manifest is included in.
+1.  Use `name` method to specify **name** of manifest or component that this manifest is included in.
 
-2.  Add dependency to required component using `component` method.
+2.  Add dependency to required **component** using `component` method.
 
     This method takes two parameters -- name of component (as symbol) and implicit or explicit block.
 
-    Beware that `GitCompound` checks for component name constraints, so if you require component 
-    with name `:component_1`, and this component has Compoundfile manifest inside that declares 
+    Beware that `GitCompound` checks name constraints, so if you rely on component 
+    with name `:component_1`, and this component has `Compoundfile` inside that declares 
     it's name as something else than `:component_1` -- `GitCompound` will raise exception.
 
-3.  Components can use following version strategies:
+3.  Components can use following **version strategies**:
 
-    *   `version` -- Rubygems-like version strategy
+    *   `version` -- Rubygems-like **version** strategy
         
         This strategy uses Git tags to determine available component versions.
         If tag matches `/^v?#{Gem::Version::VERSION_PATTERN}$/` then it is considered to 
         be version tag and therefore it can be used with Rubygems syntax 
         (like pessimistic version constraint operator)
       
-    *   `tag` -- use component sources specified by tag
+    *   `tag` -- use component sources specified by **tag**
 
-    *   `branch` -- use HEAD of given branch
+    *   `branch` -- use HEAD of given **branch**
 
-    *   `sha` -- use explicitly set commit SHA
+    *   `sha` -- use explicitly set commit **SHA**
 
-4.  Provide path to repository using `source` method in manifest DSL.
+4.  Provide path to **source** repository using `source` method of manifest domain specific language.
 
-    This will be used to clone repository into destination directory.
+    It will be used as source to clone repository into destination directory.
 
-    This can take `:shallow` parameter, but it is not recommended to use it.
+    This can take `:shallow` parameter. When `:shallow` is set, shallow clone will be 
+    performed (`--branch #{ref} --depth 1`):
+
+    ```ruby
+    component :bootstrap do
+      version '~>3.3.5'
+      source 'git@github.com:twbs/bootstrap', :shallow
+      destination '/vendor/bootstrap
+    end
+    ```
+
+    However using it is not recommended at all.
+
     It can be helpful when required component is big and you need to build your project
-    only once, but it causes issues with update. Use it with caution !
+    only once, but it will cause issues with update. You will not be able to update it properly.
+    Use it with caution !
  
 
-5.  Use `destination` method to specify path where component will be cloned into.
+5.  Use `destination` method to specify **destination** path where component will be cloned into.
 
     This should be relative path in most cases. 
 
@@ -124,7 +153,7 @@ Then run `gitcompound build`.
 
 6.  Running tasks
 
-    It is possible to use `task` method to define new task. `task` method takes 2 or 3 arguments.
+    It is possible to use `task` method to define new **task**. `task` method takes 2 or 3 arguments.
     First one is task name (symbol). Second one is optional task type that define how, and 
     in which context, task will be executed. Third one is block that will be excuted.
 
@@ -183,8 +212,10 @@ Then run `gitcompound build`.
     If you know what you are doing and it is your conscious decision to run all tasks in project 
     pass `--unsafe-stacked-tasks` options to `build` command. It can be beneficial approach, but
     it has to be done with caution.
- 
-7.  Accessing manifests -- fast
+
+## Other concepts
+
+1.  Accessing manifests
 
     `GitCompound` tries to be as fast as possible. To achieve this it tries to access
     manifest of required component without cloning it first. Is uses different strategies to
@@ -198,6 +229,15 @@ Then run `gitcompound build`.
     It is possible to create new strategies by implementing new strategy base on
     `GitCompound::Repository::RemoteFile::RemoteFileStrategy` abstraction.
 
+2.  Using lockfile (`.gitcompound.lock`) -- TODO
+
+3.  Building manifest -- TODO
+
+4.  Updating manifest -- TODO
+
+## Roadmap
+
+Take a look at issues at GitHub.
 
 ## License
 
