@@ -17,12 +17,19 @@ module GitCompound
       end
     end
 
-    def update(*_args)
+    def update(*args)
+      raise NotImplementedError
+
       raise GitCompoundError,
             "Lockfile `#{Lock::FILENAME}` does not exist ! " \
             'You should use `build` command' unless Lock.exist?
 
-      raise NotImplementedError
+      builder(args)
+        .manifest_verify
+        .dependencies_check
+        .manifest_update
+        .tasks_execute
+        .manifest_lock
     end
 
     def check(*args)

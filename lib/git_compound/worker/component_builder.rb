@@ -3,8 +3,9 @@ module GitCompound
     # Worker that builds components
     #
     class ComponentBuilder < Worker
-      def initialize
+      def initialize(lock = nil)
         @print = PrettyPrint.new
+        @lock  = lock
       end
 
       def visit_component(component)
@@ -20,6 +21,8 @@ module GitCompound
         raise GitCompoundError,
               "Destination  `#{component.destination_path}` " \
               'verification failed !' unless component.destination_exists?
+
+        @lock.lock_component(component) if @lock
       end
     end
   end

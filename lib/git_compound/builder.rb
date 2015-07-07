@@ -33,11 +33,8 @@ module GitCompound
     end
 
     def manifest_build
-      Logger.info 'Building manifest ...'
-      components = {}
-      @manifest.process(Worker::ComponentBuilder.new,
-                        Worker::ComponentsCollector.new(components))
-      components.each_value { |component| @lock.lock_component(component) }
+      Logger.info 'Building components ...'
+      @manifest.process(Worker::ComponentBuilder.new(@lock))
       self
     end
 
