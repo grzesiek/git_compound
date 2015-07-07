@@ -3,17 +3,25 @@ module GitCompound
   #
   module Command
     def build(*args)
-      builder(args)
-        .lock_initialize
-        .manifest_verify
-        .dependencies_check
-        .components_build
-        .tasks_execute
-        .manifest_lock
-        .lock_write
+      if Lock.exist?
+        builder(args)
+          .manifest_verify
+          .locked_build
+          .tasks_execute
+      else
+        builder(args)
+          .dependencies_check
+          .manifest_build
+          .tasks_execute
+          .manifest_lock
+      end
     end
 
     def update(*_args)
+      raise GitCompoundError,
+            "Lockfile `#{Lock::FILENAME}` does not exist ! " \
+            'You should use `build` command' unless Lock.exist?
+
       raise NotImplementedError
     end
 
@@ -42,7 +50,7 @@ module GitCompound
     def builder(args)
       opts = args.select { |opt| opt.start_with?('--') }
       opts.collect! { |opt| opt.sub(/^--/, '').gsub('-', '_').to_sym }
-      Builder.new(manifest(args.shift), opts)
+      Builder.new(manifest(args.first), Lock.new, opts)
     end
 
     def manifest(filename)

@@ -3,23 +3,14 @@ module GitCompound
   # from manifest or lockfile
   #
   class Builder
-    def initialize(manifest, opts)
+    def initialize(manifest, lock, opts)
       @manifest = manifest
+      @lock     = lock
       @opts     = opts
     end
 
-    def lock_initialize
-      @lock ||= Lock.new
-      self
-    end
-
-    def lock_write
-      @lock.write
-      self
-    end
-
     def manifest_verify
-      return self unless @manifest.md5sum == @lock.manifest
+      return self if @manifest.md5sum == @lock.manifest
 
       raise GitCompoundError,
             'Manifest md5sum has changed ! Use `update` command instead'
@@ -27,6 +18,7 @@ module GitCompound
 
     def manifest_lock
       @lock.lock_manifest(@manifest)
+      @lock.write
       self
     end
 
@@ -40,17 +32,16 @@ module GitCompound
       self
     end
 
-    def components_build
-      Logger.info 'Building components ...'
-      Lock.exist? ? build_from_lock! : build_from_manifest!
+    def manifest_build
+      Logger.info 'Building manifest ...'
+      components = {}
+      @manifest.process(Worker::ComponentBuilder.new,
+                        Worker::ComponentsCollector.new(components))
+      components.each_value { |component| @lock.lock_component(component) }
       self
     end
 
-    def components_update
-      raise GitCompoundError,
-            "Lockfile `#{Lock::FILENAME}` does not exist ! " \
-            'You should use `build` command' unless Lock.exist?
-
+    def manifest_update
       Logger.info 'Updating components ...'
       @manifest.process(Worker::ComponentUpdater.new(@lock))
       self
@@ -75,18 +66,14 @@ module GitCompound
       self
     end
 
-    private
-
-    def build_from_lock!
-      Logger.info 'Using lockfile ...'
+    def locked_build
+      Logger.info 'Building components from lockfile ...'
       @lock.build
+      self
     end
 
-    def build_from_manifest!
-      components = {}
-      @manifest.process(Worker::ComponentBuilder.new,
-                        Worker::ComponentsCollector.new(components))
-      components.each_value { |component| @lock.lock_component(component) }
+    def lock_write
+      self
     end
   end
 end
