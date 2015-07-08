@@ -158,6 +158,9 @@ module GitTestEnvBuilder
     @base_component_dir = "#{@dir}/base_component.git"
     Dir.mkdir(@base_component_dir)
 
+    @component_1_dst = '/component_1'
+    @component_2_dst = '/component_2'
+
     git(@base_component_dir) do
       git_init
       git_add_file('Compoundfile') do
@@ -167,13 +170,13 @@ module GitTestEnvBuilder
           component :component_1 do
             version "~>1.1"
             source '#{@component_1_dir}'
-            destination '/component_1'
+            destination '#{@component_1_dst}'
           end
 
           component :component_2 do
             version "1.1"
             source '#{@component_2_dir}'
-            destination '/component_2'
+            destination '#{@component_2_dst}'
           end
 
           task :base_component_second_tasks, :each do |dir, component|

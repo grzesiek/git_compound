@@ -1,7 +1,7 @@
-require 'workers/shared_examples/component_updater'
-require 'workers/shared_examples/task_runner'
 require 'workers/shared_context/out_of_date_environment'
+require 'workers/shared_examples/component_updater'
 require 'workers/shared_examples/local_changes_guard'
+require 'workers/shared_examples/task_runner'
 
 describe GitCompound do
   describe '#update' do
@@ -12,6 +12,7 @@ describe GitCompound do
     end
 
     it_behaves_like 'component updater worker'
+    it_behaves_like 'local changes guard worker'
 
     it 'builds new components' do
       expect { subject.call }
@@ -25,7 +26,7 @@ describe GitCompound do
                                             /untracked files/)
     end
 
-    pending 'replaces components that has been changed to another' do
+    pending 'replaces components that has been replaced in manifest' do
       fail 'TODO'
     end
 
