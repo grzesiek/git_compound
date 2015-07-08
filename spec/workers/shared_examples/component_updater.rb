@@ -1,7 +1,7 @@
 shared_examples 'component updater worker' do
   it 'prints information about components being updated' do
     expect { subject.call }
-      .to output("Updating: `component_1` component, gem version: 2.0\n")
+      .to output(/^Updating: `component_1` component, gem version: 2.0$/)
       .to_stdout
   end
 

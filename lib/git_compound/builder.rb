@@ -17,7 +17,8 @@ module GitCompound
 
     def manifest_update
       Logger.info 'Updating components ...'
-      @manifest.process(Worker::ComponentUpdater.new(@lock))
+      @manifest.process(Worker::ComponentUpdater.new(@lock),
+                        Worker::ComponentBuilder.new(@lock))
       self
     end
 
@@ -38,6 +39,7 @@ module GitCompound
     end
 
     def components_show
+      Logger.info 'Processing components list ...'
       @manifest.process(
         Worker::CircularDependencyChecker.new,
         Worker::PrettyPrint.new)
