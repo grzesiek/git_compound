@@ -34,10 +34,17 @@ module GitCompound
         GitCommand.new(:show, "#{ref}:#{file}", @source).execute
       end
 
-      def untracked_files?
+      def untracked_files?(exclude = nil)
         untracked =
-          GitCommand.new('ls-files', '--exclude-standard --others', @source)
-        untracked.execute.length > 0
+          GitCommand.new('ls-files', '--exclude-standard --others', @source).execute
+        return (untracked.length > 0) unless exclude
+
+        untracked = untracked.split("\n")
+        untracked.delete_if do |file|
+          exclude.include?(file) || exclude.include?(file.split(File::SEPARATOR).first)
+        end
+
+        untracked.any?
       end
 
       def uncommited_changes?
