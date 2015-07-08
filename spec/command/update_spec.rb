@@ -1,6 +1,7 @@
 require 'workers/shared_examples/component_updater'
 require 'workers/shared_examples/task_runner'
 require 'workers/shared_context/out_of_date_environment'
+require 'workers/shared_examples/local_changes_guard'
 
 describe GitCompound do
   describe '#update' do
@@ -12,15 +13,19 @@ describe GitCompound do
 
     it_behaves_like 'component updater worker'
 
-    pending 'builds new components' do
-      fail 'TODO'
+    it 'builds new components' do
+      expect { subject.call }
+        .to output(/^Building:   `new_component` component, gem version: 1.0$/)
+        .to_stdout
+    end
+
+    it 'protectes local changes' do
+      Dir.chdir('component_1') { FileUtils.touch('untracked') }
+      expect{ subject.call }.to raise_error(GitCompound::LocalChangesError,
+                                            /untracked files/)
     end
 
     pending 'replaces components that has been changed to another' do
-      fail 'TODO'
-    end
-
-    pending 'protects local changes' do
       fail 'TODO'
     end
 
