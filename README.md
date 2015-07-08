@@ -12,7 +12,7 @@ Create `Compoundfile` or `.gitcompound` manifest:
 
 ```ruby
   name :base_component
-  
+
   component :component_1 do
     version '~>1.1'
     source  'git@github.com:/user/repository'
@@ -24,13 +24,13 @@ Create `Compoundfile` or `.gitcompound` manifest:
     source  'git@github.com:/user/repository_2'
     destination 'src/component_2'
   end
-  
+
   component :component_3 do
     branch 'feature/new-feature'
     source  '/my/component_3/repository'
     destination 'src/component_3'
   end
-  
+
   task 'add components to gitignore', :each do |component_dir|
     File.open('.gitignore', 'a') { |f| f.write "#{component_dir}\n" }
   end
@@ -91,7 +91,7 @@ Then run `gitcompound build`.
 
     This method takes two parameters -- name of component (as symbol) and implicit or explicit block.
 
-    Beware that `GitCompound` checks name constraints, so if you rely on component 
+    Beware that `GitCompound` checks name constraints, so if you rely on component
     with name `:component_1`, and this component has `Compoundfile` inside that declares 
     it's name as something else than `:component_1` -- `GitCompound` will raise exception.
 
@@ -103,7 +103,7 @@ Then run `gitcompound build`.
         If tag matches `/^v?#{Gem::Version::VERSION_PATTERN}$/` then it is considered to 
         be version tag and therefore it can be used with Rubygems syntax 
         (like pessimistic version constraint operator)
-      
+
     *   `tag` -- use component sources specified by **tag**
 
     *   `branch` -- use HEAD of given **branch**
@@ -130,18 +130,18 @@ Then run `gitcompound build`.
     It can be helpful when required component is big and you need to build your project
     only once, but it will cause issues with update. You will not be able to update it properly.
     Use it with caution !
- 
+
 
 5.  Use `destination` method to specify **destination** path where component will be cloned into.
 
-    This should be relative path in most cases. 
+    This should be relative path in most cases.
 
     Relative path is always relative to parent component directory. So if you define 
     `component_1` with destination path `component_1/`, and this component will
     depend on `component_2` with destination path set to `src/component_2`, you will
     end with `./component_1/src/component_2` directory after building components.
 
-    When path is absolute -- it will be always relative to `Dir.pwd` where 
+    When path is absolute -- it will be always relative to `Dir.pwd` where
     you invoke `gitcompound *` commands. So if you have `component_1` with destination path
     set to `/component_1` and `component_1` which has manifest that depends on `component_2` with
     destination path set to `/component_2`, then `GitCompound` will create two separate
@@ -160,7 +160,7 @@ Then run `gitcompound build`.
     Currently there are three task types:
 
     *   `:manifest` type (this is default) -- run task in context of current manifest
-        
+
         Task will be executed only once, in context of current manifest this task is
         defined in. Example:
 
@@ -168,10 +168,10 @@ Then run `gitcompound build`.
         task :print_manifest_name do |dir, manifest|
           puts "Current manifest name is #{manifest.name} and dir is: #{dir}"
         end
-        ```      
-  
+        ```
+
     *   `:each` type -- run task for each component defined in current manifest
-      
+
         This executes task for all components that are explicitly defined in current manifest.
         Example:
 
@@ -186,14 +186,14 @@ Then run `gitcompound build`.
         ```
 
         Note that `dir` here is the same as `component.destination_path`.
-        
+
     *   `:all` type -- run task for all child components of this manifest
 
         Task for `:all` components will be executed in context of every component
         this manifest is parent of.
 
-        It will be executed for all components defined in manifest itself and for all 
-        components that are included in child manifests (obviously child manifests are 
+        It will be executed for all components defined in manifest itself and for all
+        components that are included in child manifests (obviously child manifests are
         manifests included in components defined in parent manifest).
 
         Example:
@@ -229,11 +229,22 @@ Then run `gitcompound build`.
     It is possible to create new strategies by implementing new strategy base on
     `GitCompound::Repository::RemoteFile::RemoteFileStrategy` abstraction.
 
-2.  Using lockfile (`.gitcompound.lock`) -- TODO
+2.  Using lockfile (`.gitcompound.lock`)
+
+    If lockfile is present, `gitcompound build` command will ignore manifest, and build
+    components, with versions locked in commit SHA. You can always be sure that your
+    environment will be unchange when building from lockfile.
 
 3.  Building manifest -- TODO
 
-4.  Updating manifest -- TODO
+4.  Updating manifest
+
+    When using `gitcompound update` command each subsequent component will be either
+    built, updated or replaced:
+
+    *   built (cloned) -- if destination directory does not exist
+    *   updated (fetch & checkout) -- if component exists, matches origin and locked SHA != new SHA
+    *   replaced (remove & clone) -- if component exists but doesn't match origin
 
 ## Roadmap
 
