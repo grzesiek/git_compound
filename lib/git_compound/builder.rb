@@ -9,11 +9,16 @@ module GitCompound
       @opts     = opts
     end
 
-    def manifest_verify
-      return self if @manifest.md5sum == @lock.manifest
+    def manifest_build
+      Logger.info 'Building components ...'
+      @manifest.process(Worker::ComponentBuilder.new(@lock))
+      self
+    end
 
-      raise GitCompoundError,
-            'Manifest md5sum has changed ! Use `update` command instead'
+    def manifest_update
+      Logger.info 'Updating components ...'
+      @manifest.process(Worker::ComponentUpdater.new(@lock))
+      self
     end
 
     def manifest_lock
@@ -32,18 +37,6 @@ module GitCompound
       self
     end
 
-    def manifest_build
-      Logger.info 'Building components ...'
-      @manifest.process(Worker::ComponentBuilder.new(@lock))
-      self
-    end
-
-    def manifest_update
-      Logger.info 'Updating components ...'
-      @manifest.process(Worker::ComponentUpdater.new(@lock))
-      self
-    end
-
     def components_show
       @manifest.process(
         Worker::CircularDependencyChecker.new,
@@ -59,17 +52,23 @@ module GitCompound
       else
         @manifest.tasks.each_value(&:execute)
       end
-
       self
     end
 
-    def locked_build
+    def locked_manifest_verify
+      return self if @manifest.md5sum == @lock.manifest
+      raise GitCompoundError,
+            'Manifest md5sum has changed ! Use `update` command.'
+    end
+
+    def locked_components_build
       Logger.info 'Building components from lockfile ...'
-      @lock.build
+      @lock.process(Worker::ComponentBuilder.new)
       self
     end
 
-    def lock_write
+    def locked_components_guard
+      @lock.process(Worker::LocalChangesGuard.new)
       self
     end
   end

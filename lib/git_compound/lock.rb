@@ -42,11 +42,15 @@ module GitCompound
       @locked
     end
 
-    def build
-      components.each do |component|
-        Logger.info "Building component `#{component.name}` ..."
-        component.build
+    def find(component)
+      components.find do |locked_component|
+        locked_component.match_destination?(component) &&
+          ((yield locked_component if block_given?) || true)
       end
+    end
+
+    def process(worker)
+      components.each { |component| worker.visit_component(component) }
     end
 
     def write

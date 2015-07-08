@@ -7,7 +7,7 @@ module GitCompound
   describe Lock do
     describe 'building from lock' do
       include_context 'existing lockfile'
-      subject { -> { @lock.build } }
+      subject { -> { @lock.process(Worker::ComponentBuilder.new) } }
       let(:components) { @lock.components }
 
       it_behaves_like 'component builder worker'

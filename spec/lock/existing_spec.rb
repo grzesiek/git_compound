@@ -32,6 +32,18 @@ module GitCompound
           .to eq 'component_2_test/destination_1/'
       end
 
+      it 'should find locked component' do
+        component_dir = @component_2_dir
+        component = Component.new(:component_2) do
+          branch 'master'
+          source component_dir
+          destination 'component_2_test/destination_2/'
+        end
+
+        found = @lock.find(component) { |locked| locked.origin == component.origin }
+        expect(found).to be_an_instance_of Component
+      end
+
       context 'locking new component' do
         before do
           component_dir = @component_2_dir

@@ -5,6 +5,7 @@ module GitCompound
   #
   class Component < Node
     extend Forwardable
+    def_delegator :@source,      :sha
     def_delegator :@source,      :origin
     def_delegator :@source,      :repository
     def_delegator :@destination, :expanded_path, :destination_path
@@ -42,7 +43,7 @@ module GitCompound
     end
 
     def update
-      @destination.repository do|repo|
+      @destination.repository do |repo|
         repo.fetch
         repo.checkout(@source.ref)
       end

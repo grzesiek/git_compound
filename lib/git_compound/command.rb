@@ -5,8 +5,8 @@ module GitCompound
     def build(*args)
       if Lock.exist?
         builder(args)
-          .manifest_verify
-          .locked_build
+          .locked_manifest_verify
+          .locked_components_build
           .tasks_execute
       else
         builder(args)
@@ -22,14 +22,15 @@ module GitCompound
 
       raise GitCompoundError,
             "Lockfile `#{Lock::FILENAME}` does not exist ! " \
-            'You should use `build` command' unless Lock.exist?
+            'You should use `build` command.' unless Lock.exist?
 
       builder(args)
-        .manifest_verify
+        .locked_components_guard
         .dependencies_check
         .manifest_update
         .tasks_execute
         .manifest_lock
+        .lock_purge
     end
 
     def check(*args)
