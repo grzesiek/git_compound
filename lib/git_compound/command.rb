@@ -18,8 +18,6 @@ module GitCompound
     end
 
     def update(*args)
-      raise NotImplementedError
-
       raise GitCompoundError,
             "Lockfile `#{Lock::FILENAME}` does not exist ! " \
             'You should use `build` command.' unless Lock.exist?
@@ -30,7 +28,7 @@ module GitCompound
         .manifest_update
         .tasks_execute
         .manifest_lock
-        .lock_purge
+        # .locked_dormant_components_remove
     end
 
     def check(*args)

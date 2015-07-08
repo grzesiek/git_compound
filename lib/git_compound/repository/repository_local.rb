@@ -62,6 +62,10 @@ module GitCompound
         unpushed = GitCommand.new('rev-list', '@{u}..', @source)
         unpushed.execute.length > 0
       end
+
+      def head_sha
+        GitCommand.new('rev-parse', 'HEAD', @source).execute
+      end
     end
   end
 end

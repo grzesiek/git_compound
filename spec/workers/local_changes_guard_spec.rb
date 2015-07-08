@@ -16,10 +16,12 @@ module GitCompound
       end
 
       @component.build
+
+      @lock = Lock.new
     end
 
     subject do
-      -> { described_class.new.visit_component(@component) }
+      -> { described_class.new(@lock).visit_component(@component) }
     end
 
     context 'repository is clean' do
@@ -44,7 +46,9 @@ module GitCompound
     context 'repository has untracked files' do
       before do
         git(@component_2_dst) do
-          File.open('untracked_file', 'w') { |f| f.puts 'added untracked file' }
+          File.open('untracked_file_1', 'w') { |f| f.puts 'added untracked file' }
+          Dir.mkdir('untracked_dir')
+          File.open('untracked_dir/untracked_file_2', 'w') { |f| f.puts 'untracked' }
         end
       end
 
@@ -52,19 +56,20 @@ module GitCompound
         expect { subject.call }.to raise_error(LocalChangesError,
                                                /contains untracked files/)
       end
-    end
 
-    context 'repository has unpushed commits' do
-      before do
-        git(@component_2_dst) do
-          git_add_file('component_2_new_file') { 'new file ' }
-          git_commit('commit changes')
+      it 'should not raise error if untracked files belong to locked components' do
+        %w(untracked_file_1 untracked_dir).each do |dst|
+          component_dir = @component_2_dir
+          destination_dir = "#{@component_2_dst}#{dst}"
+          tmp_component = Component.new(:tmp) do
+            branch 'master'
+            source component_dir
+            destination destination_dir
+          end
+          @lock.lock_component(tmp_component)
         end
-      end
 
-      it 'should raise error if unpushed commits are detected' do
-        expect { subject.call }.to raise_error(LocalChangesError,
-                                               /contains unpushed commits/)
+        expect { subject.call }.to_not raise_error
       end
     end
   end

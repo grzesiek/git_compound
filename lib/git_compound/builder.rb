@@ -63,12 +63,12 @@ module GitCompound
 
     def locked_components_build
       Logger.info 'Building components from lockfile ...'
-      @lock.process(Worker::ComponentBuilder.new)
+      @lock.process(Worker::ComponentBuilder.new(@lock))
       self
     end
 
     def locked_components_guard
-      @lock.process(Worker::LocalChangesGuard.new)
+      @lock.process(Worker::LocalChangesGuard.new(@lock))
       self
     end
   end
