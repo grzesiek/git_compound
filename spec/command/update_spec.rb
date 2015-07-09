@@ -22,8 +22,8 @@ describe GitCompound do
 
     it 'protectes local changes' do
       Dir.chdir('component_1') { FileUtils.touch('untracked') }
-      expect{ subject.call }.to raise_error(GitCompound::LocalChangesError,
-                                            /untracked files/)
+      expect { subject.call }.to raise_error(GitCompound::LocalChangesError,
+                                             /untracked files/)
     end
 
     pending 'replaces components that has been replaced in manifest' do

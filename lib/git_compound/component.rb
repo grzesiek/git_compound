@@ -37,9 +37,10 @@ module GitCompound
     end
 
     def build
-      destination = @destination.expanded_path
-      @source.clone(destination)
-      @destination.repository { |repo| repo.checkout(@source.ref) }
+      @source.clone(destination_path)
+      @destination.repository do |repo|
+        repo.checkout(@source.ref)
+      end
     end
 
     def update
@@ -47,6 +48,18 @@ module GitCompound
         repo.fetch
         repo.checkout(@source.ref)
       end
+    end
+
+    def remove!
+      path = destination_path
+
+      raise GitCompoundError, 'Risky directory !' if
+        path.start_with?('/') || path.include?('..')
+
+      raise GitCompoundError, 'Not a directory !' unless
+        File.directory?(path)
+
+      FileUtils.remove_entry_secure(path)
     end
 
     # components comparison

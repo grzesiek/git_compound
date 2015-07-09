@@ -26,7 +26,6 @@ module GitCompound
     end
 
     context 'repository has untracked files' do
-
       it 'should raise error if untracked file is detected' do
         Dir.chdir(@test_dir) do
           File.open('untracked_file_1', 'w') { |f| f.puts 'added untracked file' }
