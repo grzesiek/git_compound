@@ -9,7 +9,7 @@ module GitCompound
       @component = Component.new(:base_component) do
         branch 'master'
         source component_dir
-        destination '/'
+        destination '/base_component'
       end
 
       @component_1 = @component.manifest.components[:component_1]
@@ -18,13 +18,18 @@ module GitCompound
       @leaf_component_2 = @component_1.manifest.components[:leaf_component_2]
     end
 
-    it 'should have valid absolute destinations' do
+    it 'returns valid expanded destinations paths' do
       expect(@component_1.destination_path).to eq 'component_1/'
       expect(@component_2.destination_path).to eq 'component_2/'
       expect(@leaf_component_1.destination_path)
         .to eq 'leaf_component_1_destination/'
       expect(@leaf_component_2.destination_path)
-        .to eq 'component_1/leaf_component_2_destination/'
+        .to eq 'base_component/component_1/leaf_component_2_destination/'
+    end
+
+    it 'raises error if destination is not directory' do
+      expect { Component::Destination.new('/', @component) }
+        .to raise_error(CompoundSyntaxError, /should contain at least one directory/)
     end
   end
 end

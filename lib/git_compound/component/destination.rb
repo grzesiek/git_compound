@@ -11,6 +11,10 @@ module GitCompound
         raise CompoundSyntaxError, 'Destination cannot be empty' if
           path.nil? || path.empty?
 
+        raise CompoundSyntaxError,
+              'Destination should contain at least one directory' unless
+          Pathname.new(path).each_filename.count > 0
+
         @path      = path
         @component = component
       end
