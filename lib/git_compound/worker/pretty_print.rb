@@ -11,7 +11,7 @@ module GitCompound
 
       def print_component(component)
         Logger.inline '  ' * component.ancestors.count
-        Logger.info "`#{component.name}` component, #{component.source.version}"
+        Logger.info "`#{component.name}` component, #{component.source.version}" # TODO: LoD
       end
     end
   end

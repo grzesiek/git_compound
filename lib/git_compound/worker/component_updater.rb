@@ -12,7 +12,7 @@ module GitCompound
         @component = component
         return unless component_needs_updating?
 
-        Logger.inline 'Updating: '
+        Logger.inline 'Updating:  '
         @print.visit_component(component)
 
         component.update

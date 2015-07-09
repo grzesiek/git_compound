@@ -12,7 +12,7 @@ module GitCompound
         @component = component
         return unless component_needs_building?
 
-        Logger.inline 'Building: '
+        Logger.inline 'Building:  '
         @print.visit_component(component)
 
         component.build

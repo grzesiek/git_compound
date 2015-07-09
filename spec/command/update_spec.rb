@@ -16,7 +16,7 @@ describe GitCompound do
 
     it 'builds new components' do
       expect { subject.call }
-        .to output(/^Building:   `new_component` component, gem version: 1.0$/)
+        .to output(/^Building:\s+`new_component` component, gem version: 1.0$/)
         .to_stdout
     end
 
