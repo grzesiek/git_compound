@@ -207,11 +207,12 @@ Then run `gitcompound build`.
     By default `GitCompound` executes only tasks defined in root manifest.
 
     This is default behaviour dictated by security reasons. Since all tasks (also those defined 
-    in child component) are visited in reverse order it is possible to execute then too. 
+    in child component) are visited in reverse order it is possible to execute them too.
 
-    If you know what you are doing and it is your conscious decision to run all tasks in project 
-    pass `--unsafe-stacked-tasks` options to `build` command. It can be beneficial approach, but
-    it has to be done with caution.
+    If you know what you are doing and it is your conscious decision to run all tasks in project
+    pass `--allow-nested-subtasks` options to `build` or `update` command.
+
+    It can be beneficial approach, but it has to be done with caution.
 
 ## Other concepts
 

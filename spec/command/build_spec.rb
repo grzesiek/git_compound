@@ -23,11 +23,11 @@ describe GitCompound do
       end
     end
 
-    context 'unsafe stacked tasks builder' do
+    context 'unsafe nested subtasks builder' do
       subject do
         lambda do
           GitCompound.build("#{@base_component_dir}/Compoundfile",
-                            '--unsafe-stacked-tasks')
+                            '--allow-nested-subtasks')
         end
       end
 

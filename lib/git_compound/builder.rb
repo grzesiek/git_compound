@@ -49,7 +49,7 @@ module GitCompound
     def tasks_execute
       Logger.info 'Running tasks ...'
 
-      if @opts.include?(:unsafe_stacked_tasks)
+      if @opts.include?(:allow_nested_subtasks)
         @manifest.process(Worker::TaskRunner.new)
       else
         @manifest.tasks.each_value(&:execute)
