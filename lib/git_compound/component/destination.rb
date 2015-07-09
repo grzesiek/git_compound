@@ -1,3 +1,5 @@
+require 'pathname'
+
 module GitCompound
   class Component
     # Component destination
@@ -14,18 +16,18 @@ module GitCompound
       end
 
       def expanded_path
-        return format_path(@path) if @path.start_with?('/')
+        pathname = Pathname.new(@path)
 
-        components = @component.ancestors
-        expanded_path = components.each_with_object('') do |ancestor, path|
-          path << ancestor.destination.expanded_path
-        end << @path
+        unless pathname.absolute?
+          ancestor_paths = @component.ancestors.map(&:destination_path)
+          pathname = Pathname.new('.').join(*ancestor_paths) + pathname
+        end
 
-        format_path(expanded_path)
+        Pathname.new("./#{pathname}").cleanpath.to_s + '/'
       end
 
       def exists?
-        File.directory?(expanded_path)
+        FileTest.exist?(expanded_path)
       end
 
       def repository
@@ -33,14 +35,6 @@ module GitCompound
           Repository::RepositoryLocal.new(expanded_path)
         yield destination_repository if block_given?
         destination_repository
-      end
-
-      private
-
-      def format_path(path)
-        path = path[1..-1] if path.start_with?('/')
-        path << '/' unless path.end_with?('/')
-        path
       end
     end
   end
