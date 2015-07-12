@@ -9,27 +9,15 @@ module GitCompound
       end
 
       def visit_component(component)
-        @component = component
-        return unless component_needs_updating?
+        raise "Component `#{component.name}` is not built !" unless
+          component.destination_exists?
 
         Logger.inline 'Updating:  '
         @print.visit_component(component)
 
         component.update
-      end
 
-      private
-
-      # Unless component exists and match origin with locked
-      # component, it needs replacement rather than update
-      #
-      def component_needs_updating?
-        locked_component = @lock.find(@component) do |locked|
-          @component.origin == locked.origin
-        end
-
-        locked_component &&
-          locked_component.sha != @component.sha
+        @lock.lock_component(component)
       end
     end
   end
