@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'fileutils'
 
 module GitCompound
   # Component
