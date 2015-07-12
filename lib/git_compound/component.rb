@@ -7,7 +7,7 @@ module GitCompound
     extend Forwardable
 
     attr_reader :name
-    attr_accessor :version, :source, :destination
+    attr_accessor :source, :destination
 
     def initialize(name, parent = nil, &block)
       @name   = name
@@ -18,7 +18,7 @@ module GitCompound
     end
 
     def valid?
-      [@version, @source, @destination, @name].all?
+      [@name, @source, @destination].all?
     end
 
     def process(*workers)
@@ -60,8 +60,7 @@ module GitCompound
 
     def conflicts?(*components)
       components.any? do |other|
-        match_destination?(other) &&
-          !match_identity_and_version?(other)
+        match_destination?(other) && !match_identity_and_version?(other)
       end
     end
 
@@ -74,8 +73,7 @@ module GitCompound
     end
 
     def ==(other)
-      origin == other.origin ||
-        manifest == other.manifest
+      origin == other.origin || manifest == other.manifest
     end
 
     def to_hash
@@ -88,7 +86,7 @@ module GitCompound
 
     # delegators
 
-    delegate [:sha, :origin, :repository] => :@source
+    delegate [:sha, :origin, :repository, :version] => :@source
     def_delegator :@destination, :expanded_path, :destination_path
     def_delegator :@destination, :exists?,       :destination_exists?
     def_delegator :@destination, :repository,    :destination_repository

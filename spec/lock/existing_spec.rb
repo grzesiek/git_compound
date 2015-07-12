@@ -27,7 +27,8 @@ module GitCompound
       it 'should instantiate valid component' do
         component = @lock.components.first
         expect(component.name).to eq :component_2
-        expect(component.version).to eq @component_2_commit_tag_v1_2_sha
+        expect(component.version.to_s)
+          .to eq "sha: #{@component_2_commit_tag_v1_2_sha[0..7]}"
         expect(component.destination_path)
           .to eq 'component_2_test/destination_1/'
       end

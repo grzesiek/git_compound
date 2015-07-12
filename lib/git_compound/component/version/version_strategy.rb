@@ -35,6 +35,10 @@ module GitCompound
         def to_s
           raise NotImplementedError
         end
+
+        def ==(other)
+          to_s == other.to_s
+        end
       end
     end
   end

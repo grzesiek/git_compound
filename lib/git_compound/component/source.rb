@@ -9,7 +9,7 @@ module GitCompound
       delegate [:sha, :ref] => :@version
       attr_reader :origin, :repository, :version, :options
 
-      def initialize(origin, strategy, options, component)
+      def initialize(origin, version, strategy, options, component)
         raise CompoundSyntaxError, 'Source cannot be empty' if
           origin.nil? || origin.empty?
 
@@ -18,7 +18,7 @@ module GitCompound
         @options    = options
         @component  = component
         @repository = Repository.factory(@origin)
-        @version    = strategy.new(@repository, @component.version)
+        @version    = strategy.new(@repository, version)
       end
 
       # Loads manifest from source repository

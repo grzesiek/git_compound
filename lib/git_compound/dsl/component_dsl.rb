@@ -16,8 +16,8 @@ module GitCompound
         raise CompoundSyntaxError,
               'Version strategy already set !' if @version_strategy
 
-        @component.version = version
-        @version_strategy  = strategy
+        @version = version
+        @version_strategy = strategy
       end
 
       def version(component_version)
@@ -41,10 +41,11 @@ module GitCompound
 
       def source(component_source, *source_options)
         raise CompoundSyntaxError,
-              'Version/branch/tag/sha needed first' unless @component.version
+              'Version/branch/tag/sha needed first' unless @version
 
         @component.source =
           Component::Source.new(component_source,
+                                @version,
                                 @version_strategy,
                                 source_options,
                                 @component)
