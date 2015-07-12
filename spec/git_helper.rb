@@ -14,6 +14,10 @@ module GitHelper
     `git config user.email test_email`
   end
 
+  def git_remotes
+    `git remote -v`.split("\n").map { |remote| Hash[*remote.split("\t")] }
+  end
+
   def git_add_file(name, &block)
     File.open(name, 'w') { |f| f.puts block.call }
     `git add #{name}`

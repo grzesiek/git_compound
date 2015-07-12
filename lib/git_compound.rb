@@ -78,6 +78,8 @@ module GitCompound
              'git_compound/worker/component_builder'
     autoload :ComponentUpdater,
              'git_compound/worker/component_updater'
+    autoload :ComponentReplacer,
+             'git_compound/worker/component_replacer'
     autoload :ComponentsCollector,
              'git_compound/worker/components_collector'
     autoload :ConflictingDependencyChecker,
