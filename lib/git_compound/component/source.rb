@@ -6,9 +6,7 @@ module GitCompound
     #
     class Source
       extend Forwardable
-      delegate sha: :@version
-      delegate ref: :@version
-
+      delegate [:sha, :ref] => :@version
       attr_reader :origin, :repository, :version, :options
 
       def initialize(origin, strategy, options, component)

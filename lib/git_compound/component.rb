@@ -5,12 +5,6 @@ module GitCompound
   #
   class Component < Node
     extend Forwardable
-    def_delegator :@source,      :sha
-    def_delegator :@source,      :origin
-    def_delegator :@source,      :repository
-    def_delegator :@destination, :expanded_path, :destination_path
-    def_delegator :@destination, :exists?,       :destination_exists?
-    def_delegator :@destination, :repository,    :destination_repository
 
     attr_reader :name
     attr_accessor :version, :source, :destination
@@ -91,5 +85,12 @@ module GitCompound
         destination: @destination.expanded_path
       }
     end
+
+    # delegators
+
+    delegate [:sha, :origin, :repository] => :@source
+    def_delegator :@destination, :expanded_path, :destination_path
+    def_delegator :@destination, :exists?,       :destination_exists?
+    def_delegator :@destination, :repository,    :destination_repository
   end
 end
