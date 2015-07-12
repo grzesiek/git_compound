@@ -16,6 +16,7 @@ module GitCompound
     end
 
     def manifest_update
+      raise NotImplementedError
       Logger.info 'Updating components ...'
       @manifest.process(Worker::ComponentUpdater.new(@lock),
                         Worker::ComponentBuilder.new(@lock))

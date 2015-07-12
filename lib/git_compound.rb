@@ -76,6 +76,8 @@ module GitCompound
              'git_compound/worker/circular_dependency_checker'
     autoload :ComponentBuilder,
              'git_compound/worker/component_builder'
+    autoload :ComponentUpdateDispatcher,
+             'git_compound/worker/component_update_dispatcher'
     autoload :ComponentUpdater,
              'git_compound/worker/component_updater'
     autoload :ComponentReplacer,

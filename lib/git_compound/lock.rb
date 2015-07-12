@@ -44,8 +44,7 @@ module GitCompound
 
     def find(component)
       components.find do |locked_component|
-        locked_component.match_destination?(component) &&
-          ((yield locked_component if block_given?) || true)
+        locked_component.match_destination?(component)
       end
     end
 

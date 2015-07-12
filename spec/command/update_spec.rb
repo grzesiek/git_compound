@@ -1,95 +1,17 @@
+require 'workers/shared_examples/component_update_dispatcher'
 require 'workers/shared_examples/local_changes_guard'
 require 'workers/shared_examples/task_runner'
+require 'workers/shared_context/out_of_date_environment'
 
 describe GitCompound do
   describe '#update' do
-    before do
-      # Build manifest
-      #
-      git_build_test_environment!
-      GitCompound.build("#{@base_component_dir}/Compoundfile")
-      @lock = GitCompound::Lock.new
-
-      # Create new component
-      #
-      @new_component_dir = "#{@dir}/new_component.git"
-      Dir.mkdir(@new_component_dir)
-      git(@new_component_dir) do
-        git_init
-        git_add_file('new_component_file') { 'new_component_test_file' }
-        git_commit('1.0 commit')
-        git_tag('1.0', 'version 1.0')
-      end
-
-      # Update component_1 source repository
-      #
-      git(@component_1_dir) do
-        git_add_file('new_component_1_file') { 'new_file_contents' }
-        git_edit_file('.gitcompound') do
-          <<-END
-            name :component_1
-
-            component :leaf_component_1 do
-              version '1.0'
-              source  '#{@leaf_component_1_dir}'
-              destination '/leaf_component_1_destination'
-            end
-
-            component :new_component do
-              version '1.0'
-              source '#{@new_component_dir}'
-              destination '/new_component_destination'
-            end
-          END
-        end
-        git_commit('2.0 commit')
-        git_tag('2.0', 'version 2.0')
-      end
-
-      # Create new manifest manifest
-      #
-      updated_manifest = <<-EOM
-        name :base_component
-
-        component :component_1 do
-          version "2.0"
-          source '#{@component_1_dir}'
-          destination '/component_1'
-        end
-
-        task :base_component_first_task do
-          $stderr.puts 'base_component_first_task'
-        end
-      EOM
-
-      # And save it as base_component manifest
-      #
-      git(@base_component_dir) do
-        git_edit_file('Compoundfile') { updated_manifest }
-      end
-
-      @manifest = git_base_component_manifest
-    end
+    include_context 'out of date environment'
 
     subject do
       -> { GitCompound.update("#{@base_component_dir}/Compoundfile") }
     end
 
-    it 'builds new components' do
-      expect { subject.call }
-        .to output(/^Building:\s+`new_component` component, gem version: 1.0$/)
-        .to_stdout
-    end
-
-    it 'protectes local changes' do
-      Dir.chdir('component_1') { FileUtils.touch('untracked') }
-      expect { subject.call }.to raise_error(GitCompound::LocalChangesError,
-                                             /untracked files/)
-    end
-
-    pending 'replaces components that has been replaced in manifest' do
-      fail 'TODO'
-    end
+    it_behaves_like 'component update dispatcher worker'
 
     pending 'removes dormant components' do
       fail 'TODO'

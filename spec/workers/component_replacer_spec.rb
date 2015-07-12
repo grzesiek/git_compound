@@ -21,15 +21,10 @@ module GitCompound
         source component_2_dir
         destination '/component_dir_test'
       end
-
-      @lock_old = Lock.new
-      @lock_old.lock_component(component_1)
-
-      @lock_new = Lock.new(Dir::Tmpname.make_tmpname('git', 'compound'))
     end
 
     subject do
-      -> { described_class.new(@lock_old, @lock_new).visit_component(@component_2) }
+      -> { described_class.new(Lock.new).visit_component(@component_2) }
     end
 
     it 'prints information about component being replaced' do
