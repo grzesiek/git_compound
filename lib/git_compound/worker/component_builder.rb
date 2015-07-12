@@ -22,7 +22,8 @@ module GitCompound
               "Destination  `#{component.destination_path}` " \
               'verification failed !' unless component.destination_exists?
 
-        @lock.lock_component(component) if @lock
+        return unless @lock
+        @lock.lock_component(component) unless @lock.find(component)
       end
     end
   end

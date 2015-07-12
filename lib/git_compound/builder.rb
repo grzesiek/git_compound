@@ -16,16 +16,16 @@ module GitCompound
     end
 
     def manifest_update
-      raise NotImplementedError
       Logger.info 'Updating components ...'
-      @manifest.process(Worker::ComponentUpdater.new(@lock),
-                        Worker::ComponentBuilder.new(@lock))
+      @lock_new = Lock.new.clean
+      @manifest.process(Worker::ComponentUpdateDispatcher.new(@lock, @lock_new))
       self
     end
 
     def manifest_lock
-      @lock.lock_manifest(@manifest)
-      @lock.write
+      lock = @lock_new ? @lock_new : @lock
+      lock.lock_manifest(@manifest)
+      lock.write
       self
     end
 
@@ -73,6 +73,21 @@ module GitCompound
     def locked_components_guard
       @lock.process(Worker::LocalChangesGuard.new(@lock))
       self
+    end
+
+    def locked_dormant_components_remove
+      raise GitCompoundError, 'No new lockfile !' unless @lock_new
+
+      dormant_components = @lock.components.reject do |component|
+        @lock_new.find(component) ? true : false
+      end
+
+      dormant_components.each do |component|
+        Logger.warn "Removing dormant component `#{component.name}` " \
+                    "from `#{component.destination_path}` !"
+
+        component.remove!
+      end
     end
   end
 end

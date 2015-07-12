@@ -1,3 +1,5 @@
+# Requires 'out of date environment context'
+
 shared_examples 'component update dispatcher worker' do
   it 'should build components that need building' do
     expect { subject.call }

@@ -12,8 +12,13 @@ module GitCompound
 
     def initialize(file = FILENAME)
       @file   = file
-      @locked = YAML.load(File.read(file)) if self.class.exist?
-      @locked = { manifest: '', components: [] } unless @locked.is_a? Hash
+      @locked = YAML.load(File.read(file)) if File.exist?(file)
+      clean unless @locked.is_a? Hash
+    end
+
+    def clean
+      @locked = { manifest: '', components: [] }
+      self
     end
 
     def lock_manifest(manifest)

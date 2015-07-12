@@ -28,7 +28,7 @@ module GitCompound
         .manifest_update
         .tasks_execute
         .manifest_lock
-      # .locked_dormant_components_remove
+        .locked_dormant_components_remove
     end
 
     def check(*args)

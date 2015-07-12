@@ -5,11 +5,12 @@ module GitCompound
     #
     class ComponentUpdateDispatcher < Worker
       def initialize(lock_old, lock_new)
-        @lock    = lock_old
-        @print   = PrettyPrint.new
-        @build   = ComponentBuilder.new(lock_new)
-        @update  = ComponentUpdater.new(lock_new)
-        @replace = ComponentReplacer.new(lock_new)
+        @lock_old = lock_old
+        @lock_new = lock_new
+        @print    = PrettyPrint.new
+        @build    = ComponentBuilder.new(lock_new)
+        @update   = ComponentUpdater.new(lock_new)
+        @replace  = ComponentReplacer.new(lock_new)
       end
 
       def visit_component(component)
@@ -22,6 +23,7 @@ module GitCompound
         else
           Logger.inline 'Unchanged: '
           @print.visit_component(component)
+          @lock_new.lock_component(component)
           return
         end
 
@@ -41,7 +43,7 @@ module GitCompound
       # and HEAD sha has changed
       #
       def component_needs_updating?
-        locked = @lock.find(@component)
+        locked = @lock_old.find(@component)
 
         locked && locked.origin == @component.origin &&
           locked.sha != @component.sha
@@ -51,7 +53,7 @@ module GitCompound
       # origin does not match
       #
       def component_needs_replacing?
-        locked = @lock.find(@component)
+        locked = @lock_old.find(@component)
         locked && locked.origin != @component.origin
       end
     end
