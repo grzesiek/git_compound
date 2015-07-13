@@ -41,14 +41,18 @@ module GitCompound
     end
 
     def help(*_args)
-      Logger.info usage
+      Logger.info(usage)
     end
 
     def run(command, args)
       abort(usage) unless methods.include?(command.to_sym)
+
+      Logger.debug("GitCompound v#{GitCompound::VERSION}")
+      Logger.debug("Running command '#{command}'")
+
       public_send(command, *args)
     rescue GitCompoundError => e
-      abort "[-] Error: #{e.message}"
+      abort Logger.error("Error: #{e.message}", :quiet)
     end
 
     private
@@ -70,30 +74,45 @@ module GitCompound
       Manifest.new(contents)
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
     def usage
-      <<-END
-GitCompound version #{GitCompound::VERSION}
+      usage_lines = [nil]
+      usage_lines << ['GitCompound version'.bold.yellow,
+                      GitCompound::VERSION.bold].join(' ')
+      usage_lines << nil
+      usage_lines << ['Usage:', 'gitcompound'.bold.green, '[options]'.green,
+                      'command'.bold, '[manifest_file]'.green].join(' ')
+      usage_lines << nil
+      usage_lines << 'Commandsi:'
+      usage_lines << '  build'.bold
+      usage_lines << '      builds project from manifest (or lockfile if present)'
+      usage_lines << nil
+      usage_lines << '      If manifest is not specified it uses `Compoundfile`'
+      usage_lines << '      or `.gitcompound`'
+      usage_lines << nil
+      usage_lines << '  update'.bold
+      usage_lines << '      updates project'
+      usage_lines << nil
+      usage_lines << '  check'.bold
+      usage_lines << '      detects circular depenencies, conflicting dependencies'
+      usage_lines << '      and checks for name contraints'
+      usage_lines << nil
+      usage_lines << '  show'.bold
+      usage_lines << '      prints structure of project'
+      usage_lines << nil
+      usage_lines << '  help'.bold
+      usage_lines << '      prints this help'
+      usage_lines << nil
+      usage_lines << 'Options:'
+      usage_lines << '  --verbose'.bold
+      usage_lines << '      prints verbose log info'
+      usage_lines << '  --disable-colors'.bold
+      usage_lines << '      disable ANSI colors in output'
 
-Usage:
-    gitcompound build [ manifest ]
-      -- builds project from manifest (or lockfile if present)
-
-         If manifest is not specified it uses `Compoundfile`
-         or `.gitcompound`
-
-    gitcompound update [ manifest ]
-      -- updates project
-
-    gitcompound check [ manifest ]
-      -- detects circular depenencies, conflicting dependencies
-         and checks for name contraints
-
-    gitcompound show [ manifest ]
-      -- prints structure of project
-
-    gitcompound help
-      -- prints this help
-      END
+      usage_lines.join("\n")
     end
+    # rubocop:enable Metrics/AbcSize
+    # rubocop:enable Metrics/MethodLength
   end
 end
