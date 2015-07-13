@@ -6,6 +6,8 @@ module GitCompound
   class Manifest < Node
     attr_accessor :name, :components, :tasks
 
+    FILENAMES = %w(Compoundfile .gitcompound)
+
     def initialize(contents, parent = nil)
       @contents   = contents
       @parent     = parent

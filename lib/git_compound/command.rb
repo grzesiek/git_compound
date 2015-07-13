@@ -60,7 +60,7 @@ module GitCompound
     end
 
     def manifest(filename)
-      files = filename ? [filename] : ['Compoundfile', '.gitcompound']
+      files = filename ? [filename] : Manifest::FILENAMES
       found = files.select { |file| File.exist?(file) }
 
       raise GitCompoundError,
