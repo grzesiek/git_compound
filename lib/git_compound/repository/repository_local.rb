@@ -21,6 +21,11 @@ module GitCompound
 
       def fetch
         GitCommand.new(:fetch, '', @source).execute
+        GitCommand.new(:fetch, '--tags', @source).execute
+      end
+
+      def merge(mergeable = 'FETCH_HEAD')
+        GitCommand.new(:merge, mergeable, @source).execute
       end
 
       def file_exists?(file, ref)
