@@ -51,7 +51,7 @@ module GitCompound
           @repository.head_sha != @component.sha
       end
 
-      # Component needs replacing if it exists but repository 
+      # Component needs replacing if it exists but repository
       # remote origin  does not match new component origin
       #
       def component_needs_replacing?

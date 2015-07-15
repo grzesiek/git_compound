@@ -49,7 +49,7 @@ module GitCompound
 
     def find(component)
       components.find do |locked_component|
-        locked_component.match_destination?(component)
+        locked_component.destination_path == component.destination_path
       end
     end
 

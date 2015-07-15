@@ -40,8 +40,8 @@ module GitCompound
       end
 
       def origin_remote
-       origin = GitCommand.new(:remote, '-v', @source).execute.match(/origin\t(.*?)\s/)
-       origin.captures.first if origin
+        origin = GitCommand.new(:remote, '-v', @source).execute.match(/origin\t(.*?)\s/)
+        origin.captures.first if origin
       end
 
       def untracked_files?(exclude = nil)

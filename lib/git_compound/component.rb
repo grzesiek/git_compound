@@ -58,22 +58,6 @@ module GitCompound
       FileUtils.remove_entry_secure(path)
     end
 
-    # components comparison
-
-    def conflicts?(*components)
-      components.any? do |other|
-        match_destination?(other) && !match_identity_and_version?(other)
-      end
-    end
-
-    def match_destination?(other)
-      destination_path == other.destination_path
-    end
-
-    def match_identity_and_version?(other)
-      self == other && version == other.version
-    end
-
     def ==(other)
       origin == other.origin || manifest == other.manifest
     end
