@@ -73,44 +73,41 @@ module GitCompound
     end
 
     # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/MethodLength
     def usage
-      usage_lines = [nil]
-      usage_lines << ['GitCompound version'.bold.yellow,
-                      GitCompound::VERSION.bold].join(' ')
-      usage_lines << nil
-      usage_lines << ['Usage:', 'gitcompound'.bold.green, '[options]'.green,
-                      'command'.bold, '[manifest_file]'.green].join(' ')
-      usage_lines << nil
-      usage_lines << 'Commandsi:'
-      usage_lines << '  build'.bold
-      usage_lines << '      builds project from manifest (or lockfile if present)'
-      usage_lines << nil
-      usage_lines << '      If manifest is not specified it uses `Compoundfile`'
-      usage_lines << '      or `.gitcompound`'
-      usage_lines << nil
-      usage_lines << '  update'.bold
-      usage_lines << '      updates project'
-      usage_lines << nil
-      usage_lines << '  check'.bold
-      usage_lines << '      detects circular depenencies, conflicting dependencies'
-      usage_lines << '      and checks for name contraints'
-      usage_lines << nil
-      usage_lines << '  show'.bold
-      usage_lines << '      prints structure of project'
-      usage_lines << nil
-      usage_lines << '  help'.bold
-      usage_lines << '      prints this help'
-      usage_lines << nil
-      usage_lines << 'Options:'
-      usage_lines << '  --verbose'.bold
-      usage_lines << '      prints verbose log info'
-      usage_lines << '  --disable-colors'.bold
-      usage_lines << '      disable ANSI colors in output'
+      <<-EOS
+      #{'GitCompound version'.bold.yellow} #{GitCompound::VERSION.bold}
 
-      usage_lines.join("\n")
+      Usage: #{'gitcompound'.bold.green} #{
+        '[options]'.green} #{'command'.bold} #{'[manifest_file]'.green}
+
+      Commands:
+        #{'build'.bold}
+            builds project from manifest (or lockfile if present)
+
+            If manifest is not specified it uses one of
+            #{Manifest::FILENAMES.inspect}
+
+        #{'update'.bold}
+            updates project
+
+        #{'check'.bold}
+            detects circular depenencies, conflicting dependencies
+            and checks for name contraints
+
+        #{'show'.bold}
+            prints structure of project
+
+        #{'help'.bold}
+            prints this help
+
+      Options:'
+        #{'--verbose'.bold}
+            prints verbose log info
+
+        #{'--disable-colors'.bold}
+            disable ANSI colors in output
+      EOS
     end
     # rubocop:enable Metrics/AbcSize
-    # rubocop:enable Metrics/MethodLength
   end
 end
