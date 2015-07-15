@@ -22,7 +22,7 @@ module GitCompound
         git(@component_2_dir) do
           git_add_file('new_update_file') { 'new_file_contents' }
           git_commit('2.0 commit')
-          git_tag('2.0', 'version 2.0')
+          @sha = git_tag('2.0', 'version 2.0')
         end
 
         # Update component
@@ -40,6 +40,10 @@ module GitCompound
       it 'should checkout new tag' do
         expect(File.read(@destination + 'new_update_file'))
           .to eq "new_file_contents\n"
+      end
+
+      it 'updates HEAD' do
+        expect(@component_new.repository.head_sha).to eq @sha
       end
     end
 
@@ -61,7 +65,7 @@ module GitCompound
         #
         git(@component_2_dir) do
           git_add_file('new_update_file') { 'new_file_contents' }
-          git_commit('new master commit')
+          @sha = git_commit('new master commit')
         end
         @component.update
 
@@ -73,6 +77,9 @@ module GitCompound
           .to eq "new_file_contents\n"
       end
 
+      it 'updates HEAD' do
+        expect(@component.repository.head_sha).to eq @sha
+      end
     end
   end
 end
