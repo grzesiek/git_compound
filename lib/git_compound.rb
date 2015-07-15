@@ -14,12 +14,6 @@ module GitCompound
   autoload :Repository, 'git_compound/repository'
   autoload :Task,       'git_compound/task'
 
-  # GitCompound Logger
-  #
-  module Logger
-    autoload :Colors,  'git_compound/logger/colors'
-  end
-
   # GitCompound Domain Specific Language
   #
   module DSL
@@ -42,6 +36,13 @@ module GitCompound
       autoload :Tag,             'git_compound/component/version/tag'
       autoload :VersionStrategy, 'git_compound/component/version/version_strategy'
     end
+  end
+
+  # GitCompound Logger
+  #
+  module Logger
+    autoload :Colors,  'git_compound/logger/colors'
+    require            'git_compound/logger/core_ext/string'
   end
 
   # Task module
@@ -103,12 +104,3 @@ module GitCompound
 
   extend Command
 end
-
-# rubocop:disable Style/Documentation
-class String
-  include GitCompound::Logger::Colors::InstanceMethods
-  extend GitCompound::Logger::Colors::ClassMethods
-
-  create_colors_methods
-end
-# rubocop:enable Style/Documentation
