@@ -2,4 +2,4 @@
 # encoding: UTF-8
 
 require 'git_compound'
-GitCompound.run(ARGV.shift || 'help', ARGV)
+GitCompound.run(*GitCompound::Command::Options.new(ARGV).parse)

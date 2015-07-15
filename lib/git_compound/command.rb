@@ -41,22 +41,24 @@ module GitCompound
     end
 
     def help(*_args)
-      Logger.info usage
+      Logger.info(usage)
     end
 
     def run(command, args)
       abort(usage) unless methods.include?(command.to_sym)
+
+      Logger.debug("GitCompound v#{GitCompound::VERSION}")
+      Logger.debug("Running command '#{command}'")
+
       public_send(command, *args)
     rescue GitCompoundError => e
-      abort "[-] Error: #{e.message}"
+      abort Logger.error("Error: #{e.message}", :quiet)
     end
 
     private
 
     def builder(args)
-      opts = args.select { |opt| opt.start_with?('--') }
-      opts.collect! { |opt| opt.sub(/^--/, '').gsub('-', '_').to_sym }
-      Builder.new(manifest(args.first), Lock.new, opts)
+      Builder.new(manifest(args.first), Lock.new, args)
     end
 
     def manifest(filename)
@@ -70,30 +72,42 @@ module GitCompound
       Manifest.new(contents)
     end
 
+    # rubocop:disable Metrics/AbcSize
     def usage
-      <<-END
-GitCompound version #{GitCompound::VERSION}
+      <<-EOS
+      #{'GitCompound version'.bold.yellow} #{GitCompound::VERSION.bold}
 
-Usage:
-    gitcompound build [ manifest ]
-      -- builds project from manifest (or lockfile if present)
+      Usage: #{'gitcompound'.bold.green} #{
+        '[options]'.green} #{'command'.bold} #{'[manifest_file]'.green}
 
-         If manifest is not specified it uses `Compoundfile`
-         or `.gitcompound`
+      Commands:
+        #{'build'.bold}
+            builds project from manifest (or lockfile if present)
 
-    gitcompound update [ manifest ]
-      -- updates project
+            If manifest is not specified it uses one of
+            #{Manifest::FILENAMES.inspect}
 
-    gitcompound check [ manifest ]
-      -- detects circular depenencies, conflicting dependencies
-         and checks for name contraints
+        #{'update'.bold}
+            updates project
 
-    gitcompound show [ manifest ]
-      -- prints structure of project
+        #{'check'.bold}
+            detects circular depenencies, conflicting dependencies
+            and checks for name contraints
 
-    gitcompound help
-      -- prints this help
-      END
+        #{'show'.bold}
+            prints structure of project
+
+        #{'help'.bold}
+            prints this help
+
+      Options:'
+        #{'--verbose'.bold}
+            prints verbose log info
+
+        #{'--disable-colors'.bold}
+            disable ANSI colors in output
+      EOS
     end
+    # rubocop:enable Metrics/AbcSize
   end
 end

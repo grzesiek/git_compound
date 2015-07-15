@@ -4,9 +4,12 @@ module GitCompound
   module Logger
     extend self
 
-    def info(information_message)
-      puts information_message
-      information_message
+    def verbose=(value)
+      @verbose = value && true
+    end
+
+    def verbose
+      @verbose ||= false
     end
 
     def inline(inline_message)
@@ -14,14 +17,27 @@ module GitCompound
       inline_message
     end
 
-    def warn(warning_message)
-      puts "[!] #{warning_message}"
-      warning_message
+    def debug(debug_message, *params)
+      log(debug_message.cyan, *params) if verbose
     end
 
-    def error(error_message)
-      puts "[-] #{error_message}"
-      error_message
+    def info(information_message, *params)
+      log(information_message, *params)
+    end
+
+    def warn(warning_message, *params)
+      log(warning_message.red.bold, *params)
+    end
+
+    def error(error_message, *params)
+      log(error_message.on_red.white.bold, *params)
+    end
+
+    private
+
+    def log(message, *params)
+      puts message unless params.include?(:quiet)
+      message
     end
   end
 end

@@ -18,6 +18,8 @@ RSpec.configure do |config|
   config.before do
     # Catch stdout
     # @stdout, $stdout = $stdout, StringIO.new
+    # @stderr, $stderr = $stderr, StringIO.new
+    String.disable_colors = true
   end
 
   config.around do |example|
@@ -30,5 +32,6 @@ RSpec.configure do |config|
   config.after do
     # Reassign stdout
     # $stdout, @stdout = @stdout, nil
+    # $stderr, @stderr = @stderr, nil
   end
 end

@@ -15,7 +15,7 @@ describe GitCompound do
 
     it 'removes dormant components' do
       pattern = "Removing dormant component `component_2` from `component_2/` !\n" \
-                '.* Removing dormant component `leaf_component_3` ' \
+                'Removing dormant component `leaf_component_3` ' \
                 'from `leaf_component_3_destination/`'
       expect { subject.call }
         .to output(/#{pattern}/).to_stdout
