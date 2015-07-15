@@ -27,7 +27,7 @@ module GitCompound
         raise DependencyError,
               "Version #{@version} unreachable" unless @version.reachable?
 
-        contents = @repository.files_contents(Manifest::FILENAMES, @version.sha)
+        contents = @repository.files_contents(Manifest::FILENAMES, @version.ref)
         Manifest.new(contents, @component)
       rescue FileNotFoundError
         Manifest.new(nil, @component)

@@ -35,6 +35,17 @@ module GitCompound
           contents = @remote_repository.file_contents('Compoundfile', 'test_tag')
           expect(contents).to eq 'name :test123'
         end
+
+        it 'provides access to component remote manifest' do
+          component_source = @remote
+          component = Component.new(:test) do
+            branch 'master'
+            source component_source
+            destination '/test_destination'
+          end
+
+          expect(component.manifest).to be_instance_of Manifest
+        end
       end
 
       context 'git archive not supported' do
