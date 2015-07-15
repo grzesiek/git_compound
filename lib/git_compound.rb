@@ -38,11 +38,17 @@ module GitCompound
     end
   end
 
+  # GitCompound Command
+  #
+  module Command
+    autoload :Options, 'git_compound/command/options'
+  end
+
   # GitCompound Logger
   #
   module Logger
     autoload :Colors,  'git_compound/logger/colors'
-    require            'git_compound/logger/core_ext/string'
+    require 'git_compound/logger/core_ext/string'
   end
 
   # Task module

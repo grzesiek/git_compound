@@ -2,17 +2,4 @@
 # encoding: UTF-8
 
 require 'git_compound'
-
-while (command = ARGV.shift)
-  if command == '--verbose'
-    GitCompound::Logger.verbose = true
-  elsif command == '--disable-colors'
-    String.disable_colors = true
-  else
-    break
-  end
-end
-
-command = 'help' unless command
-
-GitCompound.run(command, ARGV)
+GitCompound.run(*GitCompound::Command::Options.new(ARGV).parse)

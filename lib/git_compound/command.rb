@@ -58,9 +58,7 @@ module GitCompound
     private
 
     def builder(args)
-      opts = args.select { |opt| opt.start_with?('--') }
-      opts.collect! { |opt| opt.sub(/^--/, '').gsub('-', '_').to_sym }
-      Builder.new(manifest(args.first), Lock.new, opts)
+      Builder.new(manifest(args.first), Lock.new, args)
     end
 
     def manifest(filename)
