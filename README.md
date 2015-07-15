@@ -40,21 +40,35 @@ GitCompound will also process similar manifests found in required components in 
 
 Then run `gitcompound build`.
 
-## Base features 
 
-`GitCompound` is more a distributed packaging system than alternative to Git submodules. Base features:
+## Core features 
+
+`GitCompound` is more a distributed packaging system than alternative to Git submodules. 
+
+`GitCompound` makes sure your project composition is the same on all machines,
+but you can have different composition depending on manifest you are using.
+
+It has been created with Docker compatiblity in mind.
+
+Core features:
+
+*   `GitCompound` introduces Domain Specific Language desgined for writing manifests.
 
 *   It is possible to create multiple manifest files (`Compoundfile`, `.gitcompound` or something else)
     and build them when necessary.
 
+*   Building manifest create lockfile (locking components on specific commit SHA). When lockfile is present if will
+    be used each time `build` command is invoked.
+
 *   Manifests can declare dependencies on different versions of components using different version strategies
     (Rubygems-like version, tag, branch or explicit SHA).
 
-*   Manifests can be processed in hierarchical way. Manifest that `gitcompound` command is run against
-    is root manifest. `GitCompound` processes all subsequent manifests using depth-first search of
-    dependency graph.
+*   Manifests will be processed in hierarchical way. Manifest that `gitcompound` command is run against
+    is root manifest. `GitCompound` processes all subsequent manifests found in dependencies using depth-first
+    search of dependency graph.
 
-*   Manifest of each subsequent component can declare Ruby tasks that will be executed when component is built.
+*   Root manifest and manifest of each subsequent component can declare Ruby tasks that will be executed
+    when component is built or updated.
 
 *   It is possible to install dependencies in root directory (`Dir.pwd` where `gitcompound` command is invoked).
     Each subsequent component can install their dependencies into root directory (see overview for **destination** DSL method).
@@ -64,24 +78,33 @@ Then run `gitcompound build`.
 
 ## Commands
 
-    gitcompound build [ manifest ]
-      -- builds project from manifest (or lockfile if present)
+### build
 
-      If manifest is not specified it uses `Compoundfile`
-      or `.gitcompound` if present
+`gitcompound build [manifest]` -- builds project from manifest or lockfile
 
-    gitcompound update [ manifest ]
-      -- updates current project
+If manifest is not supplied, it uses `Compoundfile` or `.gitcompound`
 
-    gitcompound check [ manifest ]
-      -- detects circular depenencies, conflicting dependencies
-      and checks for name constraints
+### update
 
-    gitcompound show [ manifest ]
-      -- prints structure of project
+`gitcompound update [manifest]` -- updates project and lockfile
 
-    gitcompound help
-      -- prints help
+### check
+
+`gitcompound check [manifest]` -- checks for circular dependencies, conflicting dependencies
+and name constraints
+
+### show
+
+`gitcompound show [manifest]` -- prints project structure
+
+### help
+
+`gitcompound help` -- print help message
+
+## Global options
+
+1.  `--verbose` -- turns debug mode on
+2.  `--disable-colors` -- disables ANSI colors in output
 
 ## Details
 
