@@ -8,7 +8,7 @@ module GitCompound
     include_context 'out of date environment'
 
     subject do
-      -> { @manifest.process(described_class.new(@lock, Lock.new)) }
+      -> { @manifest.process(described_class.new(Lock.new)) }
     end
 
     it_behaves_like 'component update dispatcher worker'

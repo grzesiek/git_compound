@@ -4,17 +4,19 @@ module GitCompound
     # should be built, updated or replaced
     #
     class ComponentUpdateDispatcher < Worker
-      def initialize(lock_old, lock_new)
-        @lock_old = lock_old
-        @lock_new = lock_new
-        @print    = PrettyPrint.new
-        @build    = ComponentBuilder.new(lock_new)
-        @update   = ComponentUpdater.new(lock_new)
-        @replace  = ComponentReplacer.new(lock_new)
+      def initialize(lock)
+        @lock    = lock
+        @print   = PrettyPrint.new
+        @build   = ComponentBuilder.new(lock)
+        @update  = ComponentUpdater.new(lock)
+        @replace = ComponentReplacer.new(lock)
       end
 
       def visit_component(component)
         @component = component
+        @component_exists = component.destination_exists?
+        @repository = component.destination_repository if
+          @component_exists
 
         case
         when component_needs_building?  then strategy = @build
@@ -23,7 +25,7 @@ module GitCompound
         else
           Logger.inline 'Unchanged: '
           @print.visit_component(component)
-          @lock_new.lock_component(component)
+          @lock.lock_component(component)
           return
         end
 
@@ -36,25 +38,26 @@ module GitCompound
       # does not exist
       #
       def component_needs_building?
-        !@component.destination_exists?
+        !@component_exists
       end
 
-      # Component needs updating if is locked and, origin matches
-      # and HEAD sha has changed
+      # Component needs updating if it exists, remote origin matches
+      # new component origin and HEAD sha has changed
       #
       def component_needs_updating?
-        locked = @lock_old.find(@component)
+        return false unless @component_exists
 
-        locked && locked.origin == @component.origin &&
-          locked.sha != @component.sha
+        @repository.origin_remote =~ /#{@component.origin}$/ &&
+          @repository.head_sha != @component.sha
       end
 
-      # Component needs replacing if is locked and
-      # origin does not match
+      # Component needs replacing if it exists but repository 
+      # remote origin  does not match new component origin
       #
       def component_needs_replacing?
-        locked = @lock_old.find(@component)
-        locked && locked.origin != @component.origin
+        return false unless @component_exists
+
+        !(@repository.origin_remote =~ /#{@component.origin}$/)
       end
     end
   end

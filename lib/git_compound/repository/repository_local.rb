@@ -39,6 +39,11 @@ module GitCompound
         GitCommand.new(:show, "#{ref}:#{file}", @source).execute
       end
 
+      def origin_remote
+       origin = GitCommand.new(:remote, '-v', @source).execute.match(/origin\t(.*?)\s/)
+       origin.captures.first if origin
+      end
+
       def untracked_files?(exclude = nil)
         untracked =
           GitCommand.new('ls-files', '--exclude-standard --others', @source).execute

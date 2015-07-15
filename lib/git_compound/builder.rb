@@ -18,7 +18,7 @@ module GitCompound
     def manifest_update
       Logger.info 'Updating components ...'
       @lock_new = Lock.new.clean
-      @manifest.process(Worker::ComponentUpdateDispatcher.new(@lock, @lock_new))
+      @manifest.process(Worker::ComponentUpdateDispatcher.new(@lock_new))
       self
     end
 
@@ -66,7 +66,7 @@ module GitCompound
 
     def locked_components_build
       Logger.info 'Building components from lockfile ...'
-      @lock.process(Worker::ComponentBuilder.new(@lock))
+      @lock.process(Worker::ComponentUpdateDispatcher.new(@lock))
       self
     end
 
