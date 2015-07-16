@@ -48,10 +48,8 @@ module GitCompound
 
     def remove!
       path = destination_path
-
       raise GitCompoundError, 'Risky directory !' if
         path.start_with?('/') || path.include?('..')
-
       raise GitCompoundError, 'Not a directory !' unless
         File.directory?(path)
 

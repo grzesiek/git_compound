@@ -99,7 +99,7 @@ and name constraints
 
 ### help
 
-`gitcompound help` -- print help message
+`gitcompound help` -- prints help message
 
 ## Global options
 
@@ -259,7 +259,16 @@ and name constraints
     components, with versions locked in commit SHA. You can always be sure that your
     environment will be unchange when building from lockfile.
 
-3.  Building manifest -- TODO
+3.  Building manifest
+
+    Behavior of `build` command depends on whether lockfile exists or not.
+
+    *   When lockfile does not exist -- components will be built using versions stored in manifest.
+
+        Then lockfile `.gitcompound.lock` will be created, locking each component on specific commit SHA
+        that component has been checkout on during build process.
+
+    *   If lockfile is present it will be used as source for update process (see "Updating manifest" below)
 
 4.  Updating manifest
 
@@ -267,8 +276,11 @@ and name constraints
     built, updated or replaced:
 
     *   built (cloned) -- if destination directory does not exist
-    *   updated (fetch & checkout) -- if component exists, matches origin and locked SHA != new SHA
-    *   replaced (remove & clone) -- if component exists but doesn't match origin
+    *   updated (fetch & checkout) -- if component exists, matches origin and existing SHA != new SHA
+    *   replaced (remove & clone) -- if component exists but doesn't match origin remote
+
+    When invoking update process via `gitcompound update` command, versions specified in manifest file
+    will be use.
 
 ## Roadmap
 
