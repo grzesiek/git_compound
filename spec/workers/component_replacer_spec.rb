@@ -14,7 +14,7 @@ module GitCompound
         source component_1_dir
         destination '/component_dir_test'
       end
-      component_1.build
+      component_1.build!
 
       @component_2 = Component.new(:component_second) do
         version '0.1'

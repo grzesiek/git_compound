@@ -6,6 +6,8 @@ module GitCompound
   #
   class Component < Node
     extend Forwardable
+    delegate [:sha, :ref, :origin, :repository, :version] => :@source
+    delegate [:path, :exists?, :repository] => :@destination
 
     attr_reader :name
     attr_accessor :source, :destination
@@ -31,14 +33,14 @@ module GitCompound
       @manifest ||= @source.manifest
     end
 
-    def build
-      @source.clone(destination_path)
+    def build!
+      @source.clone(path)
       @destination.repository do |repo|
         repo.checkout(@source.ref)
       end
     end
 
-    def update
+    def update!
       @destination.repository do |repo|
         repo.fetch
         repo.checkout(@source.ref)
@@ -47,7 +49,6 @@ module GitCompound
     end
 
     def remove!
-      path = destination_path
       raise GitCompoundError, 'Risky directory !' if
         path.start_with?('/') || path.include?('..')
       raise GitCompoundError, 'Not a directory !' unless
@@ -64,15 +65,8 @@ module GitCompound
       { name: @name,
         sha:  @source.sha,
         source: @source.origin,
-        destination: @destination.expanded_path
+        destination: @destination.path
       }
     end
-
-    # delegators
-
-    delegate [:sha, :origin, :repository, :version] => :@source
-    def_delegator :@destination, :expanded_path, :destination_path
-    def_delegator :@destination, :exists?,       :destination_exists?
-    def_delegator :@destination, :repository,    :destination_repository
   end
 end

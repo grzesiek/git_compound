@@ -19,11 +19,11 @@ module GitCompound
     end
 
     it 'returns valid expanded destinations paths' do
-      expect(@component_1.destination_path).to eq 'component_1/'
-      expect(@component_2.destination_path).to eq 'component_2/'
-      expect(@leaf_component_1.destination_path)
+      expect(@component_1.path).to eq 'component_1/'
+      expect(@component_2.path).to eq 'component_2/'
+      expect(@leaf_component_1.path)
         .to eq 'leaf_component_1_destination/'
-      expect(@leaf_component_2.destination_path)
+      expect(@leaf_component_2.path)
         .to eq 'base_component/component_1/leaf_component_2_destination/'
     end
 

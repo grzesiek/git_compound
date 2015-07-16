@@ -29,7 +29,7 @@ module GitCompound
         expect(component.name).to eq :component_2
         expect(component.version.to_s)
           .to eq "sha: #{@component_2_commit_tag_v1_2_sha[0..7]}"
-        expect(component.destination_path)
+        expect(component.path)
           .to eq 'component_2_test/destination_1/'
       end
 

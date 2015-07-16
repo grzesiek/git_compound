@@ -13,7 +13,7 @@ module GitCompound
           destination '/component_2_test_dir'
         end
 
-        @component.build
+        @component.build!
       end
 
       it 'should build component' do

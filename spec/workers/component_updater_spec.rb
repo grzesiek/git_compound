@@ -12,7 +12,7 @@ module GitCompound
         destination '/tmp_leaf_component_1_test_dir'
       end
 
-      component.build
+      component.build!
 
       git(@leaf_component_1_dir) do
         git_add_file('new_component_file') { 'new_component_test_file' }

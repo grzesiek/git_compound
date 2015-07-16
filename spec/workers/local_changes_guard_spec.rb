@@ -17,7 +17,7 @@ module GitCompound
         destination component_1_dst
       end
 
-      @component.build
+      @component.build!
 
       @lock = Lock.new
     end

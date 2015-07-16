@@ -4,14 +4,14 @@ shared_examples 'component builder worker' do
   end
 
   it 'should build all required components' do
-    expect(components.all? { |c| c.destination_exists? == true })
+    expect(components.all? { |component| component.exists? == true })
       .to be true
   end
 
   it 'should checkout valid refs' do
-    result = components.all? do |c|
-      git(c.destination_path) do
-        (git_current_ref == c.source.ref) || (c.source.ref == git_head_sha)
+    result = components.all? do |component|
+      git(component.path) do
+        (git_current_ref == component.ref) || (component.ref == git_head_sha)
       end
     end
     expect(result).to be true

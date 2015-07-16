@@ -52,7 +52,7 @@ module GitCompound
       end
 
       it 'should be properly cloned into destination' do
-        destination = "#{@dir}/#{@component.destination.expanded_path}"
+        destination = "#{@dir}/#{@component.path}"
         @component.source.clone(destination)
         expect(File.exist?("#{destination}/leaf_component_1")).to be true
       end

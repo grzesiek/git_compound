@@ -13,10 +13,8 @@ module GitCompound
       end
 
       def visit_component(component)
-        @component = component
-        @component_exists = component.destination_exists?
-        @repository = component.destination_repository if
-          @component_exists
+        @component  = component
+        @repository = component.repository if component.exists?
 
         case
         when component_needs_building?  then strategy = @build
@@ -38,14 +36,14 @@ module GitCompound
       # does not exist
       #
       def component_needs_building?
-        !@component_exists
+        !@component.exists?
       end
 
       # Component needs updating if it exists, remote origin matches
       # new component origin and HEAD sha has changed
       #
       def component_needs_updating?
-        return false unless @component_exists
+        return false unless @component.exists?
 
         @repository.origin_remote =~ /#{@component.origin}$/ &&
           @repository.head_sha != @component.sha
@@ -55,7 +53,7 @@ module GitCompound
       # remote origin  does not match new component origin
       #
       def component_needs_replacing?
-        return false unless @component_exists
+        return false unless @component.exists?
 
         !(@repository.origin_remote =~ /#{@component.origin}$/)
       end

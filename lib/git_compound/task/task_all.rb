@@ -10,7 +10,7 @@ module GitCompound
 
       def execute
         @components.each_value do |component|
-          execute_on(component.destination_path, component)
+          execute_on(component.path, component)
         end
       end
 

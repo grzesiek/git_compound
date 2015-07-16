@@ -10,17 +10,17 @@ module GitCompound
 
       def visit_component(component)
         raise GitCompoundError,
-              "Destination directory `#{component.destination_path}` " \
-              'already exists !' if component.destination_exists?
+              "Destination directory `#{component.path}` " \
+              'already exists !' if component.exists?
 
         Logger.inline 'Building:  '
         @print.visit_component(component)
 
-        component.build
+        component.build!
 
         raise GitCompoundError,
-              "Destination  `#{component.destination_path}` " \
-              'verification failed !' unless component.destination_exists?
+              "Destination  `#{component.path}` " \
+              'verification failed !' unless component.exists?
 
         return unless @lock
         @lock.lock_component(component) unless @lock.find(component)

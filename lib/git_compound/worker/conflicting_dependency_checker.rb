@@ -3,9 +3,6 @@ module GitCompound
     # Worker that detects conflicting dependencies
     #
     class ConflictingDependencyChecker < Worker
-      # TODO: this should collect all components first
-      #       using ComponentsCollector worker
-      #
       def initialize
         @components = []
       end
@@ -22,8 +19,8 @@ module GitCompound
 
       def conflict_exists?(component)
         @components.any? do |other|
-          component.destination_path == other.destination_path &&
-            !(component == other && component.version == other.version)
+          !(component == other && component.version == other.version) &&
+            component.path == other.path
         end
       end
     end

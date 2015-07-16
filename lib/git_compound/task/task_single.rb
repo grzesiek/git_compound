@@ -10,7 +10,7 @@ module GitCompound
 
       def execute
         if @component
-          execute_on(@component.destination_path, @component.manifest)
+          execute_on(@component.path, @component.manifest)
         else
           # Root manifest without parent
           execute_on(Dir.pwd, @manifest)

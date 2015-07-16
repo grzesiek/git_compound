@@ -84,7 +84,7 @@ module GitCompound
 
       dormant_components.each do |component|
         Logger.warn "Removing dormant component `#{component.name}` " \
-                    "from `#{component.destination_path}` !"
+                    "from `#{component.path}` !"
 
         component.remove!
       end

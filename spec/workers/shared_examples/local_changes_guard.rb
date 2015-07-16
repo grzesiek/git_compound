@@ -47,7 +47,7 @@ module GitCompound
             destination destination_dir
           end
           @lock.lock_component(tmp_component)
-          tmp_component.build
+          tmp_component.build!
         end
         @lock.write
 

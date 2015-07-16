@@ -10,13 +10,13 @@ module GitCompound
 
       def visit_component(component)
         raise "Component `#{component.name}` is not built !" unless
-          component.destination_exists?
+          component.exists?
 
         Logger.inline 'Replacing: '
         @print.visit_component(component)
 
         component.remove!
-        component.build
+        component.build!
 
         @lock.lock_component(component)
       end

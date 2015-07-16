@@ -10,7 +10,7 @@ module GitCompound
 
       def visit_component(component)
         @component  = component
-        @repository = component.destination_repository
+        @repository = component.repository
 
         check_uncommited_changes!
         check_untracked_files!
@@ -33,13 +33,13 @@ module GitCompound
       end
 
       def subcomponents_dirs
-        locked_dirs = @lock.components.map { |locked| "#{locked.destination_path}".chop }
+        locked_dirs = @lock.components.map { |locked| "#{locked.path}".chop }
         component_subdirs = locked_dirs.select do |locked_dir|
-          locked_dir.start_with?(@component.destination_path)
+          locked_dir.start_with?(@component.path)
         end
 
         component_subdirs.collect do |subdir|
-          subdir.sub(/^#{@component.destination_path}/, '').split(File::SEPARATOR).first
+          subdir.sub(/^#{@component.path}/, '').split(File::SEPARATOR).first
         end
       end
     end
