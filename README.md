@@ -1,6 +1,8 @@
-# Git Compound
+# GitCompound
 
-Compose your project using git repositories and ruby tasks
+Compose your project using git repositories and Ruby tasks.
+
+GitCompound combines features of Git submodules and common dependency managers like Bundler or Composer.
 
 ## Status
 
@@ -36,14 +38,16 @@ Create `Compoundfile` or `.gitcompound` manifest:
   end
 ```
 
-GitCompound will also process similar manifests found in required components in hierarchical way.
-
 Then run `gitcompound build`.
+
+GitCompound will also process manifests found in dependencies.
+
 
 
 ## Core features 
 
-`GitCompound` is more a distributed packaging system than alternative to Git submodules. 
+GitCompound is more a distributed packaging system (dependency manager) than alternative to Git submodules,
+however it has common features of both Git submodules and dependency managers like Bundler or Composer.
 
 `GitCompound` makes sure your project composition is the same on all machines,
 but you can have different composition depending on manifest you are using.
@@ -57,9 +61,6 @@ Core features:
 *   It is possible to create multiple manifest files (`Compoundfile`, `.gitcompound` or something else)
     and build them when necessary.
 
-*   Building manifest create lockfile (locking components on specific commit SHA). When lockfile is present if will
-    be used each time `build` command is invoked.
-
 *   Manifests can declare dependencies on different versions of components using different version strategies
     (Rubygems-like version, tag, branch or explicit SHA).
 
@@ -67,7 +68,7 @@ Core features:
     is root manifest. `GitCompound` processes all subsequent manifests found in dependencies using depth-first
     search of dependency graph.
 
-*   Root manifest and manifest of each subsequent component can declare Ruby tasks that will be executed
+*   Root manifest and manifests of each subsequent component can declare Ruby tasks that will be executed
     when component is built or updated.
 
 *   It is possible to install dependencies in root directory (`Dir.pwd` where `gitcompound` command is invoked).
@@ -75,6 +76,10 @@ Core features:
 
 *   Build process creates lockfile in `.gitcompound.lock`. It locks components on specific commit SHAs.
     It is then possible to build components directly, depending on versions (SHAs) from lockfile.
+    When lockfile is present if will be used each time `build` command is invoked.
+
+*   It is possible to use repositories, that has been used as dependencies, for development (like in Git submodules).
+
 
 ## Commands
 
