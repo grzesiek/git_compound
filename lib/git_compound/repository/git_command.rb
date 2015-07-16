@@ -8,7 +8,7 @@ module GitCompound
       attr_reader :output, :status, :command
 
       def initialize(cmd, args, workdir = nil)
-        @command = "git #{cmd} #{args} 2>&1"
+        @command = "(git #{cmd} #{args}) 2>&1"
         @workdir = workdir
       end
 
