@@ -58,7 +58,8 @@ module GitCompound
     private
 
     def builder(args)
-      Builder.new(manifest(args.first), Lock.new, args)
+      filename = args.find { |arg| arg.is_a? String }
+      Builder.new(manifest(filename), Lock.new, args)
     end
 
     def manifest(filename)
