@@ -14,18 +14,19 @@ module GitCompound
     end
 
     it 'should reach all components' do
-      expect { @task.execute }.to output(
-        "dir: component_1/\n"                                 \
-        "component name: component_1\n"                       \
-        "dir: leaf_component_1_destination/\n"                \
-        "component name: leaf_component_1\n"                  \
-        "dir: component_1/leaf_component_2_destination/\n"    \
-        "component name: leaf_component_2\n"                  \
-        "dir: component_2/\n"                                 \
-        "component name: component_2\n"                       \
-        "dir: leaf_component_3_destination/\n"                \
-        "component name: leaf_component_3\n"
-      ).to_stdout
+      pattern =
+        'dir: /[^ ]+/component_1\n'                               \
+        'component name: component_1\n'                           \
+        'dir: /[^ ]+/leaf_component_1_destination\n'              \
+        'component name: leaf_component_1\n'                      \
+        'dir: /[^ ]+/component_1/leaf_component_2_destination\n'  \
+        'component name: leaf_component_2\n'                      \
+        'dir: /[^ ]+/component_2\n'                               \
+        'component name: component_2\n'                           \
+        'dir: /[^ ]+/leaf_component_3_destination\n'              \
+        'component name: leaf_component_3'
+
+      expect { @task.execute }.to output(/#{pattern}/).to_stdout
     end
   end
 end

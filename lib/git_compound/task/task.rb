@@ -1,3 +1,5 @@
+require 'pathname'
+
 module GitCompound
   module Task
     # Base abstract class for task
@@ -21,7 +23,8 @@ module GitCompound
       private
 
       def execute_on(directory, component)
-        @block.call(directory, component)
+        path = Pathname.new(directory).expand_path.to_s
+        @block.call(path, component)
       end
     end
   end
