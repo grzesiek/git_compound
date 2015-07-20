@@ -17,8 +17,11 @@ RSpec.configure do |config|
 
   config.before do
     # Catch stdout
-    # @stdout, $stdout = $stdout, StringIO.new
-    # @stderr, $stderr = $stderr, StringIO.new
+    unless ENV['GIT_COMPOUND_DEBUG']
+      @stdout, $stdout = $stdout, StringIO.new
+      @stderr, $stderr = $stderr, StringIO.new
+    end
+
     GitCompound::Command::Options.verbose = true
     GitCompound::Command::Options.disable_colors = true
   end
@@ -33,7 +36,9 @@ RSpec.configure do |config|
 
   config.after do
     # Reassign stdout
-    # $stdout, @stdout = @stdout, nil
-    # $stderr, @stderr = @stderr, nil
+    unless ENV['GIT_COMPOUND_DEBUG']
+      $stdout, @stdout = @stdout, nil
+      $stderr, @stderr = @stderr, nil
+    end
   end
 end
