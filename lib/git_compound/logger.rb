@@ -56,6 +56,7 @@ module GitCompound
     def load_debug_messages
       require 'git_compound/logger/debug/command'
       require 'git_compound/logger/debug/repository'
+      require 'git_compound/logger/debug/task'
     end
   end
 end

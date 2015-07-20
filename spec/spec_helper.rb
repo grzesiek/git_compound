@@ -19,8 +19,8 @@ RSpec.configure do |config|
     # Catch stdout
     # @stdout, $stdout = $stdout, StringIO.new
     # @stderr, $stderr = $stderr, StringIO.new
-    GitCompound::Command::Options.disable_colors = true
     GitCompound::Command::Options.verbose = true
+    GitCompound::Command::Options.disable_colors = true
   end
 
   config.around do |example|

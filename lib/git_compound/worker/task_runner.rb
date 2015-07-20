@@ -5,6 +5,7 @@ module GitCompound
     #
     class TaskRunner < Worker
       def visit_task(task)
+        Logger.info "Running: `#{task.name}` task"
         task.execute
       end
     end

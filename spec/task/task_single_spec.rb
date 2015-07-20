@@ -8,8 +8,8 @@ module GitCompound
       base_manifest = git_base_component_manifest
       @task = Task::TaskSingle.new(:task_base_manifest,
                                    base_manifest) do |dir, manifest|
-        puts "dir: #{dir}"
-        puts "manifest name: #{manifest.name}"
+        $stderr.puts "dir: #{dir}"
+        $stderr.puts "manifest name: #{manifest.name}"
       end
     end
 
@@ -17,7 +17,7 @@ module GitCompound
       expect { @task.execute }.to output(
         "dir: #{@dir}\n"                          \
         "manifest name: base_component\n"         \
-      ).to_stdout
+      ).to_stderr
     end
   end
 end

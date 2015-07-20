@@ -53,7 +53,9 @@ module GitCompound
       if @opts.include?(:allow_nested_subtasks)
         @manifest.process(Worker::TaskRunner.new)
       else
-        @manifest.tasks.each_value(&:execute)
+        @manifest.tasks.each_value do |task|
+          Worker::TaskRunner.new.visit_task(task)
+        end
       end
       self
     end

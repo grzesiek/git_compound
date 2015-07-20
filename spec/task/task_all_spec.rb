@@ -8,8 +8,8 @@ module GitCompound
       base_manifest = git_base_component_manifest
       @task = Task::TaskAll.new(:task_for_all_components,
                                 base_manifest) do |dir, component|
-        puts "dir: #{dir}"
-        puts "component name: #{component.name}"
+        $stderr.puts "dir: #{dir}"
+        $stderr.puts "component name: #{component.name}"
       end
     end
 
@@ -26,7 +26,7 @@ module GitCompound
         'dir: /[^ ]+/leaf_component_3_destination\n'              \
         'component name: leaf_component_3'
 
-      expect { @task.execute }.to output(/#{pattern}/).to_stdout
+      expect { @task.execute }.to output(/#{pattern}/).to_stderr
     end
   end
 end
