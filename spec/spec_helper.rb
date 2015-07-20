@@ -23,6 +23,7 @@ RSpec.configure do |config|
   end
 
   config.around do |example|
+    @gem_dir = Dir.pwd
     Dir.mktmpdir %w(gitcompound_ _test) do |dir|
       @dir = dir
       Dir.chdir(dir) { example.run }
