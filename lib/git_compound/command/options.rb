@@ -8,6 +8,7 @@ module GitCompound
       def initialize(args)
         @command, @args = parse_options(args)
 
+        self.class.disable_colors = false
         set_global_options
       end
 
@@ -32,7 +33,7 @@ module GitCompound
       end
 
       def self.disable_colors=(mode)
-        String.disable_colors = mode
+        GitCompound::Logger.colors = !mode
       end
 
       private

@@ -47,7 +47,8 @@ module GitCompound
   # GitCompound Logger
   #
   module Logger
-    autoload :Colors,  'git_compound/logger/colors'
+    autoload :Colors,   'git_compound/logger/colors'
+    autoload :Debugger, 'git_compound/logger/debugger'
     require 'git_compound/logger/core_ext/string'
   end
 

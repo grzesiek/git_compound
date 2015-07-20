@@ -46,13 +46,9 @@ module GitCompound
 
     def run(command, args)
       abort(usage) unless methods.include?(command.to_sym)
-
-      Logger.debug("GitCompound v#{GitCompound::VERSION}")
-      Logger.debug("Running command '#{command}'")
-
       public_send(command, *args)
     rescue GitCompoundError => e
-      abort Logger.error("Error: #{e.message}", :quiet)
+      abort Logger.parse("Error: #{e.message}".on_red.white.bold)
     end
 
     private
@@ -75,39 +71,41 @@ module GitCompound
 
     # rubocop:disable Metrics/AbcSize
     def usage
-      <<-EOS
-      #{'GitCompound version'.bold.yellow} #{GitCompound::VERSION.bold}
+      msg = <<-EOS
+  #{'GitCompound version'.bold.yellow} #{GitCompound::VERSION.bold}
 
-      Usage: #{'gitcompound'.bold.green} #{
-        '[options]'.green} #{'command'.bold} #{'[manifest_file]'.green}
+  Usage: #{'gitcompound'.bold.green} #{
+    '[options]'.green} #{'command'.bold} #{'[manifest_file]'.green}
 
-      Commands:
-        #{'build'.bold}
-            builds project from manifest (or lockfile if present)
+  Commands:
+    #{'build'.bold}
+        builds project from manifest (or lockfile if present)
 
-            If manifest is not specified it uses one of
-            #{Manifest::FILENAMES.inspect}
+        If manifest is not specified it uses one of
+        #{Manifest::FILENAMES.inspect}
 
-        #{'update'.bold}
-            updates project
+    #{'update'.bold}
+        updates project
 
-        #{'check'.bold}
-            detects circular depenencies, conflicting dependencies
-            and checks for name contraints
+    #{'check'.bold}
+        detects circular depenencies, conflicting dependencies
+        and checks for name contraints
 
-        #{'show'.bold}
-            prints structure of project
+    #{'show'.bold}
+        prints structure of project
 
-        #{'help'.bold}
-            prints this help
+    #{'help'.bold}
+        prints this help
 
-      Options:'
-        #{'--verbose'.bold}
-            prints verbose log info
+  Options:'
+    #{'--verbose'.bold}
+        prints verbose log info
 
-        #{'--disable-colors'.bold}
-            disable ANSI colors in output
+    #{'--disable-colors'.bold}
+        disable ANSI colors in output
       EOS
+
+      Logger.parse(msg)
     end
     # rubocop:enable Metrics/AbcSize
   end

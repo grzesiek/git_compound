@@ -5,6 +5,7 @@ module GitCompound
     extend self
 
     def verbose=(value)
+      load_debug_messages if value
       @verbose = value && true
     end
 
@@ -12,32 +13,48 @@ module GitCompound
       @verbose ||= false
     end
 
+    def colors=(value)
+      String.disable_colors = !(@colors = value)
+    end
+
+    def colors
+      @colors ||= true
+    end
+
     def inline(inline_message)
       print inline_message
       inline_message
     end
 
-    def debug(debug_message, *params)
-      log(debug_message.cyan, *params) if verbose
+    def debug(debug_message)
+      log debug_message.cyan
     end
 
-    def info(information_message, *params)
-      log(information_message, *params)
+    def info(information_message)
+      log information_message
     end
 
-    def warn(warning_message, *params)
-      log(warning_message.red.bold, *params)
+    def warn(warning_message)
+      log warning_message.red.bold
     end
 
-    def error(error_message, *params)
-      log(error_message.on_red.white.bold, *params)
+    def error(error_message)
+      log error_message.on_red.white.bold
+    end
+
+    def parse(message)
+      message
     end
 
     private
 
-    def log(message, *params)
-      puts message unless params.include?(:quiet)
+    def log(message)
+      puts message
       message
+    end
+
+    def load_debug_messages
+      require 'git_compound/logger/debug/command'
     end
   end
 end
