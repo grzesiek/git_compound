@@ -6,7 +6,7 @@ GitCompound combines features of Git submodules and common dependency managers l
 
 ## Status
 
-This project is in alpha phase
+This project is in beta phase.
 
 ## Overview
 
