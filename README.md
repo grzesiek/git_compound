@@ -4,10 +4,6 @@ Compose your project using git repositories and Ruby tasks.
 
 GitCompound combines features of Git submodules and common dependency managers like Bundler or Composer.
 
-## Status
-
-This project is in beta phase.
-
 ## Overview
 
 Create `Compoundfile` or `.gitcompound` manifest:
@@ -15,26 +11,26 @@ Create `Compoundfile` or `.gitcompound` manifest:
 ```ruby
   name :base_component
 
-  component :component_1 do
+  component :vendor_1 do
     version '~>1.1'
     source  'git@github.com:/user/repository'
     destination 'src/component_1'
   end
 
-  component :component_2 do
+  component :second_component do
     version '>=2.0'
     source  'git@github.com:/user/repository_2'
     destination 'src/component_2'
   end
 
-  component :component_3 do
+  component :my_component do
     branch 'feature/new-feature'
     source  '/my/component_3/repository'
     destination 'src/component_3'
   end
 
   task 'add components to gitignore', :each do |component_dir|
-    File.open('.gitignore', 'a') { |f| f.write "#{component_dir}\n" }
+    File.open('.gitignore', 'a') { |f| f.puts "#{component_dir}\n" }
   end
 ```
 
