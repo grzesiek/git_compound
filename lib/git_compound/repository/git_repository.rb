@@ -40,8 +40,8 @@ module GitCompound
         all
       end
 
-      def ref_exists?(ref)
-        matching = refs.select { |refs_a| refs_a.include?(ref.to_s) }
+      def branch?(branch)
+        matching = refs.select { |refs| refs.include?(branch.to_s) }
         matching.any?
       end
 

@@ -14,7 +14,7 @@ module GitCompound
         end
 
         it 'should contain valid ref (first release)' do
-          expect(@repository.ref_exists?('v0.0.1')).to be true
+          expect(@repository.tags).to include 'v0.0.1'
         end
 
         it 'should return valid contents of file from remote repository' do

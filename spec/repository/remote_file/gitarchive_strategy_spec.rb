@@ -23,7 +23,7 @@ module GitCompound
       end
 
       it 'should contain valid test_tag ref' do
-        expect(@remote_repository.ref_exists?('test_tag')).to be true
+        expect(@remote_repository.tags).to include 'test_tag'
       end
 
       context 'git archive supported' do
