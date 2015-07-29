@@ -45,6 +45,8 @@ GitCompound will also process manifests found in dependencies.
 GitCompound is more a distributed packaging system (dependency manager) than alternative to Git submodules,
 however it has common features of both Git submodules and dependency managers like Bundler or Composer.
 
+It is particularly useful when you need to develop your project's dependencies at the same time as project itself.
+
 `GitCompound` makes sure your project composition is the same on all machines,
 but you can have different composition depending on manifest you are using.
 
