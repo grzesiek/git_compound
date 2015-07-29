@@ -1,11 +1,11 @@
-
+# rubocop:disable Metrics/ModuleLength
 # GitCompound
 #
 module GitCompound
   describe Component do
     describe '#update!' do
       shared_examples 'component updater' do
-        it 'should update master branch' do
+        it 'updates component' do
           expect(File.read(@destination + 'new_update_file'))
             .to eq "new_file_contents\n"
         end
@@ -87,44 +87,96 @@ module GitCompound
       end
 
       context 'new sha version' do
-        before do
-          git_create_component_2
+        context 'sha matches ref' do
+          before do
+            git_create_component_2
 
-          # Build component first
-          #
-          component_dir = @component_2_dir
-          initial_sha = @component_2_commit_tag_v1_2_sha
-          @component_old = Component.new(:component_2) do
-            sha initial_sha
-            source component_dir
-            destination '/component_2_destination'
+            # Build component first
+            #
+            component_dir = @component_2_dir
+            initial_sha = @component_2_commit_tag_v1_2_sha
+            @component_old = Component.new(:component_2) do
+              sha initial_sha
+              source component_dir
+              destination '/component_2_destination'
+            end
+            @component_old.build!
+
+            # Change source repository of component
+            #
+            git(@component_2_dir) do
+              git_add_file('new_update_file') { 'new_file_contents' }
+              @sha = git_commit('new master commit')
+            end
+
+            # Update component, version strategy points to newest sha, that
+            # is in fact master HEAD
+            #
+            new_sha = @sha
+            @component_new = Component.new(:component_2) do
+              sha new_sha
+              source component_dir
+              destination '/component_2_destination'
+            end
+            @component_new.update!
+
+            @symbolic_ref = 'master'
+            @destination  = "#{@dir}/#{@component_new.path}"
           end
-          @component_old.build!
 
-          # Change source repository of component
-          #
-          git(@component_2_dir) do
-            git_add_file('new_update_file') { 'new_file_contents' }
-            @sha = git_commit('new master commit')
-          end
-
-          # Update component, version strategy points to newest sha, that
-          # is in fact master HEAD
-          #
-          new_sha = @sha
-          @component_new = Component.new(:component_2) do
-            sha new_sha
-            source component_dir
-            destination '/component_2_destination'
-          end
-          @component_new.update!
-
-          @symbolic_ref = 'master'
-          @destination  = "#{@dir}/#{@component_new.path}"
+          it_behaves_like 'component updater'
         end
 
-        it_behaves_like 'component updater'
+        context 'sha does not match ref' do
+          before do
+            git_create_component_2
+
+            # Build component first
+            #
+            component_dir = @component_2_dir
+            initial_sha = @component_2_commit_tag_v1_2_sha
+            @component_old = Component.new(:component_2) do
+              sha initial_sha
+              source component_dir
+              destination '/component_2_destination'
+            end
+            @component_old.build!
+
+            # Change source repository of component
+            #
+            git(@component_2_dir) do
+              git_add_file('new_update_file') { 'new_file_contents' }
+              @sha = git_commit('wanted master commit')
+              git_add_file('second_update_file') { 'second_file_contents' }
+              @unwanted_sha = git_commit('unwanted master commit')
+            end
+
+            new_sha = @sha
+            @component_new = Component.new(:component_2) do
+              sha new_sha
+              source component_dir
+              destination '/component_2_destination'
+            end
+            @component_new.update!
+
+            @destination  = "#{@dir}/#{@component_new.path}"
+          end
+
+          it 'updates component' do
+            expect(File.read(@destination + 'new_update_file'))
+              .to eq "new_file_contents\n"
+          end
+
+          it 'updates HEAD' do
+            expect(@component_new.repository.head_sha).to eq @sha
+          end
+
+          it 'does not exceed beyond expected boundary' do
+            expect(File.exist?(@destination + 'second_update_file')).to be false
+          end
+        end
       end
     end
   end
 end
+# rubocop:enable Metrics/ModuleLength

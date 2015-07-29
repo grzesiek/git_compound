@@ -6,7 +6,7 @@ module GitCompound
   #
   class Component < Node
     extend Forwardable
-    delegate [:sha, :ref, :origin, :repository, :version] => :@source
+    delegate [:sha, :ref, :origin, :version] => :@source
     delegate [:path, :exists?, :repository] => :@destination
 
     attr_reader :name
@@ -44,7 +44,7 @@ module GitCompound
       @destination.repository do |repo|
         repo.fetch
         repo.checkout(@source.ref)
-        repo.merge
+        repo.merge if repo.branches.include?(@source.ref)
       end
     end
 

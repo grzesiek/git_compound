@@ -1,3 +1,5 @@
+require 'pathname'
+
 module GitCompound
   module Repository
     # Local git repository implementation
@@ -5,8 +7,9 @@ module GitCompound
     class RepositoryLocal < GitRepository
       def initialize(source)
         super
+        @source = Pathname.new(@source).expand_path.to_s
         raise RepositoryUnreachableError unless
-        File.directory?("#{@source}/.git")
+          File.directory?("#{@source}/.git")
       end
 
       def clone(destination, options = nil)
