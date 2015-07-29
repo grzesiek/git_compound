@@ -29,8 +29,8 @@ Create `Compoundfile` or `.gitcompound` manifest:
     destination 'src/component_3'
   end
 
-  task 'add components to gitignore', :each do |component_dir|
-    File.open('.gitignore', 'a') { |f| f.puts "#{component_dir}\n" }
+  task 'print details', :each do |_path, component|
+    puts "Component `#{component.name}` installed in #{component.path}"
   end
 ```
 
