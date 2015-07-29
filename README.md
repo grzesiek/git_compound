@@ -134,6 +134,10 @@ and name constraints
 
     *   `sha` -- use explicitly set commit **SHA**
 
+        If SHA points to HEAD of some existing  branch, this branch will be checked out instead of SHA.
+        This will prevent going into detached state. If SHA does not point to any HEAD of existing branch,
+        component destination repository will be left in detached state.
+
 4.  Provide path to **source** repository using `source` method of manifest domain specific language.
 
     It will be used as source to clone repository into destination directory.
