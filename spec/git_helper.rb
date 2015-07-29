@@ -52,10 +52,9 @@ module GitHelper
   end
 
   def git_current_ref
-    current = `git symbolic-ref --short HEAD 2>/dev/null || \
-               git describe --tags --exact-match HEAD 2>/dev/null || \
-               git rev-parse HEAD 2>/dev/null`
-    current.strip
+    `git symbolic-ref --short HEAD 2>/dev/null || \
+     git describe --tags --exact-match HEAD 2>/dev/null || \
+     git rev-parse HEAD 2>/dev/null`.strip
   end
 
   def git_head_sha

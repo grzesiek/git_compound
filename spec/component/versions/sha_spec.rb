@@ -18,8 +18,8 @@ module GitCompound
         expect(@version.reachable?).to be true
       end
 
-      it 'returns sha as ref' do
-        expect(@version.ref).to eq @component_2_commit_tag_v1_2_sha
+      it 'returns matching symbolic ref' do
+        expect(@version.ref).to eq 'master'
       end
 
       it 'matches head in repository' do

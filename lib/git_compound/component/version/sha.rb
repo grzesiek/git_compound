@@ -9,8 +9,13 @@ module GitCompound
           @sha = sha
         end
 
+        # If @sha matches ref in remote repository then
+        #   this ref should be returned
+        # else return @sha.
+        #
         def ref
-          @sha
+          ref = @repository.refs.find { |refs_a| refs_a.include?(@sha) }
+          ref ? ref.last : @sha
         end
 
         def sha # rubocop:disable Style/TrivialAccessors
