@@ -1,4 +1,4 @@
-require 'workers/shared_examples/component_update_dispatcher'
+require 'workers/shared_examples/component_dispatcher'
 require 'workers/shared_examples/local_changes_guard'
 require 'workers/shared_context/out_of_date_environment'
 
@@ -11,7 +11,7 @@ describe GitCompound do
     end
 
     it_behaves_like 'local changes guard worker'
-    it_behaves_like 'component update dispatcher worker'
+    it_behaves_like 'component dispatcher worker'
 
     it 'removes dormant components' do
       pattern = "Removing dormant component `component_2` from `component_2/` !\n" \

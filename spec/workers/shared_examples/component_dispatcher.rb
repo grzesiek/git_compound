@@ -1,6 +1,4 @@
-# Requires 'out of date environment context'
-
-shared_examples 'component update dispatcher worker' do
+shared_examples 'component dispatcher worker' do
   it 'should build components that need building' do
     expect { subject.call }
       .to output(/Building:    `new_component` component, gem version: 1.0/)

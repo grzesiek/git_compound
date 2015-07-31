@@ -3,7 +3,7 @@ module GitCompound
     # Worker that decides whether component
     # should be built, updated or replaced
     #
-    class ComponentUpdateDispatcher < Worker
+    class ComponentDispatcher < Worker
       def initialize(lock)
         @lock    = lock
         @print   = PrettyPrint.new
