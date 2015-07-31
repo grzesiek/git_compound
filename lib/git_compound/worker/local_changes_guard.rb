@@ -9,6 +9,8 @@ module GitCompound
       end
 
       def visit_component(component)
+        return unless component.exists?
+
         @component  = component
         @repository = component.repository
 
