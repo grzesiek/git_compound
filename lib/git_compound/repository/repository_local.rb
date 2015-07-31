@@ -8,7 +8,7 @@ module GitCompound
       def initialize(source)
         super
         @source = Pathname.new(@source).expand_path.to_s
-        raise RepositoryUnreachableError unless
+        raise RepositoryUnreachableError, "Invalid Git repository in #{@source}" unless
           File.directory?("#{@source}/.git")
       end
 
