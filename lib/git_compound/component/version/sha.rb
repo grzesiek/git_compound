@@ -9,23 +9,25 @@ module GitCompound
           @sha = sha
         end
 
-        # If @sha matches ref in remote repository then
+        # If sha matches ref in remote repository then
         #   this ref should be returned
-        # else return @sha.
+        # else return sha.
         #
         def ref
           ref = @repository.refs.find { |refs_a| refs_a.include?(@sha) }
           ref ? ref.last : @sha
         end
 
-        def sha # rubocop:disable Style/TrivialAccessors
+        # rubocop:disable Style/TrivialAccessors
+        def sha
           @sha
         end
+        # rubocop:enable Style/TrivialAccessors
 
         def reachable?
-          # We assume that SHA is always available as we do not want
-          # to clone repository and check it -- this probably needs
-          # to be changed, so -- TODO
+          # TODO, we assume that SHA is always available as we do not want
+          # to clone repository and check if commit exists -- this probably
+          # needs to be changed when someone finds better solution for this.
           true
         end
 
