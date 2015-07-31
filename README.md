@@ -42,24 +42,18 @@ GitCompound will also process manifests found in dependencies.
 
 ## Core features 
 
-GitCompound is more a distributed packaging system (dependency manager) than alternative to Git submodules,
-however it has common features of both Git submodules and dependency managers like Bundler or Composer.
+GitCompound has common features of both Git submodules and dependency managers like Bundler or Composer.
+It is a distributed dependency manager and alternative to Git submodules that gives you more flexibility.
 
-It is particularly useful when you need to develop your project's dependencies at the same time as project itself.
-
-`GitCompound` makes sure your project composition is the same on all machines,
-but you can have different composition depending on manifest you are using.
-
-It has been created with Docker compatiblity in mind.
+It is particularly useful when you need to develop your project dependencies at the same time as project itself.
 
 Core features:
 
-*   `GitCompound` introduces Domain Specific Language desgined for writing manifests.
+*   GitCompound introduces Domain Specific Language desgined for writing manifests.
 
-*   It is possible to create multiple manifest files (`Compoundfile`, `.gitcompound` or something else)
-    and build them when necessary.
+*   Manifest file is used to specify dependencies of your project.
 
-*   Manifests can declare dependencies on different versions of components using different version strategies
+*   Manifest can declare dependencies on components using different version strategies
     (Rubygems-like version, tag, branch or explicit SHA).
 
 *   Manifests will be processed in hierarchical way. Manifest that `gitcompound` command is run against
