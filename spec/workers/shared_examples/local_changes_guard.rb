@@ -38,6 +38,8 @@ module GitCompound
       end
 
       it 'should not raise error if untracked files belong to locked components' do
+        @lock ||= Lock.new
+
         %w(untracked_component_1 untracked_component_2).each do |dst|
           component_dir = @component_1_dir
           destination_dir = "#{@component_1_dst}#{dst}"
@@ -49,7 +51,7 @@ module GitCompound
           @lock.lock_component(tmp_component)
           tmp_component.build!
         end
-        @lock.write
+        @lock.write # TODO, this changes state of other tests
 
         expect { subject.call }.to_not raise_error
       end

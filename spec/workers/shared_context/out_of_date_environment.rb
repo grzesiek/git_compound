@@ -4,7 +4,6 @@ shared_context 'out of date environment' do
     #
     git_build_test_environment!
     GitCompound.build("#{@base_component_dir}/Compoundfile")
-    @lock = GitCompound::Lock.new
 
     # Create new component
     #
