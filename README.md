@@ -10,6 +10,7 @@ Create `Compoundfile` or `.gitcompound` manifest:
 
 ```ruby
   name :base_component
+  maintainer 'Your Name <your.email@example.com>'
 
   component :vendor_1 do
     version '~>1.1'
@@ -107,15 +108,22 @@ and name constraints
 
 1.  Use `name` method to specify **name** of manifest or component that this manifest is included in.
 
-2.  Add dependency to required **component** using `component` method.
+2.  Use `maintainer` method to specify maintainer of component. This can take more arguments (separated
+    by comma), for example:
 
-    This method takes two parameters -- name of component (as symbol) and implicit or explicit block.
+    ```ruby
+    maintaner 'First maintaner', 'Second maintaner'
+    ```
+
+3.  Add dependency to required **component** using `component` method.
+
+    This method takes two arguments -- name of component (as symbol) and implicit or explicit block.
 
     Beware that `GitCompound` checks name constraints, so if you rely on component
     with name `:component_1`, and this component has `Compoundfile` inside that declares 
     it's name as something else than `:component_1` -- `GitCompound` will raise exception.
 
-3.  Components can use following **version strategies**:
+4.  Components can use following **version strategies**:
 
     *   `version` -- Rubygems-like **version** strategy
         
@@ -134,18 +142,18 @@ and name constraints
         This will prevent going into detached state. If SHA does not point to any HEAD of existing branch,
         component destination repository will be left in detached state.
 
-4.  Provide path to **source** repository using `source` method of manifest domain specific language.
+5.  Provide path to **source** repository using `source` method of manifest domain specific language.
 
     It will be used as source to clone repository into destination directory.
 
-    This can take `:shallow` parameter. When `:shallow` is set, shallow clone will be 
+    This can take `:shallow` argument. When `:shallow` is set, shallow clone will be
     performed (`--branch #{ref} --depth 1`):
 
     ```ruby
     component :bootstrap do
       version '~>3.3.5'
       source 'git@github.com:twbs/bootstrap', :shallow
-      destination '/vendor/bootstrap
+      destination '/vendor/bootstrap'
     end
     ```
 
@@ -156,7 +164,7 @@ and name constraints
     Use it with caution !
 
 
-5.  Use `destination` method to specify **destination** path where component will be cloned into.
+6.  Use `destination` method to specify **destination** path where component will be cloned into.
 
     This should be relative path in most cases.
 
@@ -175,7 +183,7 @@ and name constraints
     Ceraintly components that are libraries should not use it at all. If component is project --
     it can take benefit from using absolute paths in component destination.
 
-6.  Running tasks
+7.  Running tasks
 
     It is possible to use `task` method to define new **task**. `task` method takes 2 or 3 arguments.
     First one is task name (symbol). Second one is optional task type that define how, and 
@@ -202,8 +210,8 @@ and name constraints
         ```ruby
         task :print_component_name, :each do |dir, component|
           puts "Current component name: #{component.name}"
-          puts "Current component source: #{component.origin}
-          puts "Current component destination: #{component.destination_path}
+          puts "Current component source: #{component.origin}"
+          puts "Current component destination: #{component.destination_path}"
 
           puts "Component directory: #{dir}"
         end
@@ -281,7 +289,7 @@ and name constraints
     *   replaced (remove & clone) -- if component exists but doesn't match origin remote
 
     When invoking update process via `gitcompound update` command, versions specified in manifest file
-    will be use.
+    will be used.
 
 ## Roadmap
 

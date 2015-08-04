@@ -14,6 +14,10 @@ module GitCompound
         @manifest.name = component_name.to_sym
       end
 
+      def maintainer(*component_maintainer)
+        @manifest.maintainer = component_maintainer
+      end
+
       def component(name, &block)
         @manifest.components.store(name.to_sym, Component.new(name, @manifest, &block))
       end

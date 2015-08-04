@@ -4,6 +4,8 @@ module GitCompound
     before do
       @manifest_contents = <<-END
         name :test_project
+        maintainer 'Grzegorz Bizon <grzegorz.bizon@ntsn.pl>',
+                   'Grzegorz Bizon <grzesiek@ntsn.pl>'
 
         component :test_component do
           version     '~>1.1'
@@ -23,29 +25,35 @@ module GitCompound
       @manifest = Manifest.new(@manifest_contents)
     end
 
-    it 'should not raise error if content is valid manifest' do
+    it 'does not raise error if content is valid manifest' do
       expect do
         Manifest.new(@manifest_contents)
       end.to_not raise_error
     end
 
-    it 'should raise exception for incorrect manifest' do
+    it 'raises exception for incorrect manifest' do
       expect do
         Manifest.new('non_existent_method')
       end.to raise_error NameError
     end
 
-    it 'should set manifest name' do
+    it 'sets manifest name' do
       expect(@manifest.name).to eq :test_project
     end
 
-    it 'should set manifest components' do
+    it 'sets manifest components' do
       expect(@manifest.components).to include(:test_component)
     end
 
-    it 'should set manifest tasks' do
+    it 'sets manifest tasks' do
       expect(@manifest.tasks).to include(:first_task_name)
       expect(@manifest.tasks).to include(:foreach_task)
+    end
+
+    it 'sets component maintainers' do
+      expect(@manifest.maintainer).to be_instance_of Array
+      expect(@manifest.maintainer).to eq ['Grzegorz Bizon <grzegorz.bizon@ntsn.pl>',
+                                          'Grzegorz Bizon <grzesiek@ntsn.pl>']
     end
   end
 end

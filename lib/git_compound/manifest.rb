@@ -4,7 +4,7 @@ module GitCompound
   # Manifest
   #
   class Manifest < Node
-    attr_accessor :name, :components, :tasks
+    attr_accessor :name, :maintainer, :components, :tasks
 
     FILENAMES = %w(Compoundfile .gitcompound)
 
@@ -12,6 +12,7 @@ module GitCompound
       @contents   = contents
       @parent     = parent
       @name       = ''
+      @maintainer = []
       @components = {}
       @tasks      = {}
       DSL::ManifestDSL.new(self, contents) if contents

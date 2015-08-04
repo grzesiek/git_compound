@@ -123,6 +123,7 @@ module GitTestEnvBuilder
       git_edit_file('Compoundfile') do
         <<-END
           name :component_2
+          maintainer 'Grzegorz Bizon <grzesiek@ntsn.pl>'
 
           component :leaf_component_3 do
             version '~>1.0'
@@ -166,6 +167,7 @@ module GitTestEnvBuilder
       git_add_file('Compoundfile') do
         <<-END
           name :base_component
+          maintainer 'Grzegorz Bizon <grzegorz.bizon@ntsn.pl>'
 
           component :component_1 do
             version "~>1.1"
