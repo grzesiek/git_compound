@@ -37,7 +37,7 @@ module GitCompound
         end
 
         def to_s
-          "gem version: #{@requirement}"
+          "version: #{@requirement}"
         end
       end
     end

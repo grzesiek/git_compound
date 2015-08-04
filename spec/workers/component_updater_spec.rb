@@ -36,7 +36,7 @@ module GitCompound
 
     it 'prints information about components being updated' do
       expect { subject.call }
-        .to output(/^Updating:\s+`leaf_component_1` component, gem version: 2.0$/)
+        .to output(/^Updating:\s+`leaf_component_1` component, version: 2.0$/)
         .to_stdout
     end
 

@@ -29,7 +29,7 @@ module GitCompound
 
     it 'prints information about component being replaced' do
       expect { subject.call }
-        .to output(/^Replacing:\s+`component_second` component, gem version: 0\.1$/)
+        .to output(/^Replacing:\s+`component_second` component, version: 0\.1.*$/)
         .to_stdout
     end
 
