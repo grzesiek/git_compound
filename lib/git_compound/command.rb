@@ -40,15 +40,15 @@ module GitCompound
       builder(args).components_show
     end
 
-    def help(*_args)
-      Logger.info(usage)
+    def help(*args)
+      Help.new(args).execute
     end
 
     def run(command, args)
-      abort(usage) unless methods.include?(command.to_sym)
+      abort(Help.message) unless methods.include?(command.to_sym)
       public_send(command, *args)
     rescue GitCompoundError => e
-      abort Logger.parse("Error: #{e.message}".on_red.white.bold)
+      abort "Error: #{e.message}".on_red.white.bold
     end
 
     private
@@ -68,45 +68,5 @@ module GitCompound
       contents = File.read(found.first)
       Manifest.new(contents)
     end
-
-    # rubocop:disable Metrics/AbcSize
-    def usage
-      msg = <<-EOS
-  #{'GitCompound version'.bold.yellow} #{GitCompound::VERSION.bold}
-
-  Usage: #{'gitcompound'.bold.green} #{
-    '[options]'.green} #{'command'.bold} #{'[manifest_file]'.green}
-
-  Commands:
-    #{'build'.bold}
-        builds project from manifest (or lockfile if present)
-
-        If manifest is not specified it uses one of
-        #{Manifest::FILENAMES.inspect}
-
-    #{'update'.bold}
-        updates project
-
-    #{'check'.bold}
-        detects circular depenencies, conflicting dependencies
-        and checks for name contraints
-
-    #{'show'.bold}
-        prints structure of project
-
-    #{'help'.bold}
-        prints this help
-
-  Options:'
-    #{'--verbose'.bold}
-        prints verbose log info
-
-    #{'--disable-colors'.bold}
-        disable ANSI colors in output
-      EOS
-
-      Logger.parse(msg)
-    end
-    # rubocop:enable Metrics/AbcSize
   end
 end

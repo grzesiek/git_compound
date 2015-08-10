@@ -42,7 +42,7 @@ module GitCompound
         opts_dash = args.select { |opt| opt.start_with?('--') }
         opts_string = args - opts_dash
         command = opts_string.shift
-        opts_sym = opts_dash.collect { |opt| opt.sub(/^--/, '').gsub('-', '_').to_sym }
+        opts_sym = opts_dash.collect { |opt| opt.sub(/^--/, '').tr('-', '_').to_sym }
         [command, opts_string + opts_sym]
       end
 

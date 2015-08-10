@@ -42,10 +42,6 @@ module GitCompound
       log error_message.on_red.white.bold
     end
 
-    def parse(message)
-      message
-    end
-
     private
 
     def log(message)
