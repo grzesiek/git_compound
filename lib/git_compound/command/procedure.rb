@@ -9,10 +9,6 @@ module GitCompound
       def execute
         raise NotImplementedError
       end
-
-      def message
-        raise NotImplementedError
-      end
     end
   end
 end

@@ -43,7 +43,14 @@ module GitCompound
   module Command
     autoload :Options,   'git_compound/command/options'
     autoload :Procedure, 'git_compound/command/procedure'
+    autoload :Check,     'git_compound/command/check'
     autoload :Help,      'git_compound/command/help'
+
+    # Procedure class submodules
+    #
+    class Procedure
+      autoload :Manifest, 'git_compound/command/procedure/manifest'
+    end
   end
 
   # GitCompound Logger

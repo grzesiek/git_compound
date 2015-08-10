@@ -32,7 +32,7 @@ module GitCompound
     end
 
     def check(*args)
-      builder(args).dependencies_check
+      Check.new(args).execute
       Logger.info 'OK'
     end
 
