@@ -18,29 +18,19 @@ module GitCompound
     end
 
     def update(*args)
-      raise GitCompoundError,
-            "Lockfile `#{Lock::FILENAME}` does not exist ! " \
-            'You should use `build` command.' unless Lock.exist?
-
-      builder(args)
-        .locked_components_guard
-        .dependencies_check
-        .manifest_update
-        .tasks_execute
-        .manifest_lock
-        .locked_dormant_components_remove
+      execute(Procedure::Update, args)
     end
 
     def check(*args)
-      execute Procedure::Check, args
+      execute(Procedure::Check, args)
     end
 
     def show(*args)
-      execute Procedure::Show, args
+      execute(Procedure::Show, args)
     end
 
     def help(*args)
-      execute Procedure::Help, args
+      execute(Procedure::Help, args)
     end
 
     def run(command, args)

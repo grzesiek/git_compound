@@ -16,7 +16,7 @@ module GitCompound
         end
 
         def show
-          manifest.process(
+          @manifest.process(
             Worker::CircularDependencyChecker.new,
             Worker::PrettyPrint.new)
         end

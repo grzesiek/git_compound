@@ -41,7 +41,7 @@ module GitCompound
   # GitCompound Command
   #
   module Command
-    autoload :Options,   'git_compound/command/options'
+    autoload :Options, 'git_compound/command/options'
 
     # Command Procedure
     #
@@ -50,10 +50,13 @@ module GitCompound
       autoload :Check,     'git_compound/command/procedure/check'
       autoload :Help,      'git_compound/command/procedure/help'
       autoload :Show,      'git_compound/command/procedure/show'
+      autoload :Tasks,     'git_compound/command/procedure/tasks'
+      autoload :Update,    'git_compound/command/procedure/update'
 
       # Procedure Element
       module Element
         autoload :Manifest, 'git_compound/command/procedure/element/manifest'
+        autoload :Lock,     'git_compound/command/procedure/element/lock'
       end
     end
   end

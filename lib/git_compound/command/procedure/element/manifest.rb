@@ -10,12 +10,13 @@ module GitCompound
           def initialize(args)
             filename = args.find { |arg| arg.is_a? String }
             @manifest = manifest_load(filename)
+            super
           end
 
           private
 
           def manifest_load(filename)
-            files = filename ? [filename] : Manifest::FILENAMES
+            files = filename ? [filename] : GitCompound::Manifest::FILENAMES
             found = files.select { |file| File.exist?(file) }
 
             raise GitCompoundError,

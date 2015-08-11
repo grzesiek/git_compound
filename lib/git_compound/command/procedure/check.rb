@@ -11,17 +11,17 @@ module GitCompound
         end
 
         def execute
-          Logger.info 'Checking dependencies ...'
           check
           Logger.info 'OK'
         end
 
         def check
-          manifest.process(
+          Logger.info 'Checking dependencies ...'
+
+          @manifest.process(
             Worker::CircularDependencyChecker.new,
             Worker::NameConstraintChecker.new,
             Worker::ConflictingDependencyChecker.new)
-          self
         end
       end
     end
