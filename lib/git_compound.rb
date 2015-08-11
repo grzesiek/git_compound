@@ -42,14 +42,19 @@ module GitCompound
   #
   module Command
     autoload :Options,   'git_compound/command/options'
-    autoload :Procedure, 'git_compound/command/procedure'
-    autoload :Check,     'git_compound/command/check'
-    autoload :Help,      'git_compound/command/help'
 
-    # Procedure class submodules
+    # Command Procedure
     #
-    class Procedure
-      autoload :Manifest, 'git_compound/command/procedure/manifest'
+    module Procedure
+      autoload :Procedure, 'git_compound/command/procedure/procedure'
+      autoload :Check,     'git_compound/command/procedure/check'
+      autoload :Help,      'git_compound/command/procedure/help'
+      autoload :Show,      'git_compound/command/procedure/show'
+
+      # Procedure Element
+      module Element
+        autoload :Manifest, 'git_compound/command/procedure/element/manifest'
+      end
     end
   end
 

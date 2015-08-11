@@ -32,26 +32,29 @@ module GitCompound
     end
 
     def check(*args)
-      Check.new(args).execute
-      Logger.info 'OK'
+      execute Procedure::Check, args
     end
 
     def show(*args)
-      builder(args).components_show
+      execute Procedure::Show, args
     end
 
     def help(*args)
-      Help.new(args).execute
+      execute Procedure::Help, args
     end
 
     def run(command, args)
-      abort(Help.message) unless methods.include?(command.to_sym)
+      abort(Procedure::Help.message) unless methods.include?(command.to_sym)
       public_send(command, *args)
     rescue GitCompoundError => e
       abort "Error: #{e.message}".on_red.white.bold
     end
 
     private
+
+    def execute(procedure, args)
+      procedure.new(args).execute
+    end
 
     def builder(args)
       filename = args.find { |arg| arg.is_a? String }
