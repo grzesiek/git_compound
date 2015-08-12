@@ -9,12 +9,12 @@ module GitCompound
         include Element::Subprocedure
 
         add_subprocedure :check_dependencies, Check
-        add_subprocedure :tasks_runner, Tasks
+        add_subprocedure :tasks_runner,       Tasks
 
         def execute
           raise GitCompoundError,
                 "Lockfile `#{Lock::FILENAME}` does not exist ! " \
-                'You should use `build` command.' unless Lock.exist?
+                'You should use `build` command.' unless locked?
 
           protect_local_modifications
           check_dependencies

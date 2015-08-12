@@ -3,18 +3,7 @@ module GitCompound
   #
   module Command
     def build(*args)
-      if Lock.exist?
-        builder(args)
-          .locked_manifest_verify
-          .locked_components_build
-          .tasks_execute
-      else
-        builder(args)
-          .dependencies_check
-          .manifest_build
-          .tasks_execute
-          .manifest_lock
-      end
+      execute(Procedure::Build, args)
     end
 
     def update(*args)
@@ -42,24 +31,6 @@ module GitCompound
       public_send(command, *args)
     rescue GitCompoundError => e
       abort "Error: #{e.message}".on_red.white.bold
-    end
-
-    private
-
-    def builder(args)
-      filename = args.find { |arg| arg.is_a? String }
-      Builder.new(manifest(filename), Lock.new, args)
-    end
-
-    def manifest(filename)
-      files = filename ? [filename] : Manifest::FILENAMES
-      found = files.select { |file| File.exist?(file) }
-
-      raise GitCompoundError,
-            "Manifest `#{filename || files.inspect}` not found !" if found.empty?
-
-      contents = File.read(found.first)
-      Manifest.new(contents)
     end
   end
 end

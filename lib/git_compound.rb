@@ -4,7 +4,6 @@ require 'git_compound/version'
 # Git Compound module
 #
 module GitCompound
-  autoload :Builder,    'git_compound/builder'
   autoload :Command,    'git_compound/command'
   autoload :Component,  'git_compound/component'
   autoload :Lock,       'git_compound/lock'
@@ -46,12 +45,15 @@ module GitCompound
     # Command Procedure
     #
     module Procedure
-      autoload :Procedure, 'git_compound/command/procedure/procedure'
-      autoload :Check,     'git_compound/command/procedure/check'
-      autoload :Help,      'git_compound/command/procedure/help'
-      autoload :Show,      'git_compound/command/procedure/show'
-      autoload :Tasks,     'git_compound/command/procedure/tasks'
-      autoload :Update,    'git_compound/command/procedure/update'
+      autoload :Procedure,     'git_compound/command/procedure/procedure'
+      autoload :Build,         'git_compound/command/procedure/build'
+      autoload :BuildLock,     'git_compound/command/procedure/build_lock'
+      autoload :BuildManifest, 'git_compound/command/procedure/build_manifest'
+      autoload :Check,         'git_compound/command/procedure/check'
+      autoload :Help,          'git_compound/command/procedure/help'
+      autoload :Show,          'git_compound/command/procedure/show'
+      autoload :Tasks,         'git_compound/command/procedure/tasks'
+      autoload :Update,        'git_compound/command/procedure/update'
 
       # Procedure Element
       #

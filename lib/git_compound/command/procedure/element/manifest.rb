@@ -5,8 +5,6 @@ module GitCompound
         # Manifest mixin
         #
         module Manifest
-          attr_reader :manifest
-
           def initialize(args)
             filename = args.find { |arg| arg.is_a? String }
             @manifest = manifest_load(filename)

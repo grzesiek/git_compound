@@ -5,12 +5,15 @@ module GitCompound
         # Lock mixin
         #
         module Lock
-          attr_reader :lock, :lock_new
-
           def initialize(args)
             @lock     = GitCompound::Lock.new
             @lock_new = GitCompound::Lock.new.clean
+
             super
+          end
+
+          def locked?
+            GitCompound::Lock.exist?
           end
         end
       end
