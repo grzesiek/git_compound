@@ -6,10 +6,6 @@ module GitCompound
       class Check < Procedure
         include Element::Manifest
 
-        def initialize(args)
-          super
-        end
-
         def execute
           check
           Logger.info 'OK'

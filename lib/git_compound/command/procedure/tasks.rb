@@ -6,10 +6,6 @@ module GitCompound
       class Tasks < Procedure
         include Element::Manifest
 
-        def initialize(args)
-          super
-        end
-
         def execute
           Logger.info 'Running tasks ...'
 

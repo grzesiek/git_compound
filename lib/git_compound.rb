@@ -54,9 +54,11 @@ module GitCompound
       autoload :Update,    'git_compound/command/procedure/update'
 
       # Procedure Element
+      #
       module Element
-        autoload :Manifest, 'git_compound/command/procedure/element/manifest'
-        autoload :Lock,     'git_compound/command/procedure/element/lock'
+        autoload :Manifest,     'git_compound/command/procedure/element/manifest'
+        autoload :Lock,         'git_compound/command/procedure/element/lock'
+        autoload :Subprocedure, 'git_compound/command/procedure/element/subprocedure'
       end
     end
   end

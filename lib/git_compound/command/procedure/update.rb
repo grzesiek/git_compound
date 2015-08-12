@@ -6,12 +6,10 @@ module GitCompound
       class Update < Procedure
         include Element::Manifest
         include Element::Lock
+        include Element::Subprocedure
 
-        def initialize(args)
-          super
-          @check = Check.new(args)
-          @tasks = Tasks.new(args)
-        end
+        add_subprocedure :check_dependencies, Check
+        add_subprocedure :tasks_runner, Tasks
 
         def execute
           raise GitCompoundError,
@@ -21,6 +19,7 @@ module GitCompound
           protect_local_modifications
           check_dependencies
           update
+          execute_tasks
           lock_updated_manifest
           remove_dormant_components
         end
@@ -32,7 +31,7 @@ module GitCompound
         end
 
         def check_dependencies
-          @check.check
+          subprocedure(:check_dependencies).check
         end
 
         def update
@@ -41,7 +40,7 @@ module GitCompound
         end
 
         def execute_tasks
-          @tasks.execute
+          subprocedure(:tasks_runner).execute
         end
 
         def lock_updated_manifest

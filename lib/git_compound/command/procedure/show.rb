@@ -6,10 +6,6 @@ module GitCompound
       class Show < Procedure
         include Element::Manifest
 
-        def initialize(args)
-          super
-        end
-
         def execute
           Logger.info 'Processing components list ...'
           show

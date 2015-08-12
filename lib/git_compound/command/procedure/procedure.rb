@@ -4,7 +4,8 @@ module GitCompound
       # Abstract Procedure class
       #
       class Procedure
-        def initialize(_args)
+        def initialize(args)
+          @args = args
         end
 
         def execute
