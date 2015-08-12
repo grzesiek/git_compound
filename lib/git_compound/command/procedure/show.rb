@@ -6,12 +6,12 @@ module GitCompound
       class Show < Procedure
         include Element::Manifest
 
-        def execute
+        def execute!
           Logger.info 'Processing components list ...'
-          show
+          execute
         end
 
-        def show
+        def execute
           @manifest.process(
             Worker::CircularDependencyChecker.new,
             Worker::PrettyPrint.new)

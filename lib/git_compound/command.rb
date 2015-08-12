@@ -33,6 +33,10 @@ module GitCompound
       execute(Procedure::Help, args)
     end
 
+    def execute(procedure, args)
+      procedure.new(args).execute!
+    end
+
     def run(command, args)
       abort(Procedure::Help.message) unless methods.include?(command.to_sym)
       public_send(command, *args)
@@ -41,10 +45,6 @@ module GitCompound
     end
 
     private
-
-    def execute(procedure, args)
-      procedure.new(args).execute
-    end
 
     def builder(args)
       filename = args.find { |arg| arg.is_a? String }

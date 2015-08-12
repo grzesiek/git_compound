@@ -31,7 +31,7 @@ module GitCompound
         end
 
         def check_dependencies
-          subprocedure(:check_dependencies).check
+          subprocedure(:check_dependencies)
         end
 
         def update
@@ -40,7 +40,7 @@ module GitCompound
         end
 
         def execute_tasks
-          subprocedure(:tasks_runner).execute
+          subprocedure(:tasks_runner)
         end
 
         def lock_updated_manifest

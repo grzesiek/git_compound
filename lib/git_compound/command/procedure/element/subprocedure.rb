@@ -12,7 +12,6 @@ module GitCompound
           def initialize(args)
             @subprocedures = {}
 
-            puts 'XXXXX' + self.class.subprocedures.to_h.inspect
             self.class.subprocedures.to_h.each_pair do |name, procedure|
               @subprocedures.store(name, procedure.new(args))
             end
@@ -21,7 +20,7 @@ module GitCompound
           end
 
           def subprocedure(name)
-            @subprocedures[name.to_sym]
+            @subprocedures[name.to_sym].execute
           end
 
           # Class methods for extended class

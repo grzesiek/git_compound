@@ -6,12 +6,12 @@ module GitCompound
       class Check < Procedure
         include Element::Manifest
 
-        def execute
-          check
+        def execute!
+          execute
           Logger.info 'OK'
         end
 
-        def check
+        def execute
           Logger.info 'Checking dependencies ...'
 
           @manifest.process(

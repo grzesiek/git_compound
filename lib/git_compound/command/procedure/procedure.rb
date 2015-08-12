@@ -8,6 +8,14 @@ module GitCompound
           @args = args
         end
 
+        # Method will additional messages etc.
+        #
+        def execute!
+          execute
+        end
+
+        # Main procedure entry point
+        #
         def execute
           raise NotImplementedError
         end
