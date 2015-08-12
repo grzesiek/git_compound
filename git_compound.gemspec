@@ -17,14 +17,12 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  # rubocop:disable Style/SingleSpaceBeforeFirstArg
   spec.add_development_dependency 'bundler',   '~> 1.8'
   spec.add_development_dependency 'rake',      '~> 10.0'
-  spec.add_development_dependency 'rubocop',   '~> 0.31.0'
+  spec.add_development_dependency 'rubocop',   '~> 0.33'
   spec.add_development_dependency 'rspec',     '~> 3.2.0'
   spec.add_development_dependency 'pry',       '~> 0.10.1'
   spec.add_development_dependency 'simplecov', '~> 0.10.0'
-  # rubocop:enable Style/SingleSpaceBeforeFirstArg
 
   spec.requirements << 'git scm version > 2'
   spec.requirements << 'gnu tar'

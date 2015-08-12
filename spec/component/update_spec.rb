@@ -159,7 +159,7 @@ module GitCompound
             end
             @component_new.update!
 
-            @destination  = "#{@dir}/#{@component_new.path}"
+            @destination = "#{@dir}/#{@component_new.path}"
           end
 
           it 'updates component' do
