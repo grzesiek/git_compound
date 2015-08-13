@@ -50,5 +50,24 @@ describe GitCompound do
         expect(lock).to match(/:name: :leaf_component_3/)
       end
     end
+
+    context 'lock file exists' do
+      subject do
+        -> { GitCompound.build("#{@base_component_dir}/Compoundfile") }
+      end
+
+      before do
+        git_build_test_environment!
+        subject.call
+      end
+
+      let(:components) { git_test_env_components }
+
+      it_behaves_like 'component builder worker'
+
+      it 'does not build or update components already installed' do
+        expect { subject.call }.to_not output(/Building:\s+|Updating:\s+/).to_stdout
+      end
+    end
   end
 end

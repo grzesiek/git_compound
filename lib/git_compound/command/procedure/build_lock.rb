@@ -8,6 +8,8 @@ module GitCompound
         include Element::Lock
         include Element::Subprocedure
 
+        add_subprocedure :tasks_runner, Tasks
+
         def execute
           Logger.info 'Building components from lockfile ...'
 
