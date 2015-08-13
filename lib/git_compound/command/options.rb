@@ -1,31 +1,22 @@
+require 'forwardable'
+
 module GitCompound
   module Command
     # Class that parses command arguments
     #
     class Options
+      extend Forwardable
+
       GLOBAL_OPTIONS = [:verbose, :disable_colors]
+      delegate [:procedure, :global, :options, :command] => :@parser
 
-      def initialize(args)
-        @command, @args = parse_options(args)
-
-        self.class.disable_colors = false
+      def initialize(argv)
+        @parser = Parser.new(argv, GLOBAL_OPTIONS)
         set_global_options
       end
 
-      def global_options
-        @args & GLOBAL_OPTIONS
-      end
-
-      def command_options
-        @args - GLOBAL_OPTIONS
-      end
-
-      def command
-        @command || 'help'
-      end
-
       def parse
-        [command, command_options]
+        [procedure, options]
       end
 
       def self.verbose=(mode)
@@ -38,16 +29,10 @@ module GitCompound
 
       private
 
-      def parse_options(args)
-        opts_dash = args.select { |opt| opt.start_with?('--') }
-        opts_string = args - opts_dash
-        command = opts_string.shift
-        opts_sym = opts_dash.collect { |opt| opt.sub(/^--/, '').tr('-', '_').to_sym }
-        [command, opts_string + opts_sym]
-      end
-
       def set_global_options
-        global_options.each do |option|
+        self.class.disable_colors = false
+
+        global.each do |option|
           self.class.public_send("#{option}=", true)
         end
       end

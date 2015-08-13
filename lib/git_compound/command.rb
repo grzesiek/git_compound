@@ -2,33 +2,28 @@ module GitCompound
   # GitCompount command facade
   #
   module Command
-    def build(*args)
-      execute(Procedure::Build, args)
+    def build(manifest, opts = {})
+      run(Procedure::Build, opts.merge(args: [manifest]))
     end
 
-    def update(*args)
-      execute(Procedure::Update, args)
+    def update(manifest, opts = {})
+      run(Procedure::Update, opts.merge(args: [manifest]))
     end
 
-    def check(*args)
-      execute(Procedure::Check, args)
+    def check(manifest, opts = {})
+      run(Procedure::Check, opts.merge(args: [manifest]))
     end
 
-    def show(*args)
-      execute(Procedure::Show, args)
+    def show(manifest, opts = {})
+      run(Procedure::Show, opts.merge(args: [manifest]))
     end
 
-    def help(*args)
-      execute(Procedure::Help, args)
+    def help(opts = {})
+      run(Procedure::Help, opts)
     end
 
-    def execute(procedure, args)
-      procedure.new(args).execute!
-    end
-
-    def run(command, args)
-      abort(Procedure::Help.message) unless methods.include?(command.to_sym)
-      public_send(command, *args)
+    def run(procedure, opts)
+      procedure.new(opts).execute!
     rescue GitCompoundError => e
       abort "Error: #{e.message}".on_red.white.bold
     end

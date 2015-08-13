@@ -32,6 +32,12 @@ module GitCompound
               @subprocedures = {} unless @subprocedures
               @subprocedures.store(name.to_sym, procedure)
             end
+
+            def options
+              opts = super
+              @subprocedures.to_h.each { |_, procedure| opts.merge!(procedure.options) }
+              opts.select { |_param, metadata| metadata[:scope] == :global }
+            end
           end
         end
       end

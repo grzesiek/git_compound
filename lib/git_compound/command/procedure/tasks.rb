@@ -5,11 +5,15 @@ module GitCompound
       #
       class Tasks < Procedure
         include Element::Manifest
+        include Element::Parameter
+
+        add_parameter :allow_nested_subtasks, type: Boolean, scope: :global
+        add_parameter :list, type: Boolean
 
         def execute
           Logger.info 'Running tasks ...'
 
-          if @args.include?(:allow_nested_subtasks)
+          if @opts[:allow_nested_subtasks]
             @manifest.process(Worker::TaskRunner.new)
           else
             @manifest.tasks.each_value do |task|

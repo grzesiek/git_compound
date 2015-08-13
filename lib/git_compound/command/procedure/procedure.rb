@@ -4,11 +4,10 @@ module GitCompound
       # Abstract Procedure class
       #
       class Procedure
-        def initialize(args)
-          @args = args
+        def initialize(_opts)
         end
 
-        # Method will additional messages etc.
+        # Method with additional messages etc.
         #
         def execute!
           execute
@@ -18,6 +17,19 @@ module GitCompound
         #
         def execute
           raise NotImplementedError
+        end
+
+        # Valid options available for this
+        # procedure, see Element::Parameter
+        #
+        def self.options
+          {}
+        end
+
+        # Name of procedure
+        #
+        def self.to_s
+          name.split('::').last.downcase
         end
       end
     end

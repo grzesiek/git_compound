@@ -5,10 +5,10 @@ module GitCompound
         # Manifest mixin
         #
         module Manifest
-          def initialize(args)
-            filename = args.find { |arg| arg.is_a? String }
-            @manifest = manifest_load(filename)
+          def initialize(opts)
             super
+            filename  = opts[:args].first
+            @manifest = manifest_load(filename)
           end
 
           private

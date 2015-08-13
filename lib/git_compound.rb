@@ -41,6 +41,7 @@ module GitCompound
   #
   module Command
     autoload :Options, 'git_compound/command/options'
+    autoload :Parser,  'git_compound/command/parser'
 
     # Command Procedure
     #
@@ -58,6 +59,7 @@ module GitCompound
       # Procedure Element
       #
       module Element
+        autoload :Parameter,    'git_compound/command/procedure/element/parameter'
         autoload :Manifest,     'git_compound/command/procedure/element/manifest'
         autoload :Lock,         'git_compound/command/procedure/element/lock'
         autoload :Subprocedure, 'git_compound/command/procedure/element/subprocedure'

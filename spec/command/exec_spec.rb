@@ -17,7 +17,7 @@ describe 'gitcompound executable' do
   end
 
   it 'detects manfiest parameter if order is invalid' do
-    expect(subject.call('build', '--allow-nested-subtask', 'Manifest'))
+    expect(subject.call('build', '--allow-nested-subtasks', 'Manifest'))
       .to match(/Error: Manifest `Manifest` not found !/)
   end
 
