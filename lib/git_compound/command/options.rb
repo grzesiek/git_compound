@@ -11,7 +11,7 @@ module GitCompound
       delegate [:procedure, :global, :options, :command] => :@parser
 
       def initialize(argv)
-        @parser = Parser.new(argv, GLOBAL_OPTIONS)
+        @parser = Arguments::Parser.new(argv, GLOBAL_OPTIONS)
         set_global_options
       end
 

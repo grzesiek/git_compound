@@ -41,7 +41,20 @@ module GitCompound
   #
   module Command
     autoload :Options, 'git_compound/command/options'
-    autoload :Parser,  'git_compound/command/parser'
+
+    # Command Arguments module
+    #
+    module Arguments
+      autoload :Parser, 'git_compound/command/arguments/parser'
+
+      # Argument Type module
+      #
+      module Type
+        autoload :Type,    'git_compound/command/arguments/type/type'
+        autoload :Boolean, 'git_compound/command/arguments/type/boolean'
+        autoload :String,  'git_compound/command/arguments/type/string'
+      end
+    end
 
     # Command Procedure
     #
