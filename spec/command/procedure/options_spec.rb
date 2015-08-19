@@ -42,8 +42,8 @@ module GitCompound
           class TestSubprocedure < described_class
             include Command::Procedure::Element::Parameter
 
-            add_parameter :first_parameter, type: Boolean, scope: :global
-            add_parameter :second_parameter, type: String
+            add_parameter :first_parameter, type: :boolean, scope: :global
+            add_parameter :second_parameter, type: :string
           end
 
           # TestProcedure mock
@@ -52,7 +52,7 @@ module GitCompound
             include Command::Procedure::Element::Subprocedure
             include Command::Procedure::Element::Parameter
 
-            add_parameter :my_parameter, type: Integer
+            add_parameter :my_parameter, type: :integer
             add_subprocedure :sub, TestSubprocedure
           end
 

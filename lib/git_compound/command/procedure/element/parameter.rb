@@ -22,7 +22,7 @@ module GitCompound
             def add_parameter(name, metadata)
               @parameters = {} unless @parameters
 
-              raise GitCompoundError, 'You need to specify type of argument !' unless
+              raise GitCompoundError, 'You need to specify type of parameter !' unless
                 metadata.include?(:type)
 
               @parameters.store(name, metadata)
@@ -32,8 +32,6 @@ module GitCompound
               (@parameters || {}).merge(super)
             end
           end
-
-          class Boolean; end
         end
       end
     end

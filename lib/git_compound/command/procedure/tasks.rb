@@ -7,8 +7,8 @@ module GitCompound
         include Element::Manifest
         include Element::Parameter
 
-        add_parameter :allow_nested_subtasks, type: Boolean, scope: :global
-        add_parameter :list, type: Boolean
+        add_parameter :allow_nested_subtasks, type: :boolean, scope: :global
+        # add_parameter :list, type: Argument::StringBoolean
 
         def execute
           Logger.info 'Running tasks ...'

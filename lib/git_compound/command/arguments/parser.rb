@@ -59,12 +59,12 @@ module GitCompound
 
         def expected_parameter_boolean?(expected, parameter)
           expected.include?(parameter) &&
-            expected[parameter][:type] == Procedure::Element::Parameter::Boolean
+            expected[parameter][:type] == :boolean
         end
 
         def expected_parameter_type_valid?(expected, parameter)
           expected.include?(parameter) &&
-            arg_next.is_a?(expected[parameter][:type])
+            arg_next.is_a?(Object.const_get(expected[parameter][:type]))
         end
 
         def unexpected_parameter_string?(expected, parameter, value)

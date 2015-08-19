@@ -50,9 +50,13 @@ module GitCompound
       # Argument Type module
       #
       module Type
-        autoload :Type,    'git_compound/command/arguments/type/type'
-        autoload :Boolean, 'git_compound/command/arguments/type/boolean'
-        autoload :String,  'git_compound/command/arguments/type/string'
+        autoload :Type, 'git_compound/command/arguments/type/type'
+
+        # Parameter module
+        #
+        module Parameter
+          autoload :Boolean, 'git_compound/command/arguments/type/parameter/boolean'
+        end
       end
     end
 
