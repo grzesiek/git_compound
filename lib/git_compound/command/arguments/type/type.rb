@@ -33,7 +33,7 @@ module GitCompound
           # or nil if bare arguments is irrelevant
           #
           def value!
-            raise NotImplementedError
+            @args[@args.index(@key) + 1]
           end
 
           # Return value converted to valid type
