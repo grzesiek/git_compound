@@ -5,6 +5,7 @@ module GitCompound
       #
       class Build < Procedure
         include Element::Lock
+        include Element::Option
         include Element::Subprocedure
 
         add_subprocedure :build_lock,     BuildLock

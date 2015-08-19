@@ -10,10 +10,6 @@ module GitCompound
               value!.is_a?(::String)
             end
 
-            def used
-              [value!].compact
-            end
-
             private
 
             def value!

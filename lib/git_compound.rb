@@ -85,9 +85,9 @@ module GitCompound
       # Procedure Element
       #
       module Element
-        autoload :Parameter,    'git_compound/command/procedure/element/parameter'
-        autoload :Manifest,     'git_compound/command/procedure/element/manifest'
         autoload :Lock,         'git_compound/command/procedure/element/lock'
+        autoload :Manifest,     'git_compound/command/procedure/element/manifest'
+        autoload :Option,       'git_compound/command/procedure/element/option'
         autoload :Subprocedure, 'git_compound/command/procedure/element/subprocedure'
       end
     end

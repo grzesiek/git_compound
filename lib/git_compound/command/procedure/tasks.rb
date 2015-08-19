@@ -5,7 +5,7 @@ module GitCompound
       #
       class Tasks < Procedure
         include Element::Manifest
-        include Element::Parameter
+        include Element::Option
 
         add_parameter :allow_nested_subtasks, type: :boolean, scope: :global
         # add_parameter :list, type: Argument::StringBoolean

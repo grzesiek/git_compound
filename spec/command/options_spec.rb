@@ -8,16 +8,16 @@ module GitCompound
 
         it 'parses procedure options' do
           expect(subject.options)
-            .to eq(args: ['Compoundfile'])
+            .to eq(manifest: 'Compoundfile')
         end
       end
 
       context 'manifest and parameter variant' do
-        subject { described_class.new(%w(build --allow-nested-subtasks Compoundfile)) }
+        subject { described_class.new(%w(tasks --allow-nested-subtasks Compoundfile)) }
 
         it 'parses procedure options' do
           expect(subject.options)
-            .to eq(allow_nested_subtasks: true, args: ['Compoundfile'])
+            .to eq(allow_nested_subtasks: true, manifest: 'Compoundfile')
         end
       end
     end
@@ -25,8 +25,7 @@ module GitCompound
     context 'argv is valid' do
       subject do
         argv = ['--verbose', 'build', 'Compoundfile',
-                '--allow-nested-subtasks', '--test-param', 'test-value',
-                '--test-second', 'value_second', '--disable-colors']
+                '--allow-nested-subtasks', '--disable-colors']
 
         described_class.new(argv)
       end
@@ -37,8 +36,7 @@ module GitCompound
 
       it 'parses procedure options' do
         expect(subject.options)
-          .to eq(allow_nested_subtasks: true, test_param: 'test-value',
-                 test_second: 'value_second', args: ['Compoundfile'])
+          .to eq(allow_nested_subtasks: true, manifest: 'Compoundfile')
       end
 
       it 'parses command' do
@@ -63,6 +61,17 @@ module GitCompound
 
         it 'returns help procedure' do
           expect(subject.procedure).to eq Command::Procedure::Help
+        end
+      end
+
+      context 'unknown arguments' do
+        subject do
+          described_class.new(['build', '--unknown-boolean-argument'])
+        end
+
+        it 'raises error' do
+          expect { subject.options }
+            .to raise_error(UnknownArgumentError, /Unknown argument/)
         end
       end
     end

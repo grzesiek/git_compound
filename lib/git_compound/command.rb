@@ -3,19 +3,19 @@ module GitCompound
   #
   module Command
     def build(manifest, opts = {})
-      run(Procedure::Build, opts.merge(args: [manifest]))
+      run(Procedure::Build, opts.merge(manifest: manifest))
     end
 
     def update(manifest, opts = {})
-      run(Procedure::Update, opts.merge(args: [manifest]))
+      run(Procedure::Update, opts.merge(manifest: manifest))
     end
 
     def check(manifest, opts = {})
-      run(Procedure::Check, opts.merge(args: [manifest]))
+      run(Procedure::Check, opts.merge(manifest: manifest))
     end
 
     def show(manifest, opts = {})
-      run(Procedure::Show, opts.merge(args: [manifest]))
+      run(Procedure::Show, opts.merge(manifest: manifest))
     end
 
     def help(opts = {})

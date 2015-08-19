@@ -19,8 +19,8 @@ module GitCompound
           raise NotImplementedError
         end
 
-        # Valid options available for this
-        # procedure, see Element::Parameter
+        # Valid options available for this procedure
+        # see Element::Option
         #
         def self.options
           {}

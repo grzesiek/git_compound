@@ -5,8 +5,8 @@ module GitCompound
       #
       class Parser
         def initialize(argv, global)
-          @global    = global
-          @args      = arguments(argv)
+          @global = global
+          @args   = format_arguments(argv)
         end
 
         def procedure
@@ -15,66 +15,59 @@ module GitCompound
           Procedure::Help
         end
 
-        def command
-          @args.find { |arg| arg.is_a?(String) }
-        end
-
         def options
-          given, expected = procedure_parameters
-          options = { args: [] }
+          expected  = procedure.options
+          arguments = @args - @global - [command]
+          found = {}
 
-          given.each_cons(3) do |arg_prev, arg, arg_next|
-            case
-            when expected_parameter_boolean?(expected, arg)
-              options.merge!(arg => true)
-            when expected_parameter_type_valid?(expected, arg)
-              options.merge!(arg => arg_next)
-            when unexpected_parameter_string?(expected, arg, arg_next)
-              options.merge!(arg => arg_next)
-            when unexpected_argument?(expected, arg_prev, arg)
-              options[:args] << arg
-            end
+          option_each(expected) do |name, type|
+            option = type.new(name, arguments)
+            next unless option.valid?
+
+            arguments -= option.used
+            found.merge!(option.parse)
           end
 
-          options
+          return found if arguments.empty?
+          raise UnknownArgumentError,
+                "Unknown arguments `#{arguments.inspect}`"
         end
 
         def global
           @args & @global
         end
 
+        def command
+          @args.find { |arg| arg.is_a?(String) }
+        end
+
         private
 
-        def arguments(argv)
+        def format_arguments(argv)
           argv.map do |arg|
             arg.start_with?('--') ? arg.sub(/^--/, '').tr('-', '_').to_sym : arg
           end
         end
 
-        def procedure_parameters
-          given    = [nil] + (@args - @global - [command]) + [nil]
-          expected = procedure.options
-          [given, expected]
+        def option_each(expected)
+          # parameters first, arguments last
+          opts = expected.sort_by { |_key, value| value[:variant] }.reverse
+
+          opts.each do |opt|
+            name = opt.first
+            type = option_type(opt.last)
+
+            yield name, type
+          end
         end
 
-        def expected_parameter_boolean?(expected, parameter)
-          expected.include?(parameter) &&
-            expected[parameter][:type] == :boolean
-        end
-
-        def expected_parameter_type_valid?(expected, parameter)
-          expected.include?(parameter) &&
-            arg_next.is_a?(Object.const_get(expected[parameter][:type]))
-        end
-
-        def unexpected_parameter_string?(expected, parameter, value)
-          !expected.include?(parameter) &&
-            parameter.is_a?(Symbol) && value.is_a?(String)
-        end
-
-        def unexpected_argument?(expected, arg_prev, argument)
-          (expected_parameter_boolean?(expected, arg_prev) || !arg_prev.is_a?(Symbol)) &&
-            argument.is_a?(String)
+        def option_type(metadata)
+          variant = metadata[:variant].capitalize
+          type = metadata[:type].capitalize
+          Arguments::Type.const_get("#{variant}::#{type}")
+        rescue NameError
+          raise GitCompoundError,
+                "Unknown option variant or type `#{variant}`, `#{type}`"
         end
       end
     end

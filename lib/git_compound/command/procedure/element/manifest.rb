@@ -7,8 +7,14 @@ module GitCompound
         module Manifest
           def initialize(opts)
             super
-            filename  = opts[:args].first
-            @manifest = manifest_load(filename)
+            @manifest = manifest_load(opts[:manifest])
+          end
+
+          def self.included(parent_class)
+            parent_class.class_eval do
+              include Element::Option
+              add_argument :manifest, type: :string, scope: :global
+            end
           end
 
           private

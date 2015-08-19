@@ -34,9 +34,16 @@ module GitCompound
             end
 
             def options
-              opts = super
-              @subprocedures.to_h.each { |_, procedure| opts.merge!(procedure.options) }
-              opts.select { |_param, metadata| metadata[:scope] == :global }
+              subprocedure_options = {}
+              @subprocedures.to_h.each do |_, procedure|
+                subprocedure_options.merge!(procedure.options)
+              end
+
+              subprocedure_options.select! do |_param, metadata|
+                metadata[:scope] == :global
+              end
+
+              subprocedure_options.merge(super)
             end
           end
         end

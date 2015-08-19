@@ -4,7 +4,7 @@ describe GitCompound do
     subject do
       proc do
         GitCompound.run(GitCompound::Command::Procedure::Show,
-                        args: ["#{@base_component_dir}/Compoundfile"])
+                        manifest: "#{@base_component_dir}/Compoundfile")
       end
     end
 
