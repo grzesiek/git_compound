@@ -24,7 +24,7 @@ module GitCompound
           # Returns array of arguments that has been used
           #
           def used
-            valid? ? [@key, value!].compact : []
+            raise NotImplementedError
           end
 
           private
@@ -33,7 +33,7 @@ module GitCompound
           # or nil if bare arguments is irrelevant
           #
           def value!
-            @args[@args.index(@key) + 1]
+            raise NotImplementedError
           end
 
           # Return value converted to valid type

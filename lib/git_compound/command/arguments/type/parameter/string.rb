@@ -5,7 +5,7 @@ module GitCompound
         module Parameter
           # String parameter implementation
           #
-          class String < Type
+          class String < Parameter
             def valid?
               @args.include?(@key) && value!.is_a?(::String)
             end

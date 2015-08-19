@@ -3,21 +3,17 @@ module GitCompound
     module Arguments
       module Type
         module Parameter
-          # Boolean parameter implmentation
+          # Abstract parameter type
           #
-          class Boolean < Parameter
-            def valid?
-              @args.include?(@key)
+          class Parameter < Type
+            def used
+              valid? ? [@key, value!].compact : []
             end
 
             private
 
             def value!
-              nil
-            end
-
-            def value
-              true
+              @args[@args.index(@key) + 1]
             end
           end
         end
