@@ -28,7 +28,7 @@ describe GitCompound do
         subject do
           lambda do
             GitCompound.build("#{@base_component_dir}/Compoundfile",
-                              :allow_nested_subtasks)
+                              allow_nested_subtasks: true)
           end
         end
 

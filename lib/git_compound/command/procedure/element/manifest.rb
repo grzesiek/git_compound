@@ -5,10 +5,16 @@ module GitCompound
         # Manifest mixin
         #
         module Manifest
-          def initialize(args)
-            filename = args.find { |arg| arg.is_a? String }
-            @manifest = manifest_load(filename)
+          def initialize(opts)
             super
+            @manifest = manifest_load(opts[:manifest])
+          end
+
+          def self.included(parent_class)
+            parent_class.class_eval do
+              include Element::Option
+              add_argument :manifest, type: :string, scope: :global
+            end
           end
 
           private

@@ -20,7 +20,7 @@ module GitCompound
       end
 
       it 'should raise error if local changes are detected' do
-        expect { subject.call }.to raise_error(LocalChangesError,
+        expect { subject.call }.to raise_error(Exception,
                                                /contains uncommited changes/)
       end
     end
@@ -33,7 +33,7 @@ module GitCompound
           File.open('untracked_dir/untracked_file_2', 'w') { |f| f.puts 'untracked' }
         end
 
-        expect { subject.call }.to raise_error(LocalChangesError,
+        expect { subject.call }.to raise_error(Exception,
                                                /contains untracked files/)
       end
 

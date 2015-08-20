@@ -10,7 +10,7 @@ module GitCompound
     end
 
     def verbose
-      @verbose ||= false
+      @verbose.nil? ? false : @verbose
     end
 
     def colors=(value)
@@ -18,7 +18,7 @@ module GitCompound
     end
 
     def colors
-      @colors ||= true
+      @colors.nil? ? true : @colors
     end
 
     def inline(inline_message)

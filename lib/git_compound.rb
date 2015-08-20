@@ -42,6 +42,33 @@ module GitCompound
   module Command
     autoload :Options, 'git_compound/command/options'
 
+    # Command Arguments module
+    #
+    module Arguments
+      autoload :Parser, 'git_compound/command/arguments/parser'
+
+      # Argument Type module
+      #
+      module Type
+        autoload :Type, 'git_compound/command/arguments/type/type'
+
+        # Parameter module
+        #
+        module Parameter
+          autoload :Parameter, 'git_compound/command/arguments/type/parameter/parameter'
+          autoload :Boolean,   'git_compound/command/arguments/type/parameter/boolean'
+          autoload :String,    'git_compound/command/arguments/type/parameter/string'
+        end
+
+        # Argument module
+        #
+        module Argument
+          autoload :Argument, 'git_compound/command/arguments/type/argument/argument'
+          autoload :String,   'git_compound/command/arguments/type/argument/string'
+        end
+      end
+    end
+
     # Command Procedure
     #
     module Procedure
@@ -58,8 +85,9 @@ module GitCompound
       # Procedure Element
       #
       module Element
-        autoload :Manifest,     'git_compound/command/procedure/element/manifest'
         autoload :Lock,         'git_compound/command/procedure/element/lock'
+        autoload :Manifest,     'git_compound/command/procedure/element/manifest'
+        autoload :Option,       'git_compound/command/procedure/element/option'
         autoload :Subprocedure, 'git_compound/command/procedure/element/subprocedure'
       end
     end

@@ -5,7 +5,7 @@ module GitCompound
         # Lock mixin
         #
         module Lock
-          def initialize(args)
+          def initialize(opts)
             @lock     = GitCompound::Lock.new
             @lock_new = GitCompound::Lock.new.clean
 
