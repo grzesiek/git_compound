@@ -175,6 +175,46 @@ module GitCompound
             expect(File.exist?(@destination + 'second_update_file')).to be false
           end
         end
+
+        context 'HEAD on local-only branch' do
+          before do
+            git_create_component_2
+
+            # Build component first
+            #
+            component_source_dir = @component_2_dir
+            component_destination_dir = 'component_2_destination'
+
+            @component = Component.new(:component_2) do
+              branch 'master'
+              source component_source_dir
+              destination component_destination_dir
+            end
+            @component.build!
+
+            # Change local repository
+            #
+            git(component_destination_dir) do
+              git_branch_new('test/test-branch')
+              git_add_file('new_update_file') { 'new_file_contents' }
+              @sha = git_commit('new commit on test/test-branch')
+              git_branch_push('test/test-branch')
+            end
+
+            # Update component
+            #
+            @component.update!
+          end
+
+          it 'does not merge branch previously checked out' do
+            ref = git(@component.path) { git_current_ref }
+            sha = git(@component.path) { git_head_sha }
+
+            expect(ref).to eq 'master'
+            expect(sha).to eq @component_2_commit_tag_v1_2_sha
+            expect(sha).to_not eq @sha
+          end
+        end
       end
     end
   end

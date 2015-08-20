@@ -44,6 +44,7 @@ module GitCompound
       @destination.repository do |repo|
         repo.fetch
         repo.checkout(@source.ref)
+        repo.fetch
         repo.merge if repo.branch?(@source.ref)
       end
     end
