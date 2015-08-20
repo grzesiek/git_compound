@@ -23,6 +23,8 @@ module GitCompound
     context 'conflicting dependency exists' do
       before do
         git(@leaf_component_3_dir) do
+          git_add_file('new_file') { 'new_file' }
+          git_commit('new commit indicates new version')
           git_tag('2.0', 'version 2.0')
         end
 

@@ -33,14 +33,12 @@ module GitHelper
 
   def git_commit(message)
     `git commit -m "#{message}"`
-    sha = `git rev-parse HEAD`
-    sha.strip
+    `git rev-parse HEAD`.strip
   end
 
   def git_tag(name, message)
     `git tag -a "#{name}" -m "#{message}"`
-    sha = `git rev-parse #{name}^{}`
-    sha.strip
+    `git rev-parse #{name}^{}`.strip
   end
 
   def git_expose(dir, port)
@@ -63,5 +61,13 @@ module GitHelper
 
   def git_commits
     `git log --oneline`.strip
+  end
+
+  def git_branch_new(branch_name)
+    `git checkout -b #{branch_name} >/dev/null 2>&1`
+  end
+
+  def git_branch_push(branch_name)
+    `git push -u origin #{branch_name} >/dev/null 2>&1`
   end
 end

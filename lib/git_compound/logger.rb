@@ -10,7 +10,7 @@ module GitCompound
     end
 
     def verbose
-      @verbose ||= false
+      @verbose.nil? ? false : @verbose
     end
 
     def colors=(value)
@@ -18,7 +18,7 @@ module GitCompound
     end
 
     def colors
-      @colors ||= true
+      @colors.nil? ? true : @colors
     end
 
     def inline(inline_message)
@@ -40,10 +40,6 @@ module GitCompound
 
     def error(error_message)
       log error_message.on_red.white.bold
-    end
-
-    def parse(message)
-      message
     end
 
     private

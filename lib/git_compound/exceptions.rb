@@ -13,4 +13,5 @@ module GitCompound
   class ConflictingDependencyError < GitCompoundError; end
   class NameConstraintError < GitCompoundError; end
   class LocalChangesError < GitCompoundError; end
+  class UnknownArgumentError < GitCompoundError; end
 end

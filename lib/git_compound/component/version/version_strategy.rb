@@ -37,7 +37,7 @@ module GitCompound
         end
 
         def ==(other)
-          to_s == other.to_s
+          sha == other.sha
         end
       end
     end
