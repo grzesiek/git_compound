@@ -16,11 +16,10 @@ module GitCompound
         end
 
         def options
-          expected  = procedure.options
           arguments = @args - @global - [command]
           found = {}
 
-          option_each(expected) do |name, type|
+          option_each(procedure.options) do |name, type|
             option = type.new(name, arguments)
             next unless option.valid?
 

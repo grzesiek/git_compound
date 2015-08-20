@@ -3,23 +3,6 @@
 module GitCompound
   describe Command::Procedure::Procedure do
     describe 'options' do
-      context 'parameters invalid' do
-        let(:test_procedure) do
-          # Testpocedure mock
-          #
-          class TestProcedure < described_class
-            include Command::Procedure::Element::Option
-          end
-        end
-
-        subject { test_procedure.new(invalid_parameter: false) }
-
-        pending 'raises error' do
-          expect { described_class.new(invalid_parameter: false) }
-            .to raise_error(UnknownArgumentError, /Unknown option/)
-        end
-      end
-
       context 'parameters are valid' do
         before do
           allow(described_class)
