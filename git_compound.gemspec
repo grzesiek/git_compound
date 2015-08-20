@@ -6,9 +6,9 @@ require 'git_compound/version'
 Gem::Specification.new do |spec|
   spec.name          = 'git_compound'
   spec.version       = GitCompound::VERSION
-  spec.authors       = ['Grzegorz Bizon']
-  spec.email         = ['grzegorz.bizon@ntsn.pl']
-  spec.summary       = 'Compose you project using git repositories and ruby tasks'
+  spec.authors       = ['Grzegorz Bizon', 'Tomasz Maczukin']
+  spec.email         = ['grzegorz.bizon@ntsn.pl', 'tomasz@maczukin.pl']
+  spec.summary       = 'Compose you project using Git repositories and ruby tasks'
   spec.homepage      = 'https://github.com/grzesiek/git_compound'
   spec.license       = 'MIT'
 
