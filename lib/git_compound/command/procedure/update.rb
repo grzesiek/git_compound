@@ -11,44 +11,35 @@ module GitCompound
         add_subprocedure :check_dependencies, Check
         add_subprocedure :tasks_runner,       Tasks
 
-        def execute
+        step :check_lockfile do
           raise GitCompoundError,
                 "Lockfile `#{Lock::FILENAME}` does not exist ! " \
                 'You should use `build` command.' unless locked?
-
-          protect_local_modifications
-          check_dependencies
-          update
-          execute_tasks
-          lock_updated_manifest
-          remove_dormant_components
         end
 
-        private
-
-        def protect_local_modifications
+        step :protect_local_modifications do
           @lock.process(Worker::LocalChangesGuard.new(@lock))
         end
 
-        def check_dependencies
+        step :check_dependencies do
           subprocedure(:check_dependencies)
         end
 
-        def update
+        step :update do
           Logger.info 'Updating components ...'
           @manifest.process(Worker::ComponentDispatcher.new(@lock_new))
         end
 
-        def execute_tasks
+        step :execute_tasks do
           subprocedure(:tasks_runner)
         end
 
-        def lock_updated_manifest
+        step :lock_updated_manifest do
           @lock_new.lock_manifest(@manifest)
           @lock_new.write
         end
 
-        def remove_dormant_components
+        step :remove_dormant_components do
           dormant_components = @lock.components.reject do |component|
             @lock_new.find(component) ? true : false
           end

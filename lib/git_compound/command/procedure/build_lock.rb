@@ -10,28 +10,21 @@ module GitCompound
 
         add_subprocedure :tasks_runner, Tasks
 
-        def execute
+        step :build_info do
           Logger.info 'Building components from lockfile ...'
-
-          verify_manifest
-          build_locked_components
-          execute_tasks
         end
 
-        private
-
-        def verify_manifest
-          return if @manifest.md5sum == @lock.manifest
-
+        step :verify_manifest do
           raise GitCompoundError,
-                'Manifest md5sum has changed ! Use `update` command.'
+                'Manifest md5sum has changed ! Use `update` command.' unless
+            @manifest.md5sum == @lock.manifest
         end
 
-        def build_locked_components
+        step :build_locked_components do
           @lock.process(Worker::ComponentDispatcher.new(@lock))
         end
 
-        def execute_tasks
+        step :execute_tasks do
           subprocedure(:tasks_runner)
         end
       end

@@ -7,11 +7,11 @@ module GitCompound
         include Element::Manifest
 
         def execute!
-          execute
+          super
           Logger.info 'OK'
         end
 
-        def execute
+        step :check_dependencies do
           Logger.info 'Checking dependencies ...'
 
           @manifest.process(
