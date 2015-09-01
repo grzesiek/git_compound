@@ -11,7 +11,7 @@ module GitCompound
         add_subprocedure :build_lock,     BuildLock
         add_subprocedure :build_manifest, BuildManifest
 
-        step :build do
+        step :build_dispatcher do
           if locked?
             subprocedure(:build_lock)
           else

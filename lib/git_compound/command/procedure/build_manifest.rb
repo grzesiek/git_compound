@@ -11,11 +11,11 @@ module GitCompound
         add_subprocedure :check_dependencies, Check
         add_subprocedure :tasks_runner,       Tasks
 
-        step :print_info do
+        step :build_info do
           Logger.info 'Building components ...'
         end
 
-        step :check_dependencies do
+        step :check do
           subprocedure(:check_dependencies)
         end
 

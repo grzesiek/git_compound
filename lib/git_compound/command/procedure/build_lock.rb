@@ -10,7 +10,7 @@ module GitCompound
 
         add_subprocedure :tasks_runner, Tasks
 
-        step :print_info do
+        step :build_info do
           Logger.info 'Building components from lockfile ...'
         end
 
