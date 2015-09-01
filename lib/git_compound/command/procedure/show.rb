@@ -8,10 +8,10 @@ module GitCompound
 
         def execute!
           Logger.info 'Processing components list ...'
-          execute
+          super
         end
 
-        def execute
+        step :pretty_print do
           @manifest.process(
             Worker::CircularDependencyChecker.new,
             Worker::PrettyPrint.new)

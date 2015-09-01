@@ -4,12 +4,8 @@ module GitCompound
       # Help command procedure
       #
       class Help < Procedure
-        def execute
-          Logger.info(message)
-        end
-
-        def message
-          self.class.message
+        step :print_help do
+          Logger.info(self.class.message)
         end
 
         # rubocop:disable Metrics/AbcSize
