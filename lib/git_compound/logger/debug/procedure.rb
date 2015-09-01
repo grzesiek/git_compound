@@ -7,7 +7,7 @@ module GitCompound
         extend Logger::Debugger
 
         debug_before(:execute_step) do |name|
-          "Executing procedure step `#{name}`"
+          "Executing step `#{name}` in `#{self.class}` procedure"
         end
       end
     end

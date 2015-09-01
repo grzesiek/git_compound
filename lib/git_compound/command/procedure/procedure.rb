@@ -39,7 +39,12 @@ module GitCompound
           # Name of procedure
           #
           def to_s
-            name.split('::').last.downcase
+            name.split('::').last
+              .gsub(/::/, '/')
+              .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+              .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+              .tr('-', '_')
+              .downcase
           end
 
           private
