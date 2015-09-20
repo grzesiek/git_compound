@@ -3,17 +3,17 @@
 module GitCompound
   describe Component::Source do
     describe 'clone options' do
-      before do
-        git_create_component_2
+      let!(:component_2) { create_component_2 }
 
-        component_dir = @component_2_dir
-        @component = Component.new(:component_2) do
+      before do
+        component_dir = component_2.origin
+        component = Component.new(:component_2) do
           tag 'v1.1'
           source component_dir, :shallow
           destination '/component_2_test_dir'
         end
 
-        @component.build!
+        component.build!
       end
 
       it 'should build component' do

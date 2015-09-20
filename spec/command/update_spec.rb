@@ -6,15 +6,14 @@ describe GitCompound do
   describe '#update' do
     include_context 'out of date environment'
 
-    subject do
-      -> { GitCompound.update("#{@base_component_dir}/Compoundfile") }
-    end
+    subject { -> { GitCompound.update(manifest_path!) } }
 
     it_behaves_like 'local changes guard worker'
     it_behaves_like 'component dispatcher worker'
 
     it 'removes dormant components' do
-      pattern = "Removing dormant component `component_2` from `component_2/` !\n" \
+      pattern = 'Removing dormant component `component_2` '      \
+                "from `component_2_destination/` !\n"            \
                 'Removing dormant component `leaf_component_3` ' \
                 'from `leaf_component_3_destination/`'
       expect { subject.call }

@@ -4,40 +4,37 @@ require 'workers/shared_examples/local_changes_guard'
 #
 module GitCompound
   describe Worker::LocalChangesGuard do
-    before do
-      git_create_component_1
+    let!(:component_1) { create_component_1 }
 
-      @component_1_dst = 'test_component_1_dir_built/'
-      component_1_src = @component_1_dir
-      component_1_dst = @component_1_dst
-
-      @component = Component.new(:component_1) do
+    let(:component) do
+      component_1_src = component_1.origin
+      Component.new(:component_1) do
         branch 'master'
         source component_1_src
-        destination component_1_dst
+        destination 'test_component_1_dir_built/'
       end
-
-      @component.build!
-      @lock = Lock.new
     end
 
+    let(:lock) { Lock.new }
+    let(:destination) { component.path }
+
+    before { component.build! }
+
     subject do
-      -> { described_class.new(@lock).visit_component(component) }
+      -> { described_class.new(lock).visit_component(component) }
     end
 
     context 'component repository exists' do
-      let(:component) { @component }
-
       it_behaves_like 'local changes guard worker'
     end
 
     context 'repository does not exist' do
       let(:component) do
-        component_dir = @component_1_dir
+        component_dir = component_1.origin
         Component.new(:tmp) do
           branch 'master'
           source component_dir
-          destination 'non existent'
+          destination 'non/existent'
         end
       end
 

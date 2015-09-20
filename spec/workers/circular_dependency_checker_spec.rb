@@ -2,28 +2,27 @@
 #
 module GitCompound
   describe Worker::CircularDependencyChecker do
-    before do
-      git_build_test_environment!
-      @manifest = git_base_component_manifest
-    end
+    let!(:components) { create_all_components! }
+    let(:manifest) { manifest! }
+    let(:base_component_path) { base_component_path! }
 
     context 'circular depenendecy does not exist' do
       it 'should not raise error' do
-        expect { @manifest.process(described_class.new) }
+        expect { manifest.process(described_class.new) }
           .to_not raise_error
       end
     end
 
     context 'circular dependency exists' do
       before do
-        git(@leaf_component_3_dir) do
+        git(components[:leaf_component_3].origin) do
           git_add_file('Compoundfile') do
             <<-END
               name :leaf_component_3
 
               component :base_component do
                 branch 'master'
-                source '#{@base_component_dir}'
+                source '#{base_component_path}'
                 destination '/destination'
               end
             END
@@ -34,7 +33,7 @@ module GitCompound
       end
 
       it 'should raise error when circular depenendecy is found' do
-        expect { @manifest.process(described_class.new) }
+        expect { manifest.process(described_class.new) }
           .to raise_error CircularDependencyError
       end
     end

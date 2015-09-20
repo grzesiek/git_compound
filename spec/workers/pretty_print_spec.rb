@@ -4,12 +4,10 @@ require 'workers/shared_examples/pretty_print'
 #
 module GitCompound
   describe Worker::PrettyPrint do
-    before { git_build_test_environment! }
+    before { create_all_components! }
+    let(:manifest) { manifest! }
 
-    subject do
-      manifest = git_base_component_manifest
-      -> { manifest.process(described_class.new) }
-    end
+    subject { -> { manifest.process(described_class.new) } }
 
     it_behaves_like 'pretty print worker'
   end

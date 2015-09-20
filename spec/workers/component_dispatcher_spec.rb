@@ -7,9 +7,7 @@ module GitCompound
   describe Worker::ComponentDispatcher do
     include_context 'out of date environment'
 
-    subject do
-      -> { @manifest.process(described_class.new(Lock.new)) }
-    end
+    subject { -> { manifest.process(described_class.new(Lock.new)) } }
 
     it_behaves_like 'component dispatcher worker'
   end

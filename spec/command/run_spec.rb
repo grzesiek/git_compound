@@ -1,10 +1,11 @@
 describe GitCompound do
   describe '#run' do
-    before { git_build_test_environment! }
+    before { create_all_components! }
+
     subject do
       proc do
         GitCompound.run(GitCompound::Command::Procedure::Show,
-                        manifest: "#{@base_component_dir}/Compoundfile")
+                        manifest: manifest_path!)
       end
     end
 

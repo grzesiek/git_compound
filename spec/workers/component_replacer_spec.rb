@@ -2,34 +2,36 @@
 #
 module GitCompound
   describe Worker::ComponentReplacer do
-    before do
-      git_create_component_1
-      git_create_component_2
+    let(:component_1) { create_component_1 }
+    let(:component_2) { create_component_2 }
 
-      component_1_dir = @component_1_dir
-      component_2_dir = @component_2_dir
-
-      component_1 = Component.new(:component_first) do
+    let(:old_component) do
+      component_1_dir = component_1.origin
+      Component.new(:component_old) do
         branch 'master'
         source component_1_dir
         destination '/component_dir_test'
       end
-      component_1.build!
+    end
 
-      @component_2 = Component.new(:component_second) do
+    let(:new_component) do
+      component_2_dir = component_2.origin
+      Component.new(:component_new) do
         version '0.1'
         source component_2_dir
         destination '/component_dir_test'
       end
     end
 
+    before { old_component.build! }
+
     subject do
-      -> { described_class.new(Lock.new).visit_component(@component_2) }
+      -> { described_class.new(Lock.new).visit_component(new_component) }
     end
 
     it 'prints information about component being replaced' do
       expect { subject.call }
-        .to output(/^Replacing:\s+`component_second` component, version: 0\.1.*$/)
+        .to output(/^Replacing:\s+`component_new` component, version: 0\.1.*$/)
         .to_stdout
     end
 
@@ -42,7 +44,7 @@ module GitCompound
     it 'sets new origin remote in new component' do
       subject.call
       origin = git("#{@dir}/component_dir_test") { git_remotes.first['origin'] }
-      expect(origin).to match(/#{@component_2_dir}/)
+      expect(origin).to match(/#{component_2.origin}/)
     end
   end
 end

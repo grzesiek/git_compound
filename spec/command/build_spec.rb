@@ -3,14 +3,11 @@ require 'workers/shared_examples/task_runner'
 
 describe GitCompound do
   describe '#build' do
-    context 'lock file does not exist' do
-      before { git_build_test_environment! }
-      let(:components) { git_test_env_components }
+    let!(:components) { create_all_components!.values }
 
+    context 'lock file does not exist' do
       context 'safe build' do
-        subject do
-          -> { GitCompound.build("#{@base_component_dir}/Compoundfile") }
-        end
+        subject { -> { GitCompound.build(manifest_path!) } }
 
         it_behaves_like 'component builder worker'
 
@@ -27,8 +24,7 @@ describe GitCompound do
       context 'unsafe nested subtasks builder' do
         subject do
           lambda do
-            GitCompound.build("#{@base_component_dir}/Compoundfile",
-                              allow_nested_subtasks: true)
+            GitCompound.build(manifest_path!, allow_nested_subtasks: true)
           end
         end
 
@@ -37,7 +33,7 @@ describe GitCompound do
       end
 
       it 'creates valid lockfile' do
-        GitCompound.build("#{@base_component_dir}/Compoundfile")
+        GitCompound.build(manifest_path!)
         lock = File.read(GitCompound::Lock::FILENAME)
 
         expect(GitCompound::Lock.exist?).to be true
@@ -52,17 +48,9 @@ describe GitCompound do
     end
 
     context 'lock file exists' do
-      subject do
-        -> { GitCompound.build("#{@base_component_dir}/Compoundfile") }
-      end
+      subject { -> { GitCompound.build(manifest_path!) } }
 
-      before do
-        git_build_test_environment!
-        subject.call
-      end
-
-      let(:components) { git_test_env_components }
-
+      before { subject.call }
       it_behaves_like 'component builder worker'
 
       it 'does not build or update components already installed' do
