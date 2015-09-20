@@ -20,7 +20,7 @@ module GitCompound
             @manifest.md5sum == @lock.manifest
         end
 
-        step :build_locked_components do
+        step :build_lock do
           @lock.process(Worker::ComponentDispatcher.new(@lock))
         end
 

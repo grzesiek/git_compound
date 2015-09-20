@@ -9,7 +9,7 @@ module GitCompound
 
         add_parameter :allow_nested_subtasks, type: :boolean, scope: :global
 
-        step :run_tasks do
+        step :tasks do
           Logger.info 'Running tasks ...'
 
           if @opts[:allow_nested_subtasks]
