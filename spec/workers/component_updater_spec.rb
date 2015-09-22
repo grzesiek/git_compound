@@ -2,41 +2,46 @@
 #
 module GitCompound
   describe Worker::ComponentUpdater do
-    before do
-      git_create_leaf_component_1
+    let!(:leaf_component_1) { create_leaf_component_1 }
 
-      component_dir = @leaf_component_1_dir
-      component = Component.new(:leaf_component_1) do
+    let(:old_component) do
+      component_dir = leaf_component_1.origin
+      Component.new(:component_old) do
         version '=1.0'
         source component_dir
         destination '/tmp_leaf_component_1_test_dir'
       end
+    end
 
-      component.build!
-
-      git(@leaf_component_1_dir) do
-        git_add_file('new_component_file') { 'new_component_test_file' }
-        git_commit('2.0 commit')
-        git_tag('2.0', 'version 2.0')
-      end
-
-      @updated_component = Component.new(:leaf_component_1) do
+    let(:updated_component) do
+      component_dir = leaf_component_1.origin
+      Component.new(:component_new) do
         version '2.0'
         source component_dir
         destination '/tmp_leaf_component_1_test_dir'
       end
+    end
 
-      @lock = Lock.new
-      @lock.lock_component(component)
+    let(:lock) { Lock.new }
+
+    before do
+      old_component.build!
+      lock.lock_component(old_component)
+
+      git(leaf_component_1.origin) do
+        git_add_file('new_component_file') { 'new_component_test_file' }
+        git_commit('2.0 commit')
+        git_tag('2.0', 'version 2.0')
+      end
     end
 
     subject do
-      -> { described_class.new(@lock).visit_component(@updated_component) }
+      -> { described_class.new(lock).visit_component(updated_component) }
     end
 
     it 'prints information about components being updated' do
       expect { subject.call }
-        .to output(/^Updating:\s+`leaf_component_1` component, version: 2.0$/)
+        .to output(/^Updating:\s+`component_new` component, version: 2.0$/)
         .to_stdout
     end
 

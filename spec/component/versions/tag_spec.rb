@@ -2,34 +2,30 @@
 #
 module GitCompound
   describe Component::Version::Tag do
-    before do
-      git_create_component_2
-      @repository = Repository::RepositoryLocal.new(@component_2_dir)
-    end
+    let!(:component_2) { create_component_2 }
+    let(:repository) { Repository::RepositoryLocal.new(component_2.origin) }
 
     context 'repository contains valid tag' do
-      before do
-        @version =
-          Component::Version::Tag.new(@repository, 'v1.1')
+      subject do
+        Component::Version::Tag.new(repository, 'v1.1')
       end
 
       it 'reaches valid tag' do
-        expect(@version.reachable?).to be true
+        expect(subject.reachable?).to be true
       end
 
       it 'returns tag as ref' do
-        expect(@version.ref).to eq 'v1.1'
+        expect(subject.ref).to eq 'v1.1'
       end
     end
 
     context 'repository does not contain valid tag' do
-      before do
-        @version =
-          Component::Version::Tag.new(@repository, :non_existent)
+      subject do
+        Component::Version::Tag.new(repository, :non_existent)
       end
 
       it 'indicates that tag is not reachable' do
-        expect(@version.reachable?).to be false
+        expect(subject.reachable?).to be false
       end
     end
   end

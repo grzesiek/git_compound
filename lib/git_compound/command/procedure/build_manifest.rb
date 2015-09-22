@@ -11,30 +11,23 @@ module GitCompound
         add_subprocedure :check_dependencies, Check
         add_subprocedure :tasks_runner,       Tasks
 
-        def execute
+        step :build_info do
           Logger.info 'Building components ...'
-
-          check_dependencies
-          build_manifest
-          execute_tasks
-          lock_manifest
         end
 
-        private
-
-        def check_dependencies
+        step :check do
           subprocedure(:check_dependencies)
         end
 
-        def build_manifest
+        step :build_manifest do
           @manifest.process(Worker::ComponentBuilder.new(@lock))
         end
 
-        def execute_tasks
+        step :execute_tasks do
           subprocedure(:tasks_runner)
         end
 
-        def lock_manifest
+        step :lock_manifest do
           @lock.lock_manifest(@manifest)
           @lock.write
         end

@@ -1,8 +1,6 @@
 describe GitCompound do
   describe '#help' do
-    subject do
-      -> { GitCompound.help }
-    end
+    subject { -> { GitCompound.help } }
 
     it 'outputs help for build method' do
       expect { subject.call }.to output(/^\s*build/).to_stdout

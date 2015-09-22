@@ -3,46 +3,44 @@
 module GitCompound
   describe Manifest do
     describe 'dependencies' do
-      before do
-        git_build_test_environment!
-        @manifest = git_base_component_manifest
-      end
+      let!(:components) { create_all_components! }
+      subject { manifest! }
 
       it 'should load all dependencies' do
-        expect(@manifest.components.count).to eq 2
+        expect(subject.components.count).to eq 2
       end
 
       it 'should set valid names for required components' do
-        expect(@manifest.components).to include(:component_1)
-        expect(@manifest.components).to include(:component_2)
+        expect(subject.components).to include(:component_1)
+        expect(subject.components).to include(:component_2)
       end
 
       it 'should set valid sources for required components' do
-        component_1_source = @manifest.components[:component_1].source.origin
-        component_2_source = @manifest.components[:component_2].source.origin
-        expect(component_1_source).to eq @component_1_dir
-        expect(component_2_source).to eq @component_2_dir
+        component_1_source = subject.components[:component_1].origin
+        component_2_source = subject.components[:component_2].origin
+        expect(component_1_source).to eq components[:component_1].origin
+        expect(component_2_source).to eq components[:component_2].origin
       end
 
-      it 'it should process required components dependencies' do
-        @manifest.process
+      it 'it should process required dependencies' do
+        subject.process
         required_components =
-          @manifest.components[:component_1].manifest.components
+          subject.components[:component_1].manifest.components
         expect(required_components.count).to eq 2
         expect(required_components).to include(:leaf_component_1)
         expect(required_components).to include(:leaf_component_2)
       end
 
       it 'should load required component from valid ref' do
-        @manifest.process
+        subject.process
         required_components =
-          @manifest.components[:component_2].manifest.components
+          subject.components[:component_2].manifest.components
         expect(required_components.count).to eq 1
         expect(required_components).to include(:leaf_component_3)
       end
 
       it 'should raise error if there is no maching version' do
-        component_dir = @component_1_dir
+        component_dir = components[:component_1].origin
         component = Component.new(:test) do
           version '>6.0'
           source component_dir
@@ -52,7 +50,7 @@ module GitCompound
       end
 
       it 'should raise error if there is no maching ref' do
-        component_dir = @component_1_dir
+        component_dir = components[:component_1].origin
         component = Component.new(:test) do
           branch 'non-existent'
           source component_dir

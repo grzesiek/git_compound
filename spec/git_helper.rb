@@ -1,6 +1,20 @@
 # Git Helper module
 #
 module GitHelper
+  def git_create_component(path)
+    raise unless block_given?
+    component_path = git_new(path) { yield }
+    component_name = path.split(File::SEPARATOR).last
+    TestComponent.new(component_name, component_path)
+  end
+
+  def git_new(path)
+    raise unless block_given?
+    Dir.mkdir(path)
+    git(path) { yield }
+    path
+  end
+
   def git(path)
     raise unless block_given?
     Dir.chdir(path) do

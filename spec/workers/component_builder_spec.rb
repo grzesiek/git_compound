@@ -4,14 +4,10 @@ require 'workers/shared_examples/component_builder'
 #
 module GitCompound
   describe Worker::ComponentBuilder do
-    before { git_build_test_environment! }
+    let!(:components) { create_all_components!.values }
+    let(:manifest) { manifest! }
 
-    subject do
-      manifest = git_base_component_manifest
-      -> { manifest.process(described_class.new) }
-    end
-
-    let(:components) { git_test_env_components }
+    subject { -> { manifest.process(described_class.new) } }
 
     it_behaves_like 'component builder worker'
   end

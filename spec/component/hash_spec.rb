@@ -3,23 +3,24 @@
 module GitCompound
   describe Component do
     describe '#to_hash' do
-      before do
-        git_create_component_2
+      let!(:component_2) { create_component_2 }
 
-        component_dir = @component_2_dir
-        @component = Component.new(:component_2) do
+      let(:component) do
+        component_dir = component_2.origin
+        Component.new(:component_2) do
           version '=1.2'
           source component_dir
           destination '/component_2_test_destination'
         end
       end
 
+      subject { component.to_hash }
+
       it 'should return valid hash' do
-        hash = @component.to_hash
-        expect(hash).to eq(
+        expect(subject).to eq(
           name: :component_2,
-          sha: @component_2_commit_tag_v1_2_sha,
-          source: @component_2_dir,
+          sha: component_2.metadata[:tag_v1_2_sha],
+          source: component_2.origin,
           destination: 'component_2_test_destination/'
         )
       end

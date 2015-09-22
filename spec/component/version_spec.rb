@@ -2,31 +2,30 @@
 #
 module GitCompound
   describe Component::Version do
-    before do
-      git_create_component_2
-      component_2_dir = @component_2_dir
+    let!(:component_2) { create_component_2 }
 
-      @component = Component.new(:test_component) do
+    let!(:test_component) do
+      component_2_dir = component_2.origin
+      Component.new(:test_component) do
         version '~>1.1'
         source component_2_dir
         destination '/some/path'
       end
     end
 
+    subject { test_component.source.version }
+
     it 'should return valid matching versions for requirement' do
-      matches = @component.source.version.matches
-      expect(matches).to include '1.1'
-      expect(matches).to include '1.2'
+      expect(subject.matches).to include '1.1'
+      expect(subject.matches).to include '1.2'
     end
 
     it 'should provide lastest valid matching version' do
-      lastest_matching_version = @component.source.version.ref
-      expect(lastest_matching_version).to eq 'v1.2'
+      expect(subject.ref).to eq 'v1.2'
     end
 
     it 'should provide valid lastest matching sha' do
-      lastest_matching_sha = @component.source.version.sha
-      expect(lastest_matching_sha).to eq @component_2_commit_tag_v1_2_sha
+      expect(subject.sha).to eq component_2.metadata[:tag_v1_2_sha]
     end
   end
 end

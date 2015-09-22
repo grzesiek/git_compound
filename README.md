@@ -50,7 +50,7 @@ It is particularly useful when you need to develop your project dependencies at 
 
 Core features:
 
-*   GitCompound introduces Domain Specific Language desgined for writing manifests.
+*   GitCompound introduces Domain Specific Language designed for writing manifests.
 
 *   Manifest file is used to specify dependencies of your project.
 
@@ -102,6 +102,9 @@ and name constraints
 ## Global options
 
 1.  `--verbose` -- turns debug mode on
+
+    This will show you what happens under the hood. All Git commands, procedure steps and tasks being executed will be printed.
+
 2.  `--disable-colors` -- disables ANSI colors in output
 
 ## Details
@@ -211,13 +214,13 @@ and name constraints
         task :print_component_name, :each do |dir, component|
           puts "Current component name: #{component.name}"
           puts "Current component source: #{component.origin}"
-          puts "Current component destination: #{component.destination_path}"
+          puts "Current component destination: #{component.path}"
 
           puts "Component directory: #{dir}"
         end
         ```
 
-        Note that `dir` here is the same as `component.destination_path`.
+        Note that `dir` here is the same as `component.path`.
 
     *   `:all` type -- run task for all child components of this manifest
 

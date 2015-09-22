@@ -2,12 +2,10 @@ require 'workers/shared_examples/pretty_print'
 
 describe GitCompound do
   describe '#show' do
-    before { git_build_test_environment! }
+    before { create_all_components! }
 
     context 'dependencies are valid' do
-      subject do
-        -> { GitCompound.check("#{@base_component_dir}/Compoundfile") }
-      end
+      subject { -> { GitCompound.check(manifest_path!) } }
 
       it 'print information about valid dependencies' do
         expect { subject.call }.to output(/OK/).to_stdout

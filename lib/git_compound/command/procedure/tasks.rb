@@ -8,9 +8,8 @@ module GitCompound
         include Element::Option
 
         add_parameter :allow_nested_subtasks, type: :boolean, scope: :global
-        # add_parameter :list, type: Argument::StringBoolean
 
-        def execute
+        step :tasks do
           Logger.info 'Running tasks ...'
 
           if @opts[:allow_nested_subtasks]
