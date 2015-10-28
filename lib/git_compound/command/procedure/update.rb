@@ -8,6 +8,7 @@ module GitCompound
         include Element::Lock
         include Element::Subprocedure
 
+        add_parameter :perserve_lock, type: :boolean
         add_subprocedure :check_dependencies, Check
         add_subprocedure :tasks_runner,       Tasks
 
@@ -35,8 +36,10 @@ module GitCompound
         end
 
         step :lock_updated_manifest do
-          @lock_new.lock_manifest(@manifest)
-          @lock_new.write
+          unless @opts[:perserve_lock]
+            @lock_new.lock_manifest(@manifest)
+            @lock_new.write
+          end
         end
 
         step :remove_dormant_components do

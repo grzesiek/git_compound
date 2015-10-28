@@ -20,13 +20,29 @@ describe GitCompound do
         .to output(/#{pattern}/).to_stdout
     end
 
-    it 'updates lockfile' do
-      subject.call
-      components = GitCompound::Lock.new.contents[:components]
-      expect(components).to be_any { |cmp| cmp[:name] == :component_1 }
-      expect(components).to be_any { |cmp| cmp[:name] == :new_component }
-      expect(components).to be_none { |cmp| cmp[:name] == :component_2 }
-      expect(components).to be_none { |cmp| cmp[:name] == :leaf_component_3 }
+    describe 'lockfile results' do
+      before { subject.call }
+
+      context 'normal update' do
+        it 'updates lockfile' do
+          components = GitCompound::Lock.new.contents[:components]
+          expect(components).to be_any { |cmp| cmp[:name] == :component_1 }
+          expect(components).to be_any { |cmp| cmp[:name] == :new_component }
+          expect(components).to be_none { |cmp| cmp[:name] == :component_2 }
+          expect(components).to be_none { |cmp| cmp[:name] == :leaf_component_3 }
+        end
+      end
+
+      context 'updating with peserve-lock option' do
+        subject { -> { GitCompound.update(manifest_path!, perserve_lock: true) } }
+
+        it 'does not update lockfile' do
+          components = GitCompound::Lock.new.contents[:components]
+          expect(components).to be_none { |cmp| cmp[:name] == :new_component }
+          expect(components).to be_any { |cmp| cmp[:name] == :component_2 }
+          expect(components).to be_any { |cmp| cmp[:name] == :leaf_component_3 }
+        end
+      end
     end
   end
 end

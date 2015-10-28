@@ -86,6 +86,8 @@ If manifest is not supplied, it uses `Compoundfile` or `.gitcompound`
 
 `gitcompound update [manifest]` -- updates project and lockfile
 
+If parameter `--perserve-lock` is present, lockfile will not be updated.
+
 ### check
 
 `gitcompound check [manifest]` -- checks for circular dependencies, conflicting dependencies
