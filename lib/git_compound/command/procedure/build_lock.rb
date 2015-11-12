@@ -14,6 +14,10 @@ module GitCompound
           Logger.info 'Building components from lockfile ...'
         end
 
+        step :protect_local_modifications do
+          @lock.process(Worker::LocalChangesGuard.new(@lock))
+        end
+
         step :verify_manifest do
           raise GitCompoundError,
                 'Manifest md5sum has changed ! Use `update` command.' unless
